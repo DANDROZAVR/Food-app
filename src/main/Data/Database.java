@@ -35,12 +35,12 @@ public class Database {
             ResultSetMetaData queryMeta = queryResult.getMetaData();
             result.add(new ArrayList<String>());
             int columnsNumber = queryMeta.getColumnCount();
-            for (int i = 0; i < columnsNumber; ++i)
+            for (int i = 1; i <= columnsNumber; ++i)
                 result.get(0).add(queryMeta.getColumnName(i));
             int rows = 1;
             while(queryResult.next()) {
                 result.add(new ArrayList<String>());
-                for (int i = 0; i < columnsNumber; ++i)
+                for (int i = 1; i <= columnsNumber; ++i)
                     result.get(rows).add(queryResult.getString(i));
                 ++rows;
             }
