@@ -26,7 +26,7 @@ public class Database {
         }
         // Closes connection
     }
-    public static ArrayList<ArrayList<String>> execute(String query) throws Exception {
+    public static ArrayList<ArrayList<String>> execute(String query) throws SQLException {
         Statement queryStatement = null;
         try {
             ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
@@ -48,7 +48,7 @@ public class Database {
         } catch (Exception e) {
             e.printStackTrace();;
             System.err.println("Error executing query [" + query + "]: " + e.getClass().getName() + e.getMessage());
-            throw new Exception(e);
+            throw e;
         } finally {
             if (queryStatement != null) {
                 try {
