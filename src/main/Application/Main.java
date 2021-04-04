@@ -15,6 +15,13 @@ public class Main extends Application {
         primaryStage.show();
     }
     public static void main(String[] args) {
+        try {
+            main.Data.Database.connect("jdbc:postgresql://localhost:5432/psimaj", "psimaj", "testpass");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error set connection to the database");
+            System.exit(1);
+        }
         launch(args);
     }
 }
