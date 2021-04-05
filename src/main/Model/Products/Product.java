@@ -6,11 +6,11 @@ public abstract class Product {
     private String productType;
     protected String name = null, description = null;
     String area[] = null;
-    protected Product(int callories, String productType, int id, boolean isInherited) {
-        this.callories = callories;
+    protected Product(int calories, String productType, int id, boolean isInherited) {
+        this.callories = calories;
         this.productType = productType;
         this.id = id;
     }
-    public int getCallories(){ return callories; }
+    public int getCalories(){ return callories; }
     public String getType() { return productType; }
 }
