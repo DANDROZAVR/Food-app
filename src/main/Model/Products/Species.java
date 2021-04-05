@@ -8,8 +8,8 @@ public abstract class Species extends Product {
         Spicy
     }
     Taste taste;
-    protected Species(int callories, Taste taste, int id, boolean isInherited) {
-        super(callories, "Species", id, isInherited);
+    protected Species(int calories, Taste taste, int id, boolean isInherited) {
+        super(calories, "Species", id, isInherited);
         this.taste = taste;
     }
 }

@@ -9,12 +9,12 @@ public abstract class Solid extends Product {
         None
     }
     private final Taste taste;
-    protected Solid(int callories, int id, Taste taste, boolean isInherited) {
-        super(callories, "Solid", id, isInherited);
+    protected Solid(int calories, int id, Taste taste, boolean isInherited) {
+        super(calories, "Solid", id, isInherited);
         this.taste = taste;
     }
-    protected Solid(int callories, int id, boolean isInherited) {
-        super(callories, "Solid", id, isInherited);
+    protected Solid(int calories, int id, boolean isInherited) {
+        super(calories, "Solid", id, isInherited);
         this.taste = Taste.None;
     }
 }
