@@ -20,8 +20,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         try {
             main.Data.Database.connect("jdbc:postgresql://localhost:5432/test", "test", "testpass");
-            //int empty[] = {};
-            //System.out.println(main.Data.Query.getFullInformation("Products", empty));
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error set connection to the database");
