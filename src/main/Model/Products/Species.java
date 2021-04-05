@@ -1,7 +1,15 @@
 package main.Model.Products;
 
 public abstract class Species extends Product {
-    protected Species(int callories, int id, Solid.ProductTaste taste, boolean isInherited) {
-        super(callories, ProductType.Species, id, isInherited);
+    enum Taste {
+        Sweet,
+        Salty,
+        Bitter,
+        Spicy
+    }
+    Taste taste;
+    protected Species(int callories, Taste taste, int id, boolean isInherited) {
+        super(callories, "Species", id, isInherited);
+        this.taste = taste;
     }
 }
