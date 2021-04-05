@@ -1,6 +1,7 @@
 // author: dandrozavr
 package main.Data;
 
+import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -17,5 +18,9 @@ public class Query {
         }
         query.append(";");
         return Database.execute(query.toString());
+    }
+    public static int getCaloriesFromProducts(String fromTable, int item) throws SQLException {
+        String query = "SELECT callories FROM " + fromTable + " WHERE id_prod=" + String.valueOf(item) + ";";
+        return Integer.parseInt(Database.execute(query).get(1).get(0));
     }
 }
