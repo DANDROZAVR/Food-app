@@ -20,7 +20,7 @@ public class Query {
         return Database.execute(query.toString());
     }
     public static int getCaloriesFromProducts(String fromTable, int item) throws SQLException {
-        String query = "SELECT callories FROM " + fromTable + " WHERE id_prod=" + String.valueOf(item) + ";";
+        String query = "SELECT calories FROM " + fromTable + " WHERE id_prod=" + String.valueOf(item) + ";";
         return Integer.parseInt(Database.execute(query).get(1).get(0));
     }
 }
