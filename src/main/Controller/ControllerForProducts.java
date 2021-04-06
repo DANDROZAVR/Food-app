@@ -26,8 +26,7 @@ public class ControllerForProducts {
     void initialize() {
         assert AllProducts != null : "fx:id=\"AllProducts\" was not injected: check your FXML file 'forButtonProducts.fxml'.";
         try {
-            Query q = new Query();
-            ArrayList<ArrayList<String>> test = q.getFullInformation("products", new int[]{});
+            ArrayList<ArrayList<String>> test = Query.getFullInformation("products");
             String products = test.toString();
             AllProducts.setText(products);
         }catch(Exception e){
