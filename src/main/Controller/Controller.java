@@ -21,23 +21,14 @@ public class Controller {
     private URL location;
 
     @FXML
-    private Button show_all_produkts;
+    private Button show_all_products;
 
     @FXML
     void initialize() {
-        assert show_all_produkts != null : "fx:id=\"show_all_produkts\" was not injected: check your FXML file 'sample.fxml'.";
-        show_all_produkts.setOnAction(event -> {
-            show_all_produkts.getScene().getWindow().hide();
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/main/Application/forButtonProducts.fxml"));
-
-            try{
-                loader.load();
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-
+        assert show_all_products != null : "fx:id=\"show_all_products\" was not injected: check your FXML file 'sample.fxml'.";
+        show_all_products.setOnAction(event -> {
+            show_all_products.getScene().getWindow().hide();
+            FXMLLoader loader = LoadXML.load("/main/Application/forButtonProducts.fxml");
             Parent root = loader.getRoot();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
