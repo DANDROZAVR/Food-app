@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
 public class Controller {
-
     @FXML
     private ResourceBundle resources;
 
@@ -24,15 +23,21 @@ public class Controller {
     private Button show_all_products;
 
     @FXML
+    private Button show_all_receipts;
+
+    @FXML
     void initialize() {
         assert show_all_products != null : "fx:id=\"show_all_products\" was not injected: check your FXML file 'sample.fxml'.";
         show_all_products.setOnAction(event -> {
-            show_all_products.getScene().getWindow().hide();
             FXMLLoader loader = LoadXML.load("/main/Application/forButtonProducts.fxml");
             Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
+            ((Stage) show_all_products.getScene().getWindow()).setScene(new Scene(root));
+        });
+        assert show_all_receipts != null : "fx:id=\"show_all_receipts\" was not injected: check your FXML file 'sample.fxml'.";
+        show_all_receipts.setOnAction(event -> {
+            FXMLLoader loader = LoadXML.load("/main/Application/forButtonReceipts.fxml");
+            Parent root = loader.getRoot();
+            ((Stage) show_all_receipts.getScene().getWindow()).setScene(new Scene(root));
         });
     }
 }
