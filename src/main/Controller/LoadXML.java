@@ -10,8 +10,7 @@ public class LoadXML {
         loader.setLocation(LoadXML.class.getResource(path));
         try {
             loader.load();
-        } catch (
-                IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return loader;
