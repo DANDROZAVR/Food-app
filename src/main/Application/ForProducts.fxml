@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ControllerForProducts">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForProductsController">
    <children>
       <Label fx:id="AllProducts" layoutX="202.0" layoutY="111.0" text="products:" textAlignment="CENTER" />
       <Button fx:id="cancelButton" onAction = "#goToHome" cancelButton="true" layoutX="28.0" layoutY="21.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="30.0" text="&lt;">

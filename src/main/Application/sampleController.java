@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
-public class Controller {
+public class sampleController {
     @FXML
     private ResourceBundle resources;
 
@@ -30,7 +30,7 @@ public class Controller {
         assert show_all_products != null : "fx:id=\"show_all_products\" was not injected: check your FXML file 'sample.fxml'.";
         show_all_products.setOnAction(event -> {
             FXMLLoader loader = LoadXML.load("forProducts.fxml");
-            ControllerForProducts ctr = loader.getController();
+            ForProductsController ctr = loader.getController();
             //ctr.savePath("/main/Application/sample.fxml");
             Parent root = loader.getRoot();
             ((Stage) show_all_products.getScene().getWindow()).setScene(new Scene(root));

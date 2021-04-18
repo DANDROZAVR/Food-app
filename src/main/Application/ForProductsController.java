@@ -17,7 +17,7 @@ import jdk.jfr.Event;
 import main.Data.Query;
 import javafx.scene.control.Button;
 
-public class ControllerForProducts {
+public class ForProductsController {
 
     @FXML
     private ResourceBundle resources;
