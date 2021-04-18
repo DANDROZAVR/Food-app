@@ -29,7 +29,7 @@ public class sampleController {
     void initialize() {
         assert show_all_products != null : "fx:id=\"show_all_products\" was not injected: check your FXML file 'sample.fxml'.";
         show_all_products.setOnAction(event -> {
-            FXMLLoader loader = LoadXML.load("forProducts.fxml");
+            FXMLLoader loader = LoadXML.load("ForProducts.fxml");
             ForProductsController ctr = loader.getController();
             //ctr.savePath("/main/Application/sample.fxml");
             Parent root = loader.getRoot();
@@ -37,7 +37,7 @@ public class sampleController {
         });
         assert show_all_receipts != null : "fx:id=\"show_all_receipts\" was not injected: check your FXML file 'sample.fxml'.";
         show_all_receipts.setOnAction(event -> {
-            FXMLLoader loader = LoadXML.load("forReceipts.fxml");
+            FXMLLoader loader = LoadXML.load("ForReceipts.fxml");
             Parent root = loader.getRoot();
             ((Stage) show_all_receipts.getScene().getWindow()).setScene(new Scene(root));
         });
