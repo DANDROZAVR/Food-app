@@ -1,6 +1,6 @@
 // author: Daniil-Y
 
-package main.Controller;
+package main.Application;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,15 +29,15 @@ public class Controller {
     void initialize() {
         assert show_all_products != null : "fx:id=\"show_all_products\" was not injected: check your FXML file 'sample.fxml'.";
         show_all_products.setOnAction(event -> {
-            FXMLLoader loader = LoadXML.load("/main/Application/forButtonProducts.fxml");
+            FXMLLoader loader = LoadXML.load("forProducts.fxml");
             ControllerForProducts ctr = loader.getController();
-            ctr.savePath("/main/Application/sample.fxml");
+            //ctr.savePath("/main/Application/sample.fxml");
             Parent root = loader.getRoot();
             ((Stage) show_all_products.getScene().getWindow()).setScene(new Scene(root));
         });
         assert show_all_receipts != null : "fx:id=\"show_all_receipts\" was not injected: check your FXML file 'sample.fxml'.";
         show_all_receipts.setOnAction(event -> {
-            FXMLLoader loader = LoadXML.load("/main/Application/forButtonReceipts.fxml");
+            FXMLLoader loader = LoadXML.load("forReceipts.fxml");
             Parent root = loader.getRoot();
             ((Stage) show_all_receipts.getScene().getWindow()).setScene(new Scene(root));
         });
