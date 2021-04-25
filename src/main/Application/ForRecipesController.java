@@ -19,7 +19,7 @@ public class ForRecipesController {
     private URL location;
 
     @FXML
-    private Label ShowReceipts;
+    private Label ShowRecipes;
     @FXML
     private Button cancelButton;
     @FXML
@@ -29,7 +29,7 @@ public class ForRecipesController {
         try {
             ArrayList<ArrayList<String>> test = Query.getFullInformation("receipts");
             for(ArrayList<String> s: test){
-                ShowReceipts.setText(ShowReceipts.getText() + "\n"+ s.toString());
+                ShowRecipes.setText(ShowRecipes.getText() + "\n"+ s.toString());
             }
         }catch(Exception e){
             e.printStackTrace();

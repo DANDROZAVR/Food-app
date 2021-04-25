@@ -43,7 +43,7 @@ public class Main extends Application {
         FXMLLoader loader = LoadXML.load("ForProducts.fxml");
         setScene(loader);
     }
-    public static void goToReceipts() {
+    public static void goToRecipes() {
         FXMLLoader loader = LoadXML.load("ForRecipes.fxml");
         setScene(loader);
     }
