@@ -1,15 +1,32 @@
 package main.Model.Products;
 
-public abstract class Species extends Product {
+public class Species extends Product {
     enum Taste {
         Sweet,
         Salty,
         Bitter,
-        Spicy
+        Spicy,
+        None
     }
     Taste taste;
-    protected Species(int calories, Taste taste, int id, boolean isInherited) {
-        super(calories, "Species", id, isInherited);
+    public Species(String name, int calories, Taste taste, int id) {
+        super(name, calories, "Species", id);
         this.taste = taste;
+    }
+    public static Taste getEnumTaste(String taste) {
+        switch (taste) {
+            case "Sweet":
+                return Taste.Sweet;
+            case "Salty":
+                return Taste.Salty;
+            case "Bitter":
+                return Taste.Bitter;
+            case "Spicy":
+                return Taste.Spicy;
+            default:
+                System.err.println("Can't get taste " + taste);
+                break;
+        }
+        return Taste.None;
     }
 }
