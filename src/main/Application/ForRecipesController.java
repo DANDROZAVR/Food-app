@@ -20,8 +20,6 @@ public class ForRecipesController {
     @FXML
     private TextArea textArea;
     @FXML
-    private Label ShowRecipes;
-    @FXML
     private Button cancelButton;
     @FXML
     public void goToHome(ActionEvent e) { Main.goToHome(); }
