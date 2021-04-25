@@ -10,7 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import main.Data.Query;
 
-public class ForReceiptsController {
+public class ForRecipesController {
 
     @FXML
     private ResourceBundle resources;

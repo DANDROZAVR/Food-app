@@ -47,5 +47,4 @@ public class Main extends Application {
         FXMLLoader loader = LoadXML.load("ForReceipts.fxml");
         setScene(loader);
     }
-
 }

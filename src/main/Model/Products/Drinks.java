@@ -1,9 +1,9 @@
 package main.Model.Products;
 
-public abstract class Drinks extends Product {
+public class Drinks extends Product {
     private final boolean sugar;
-    protected Drinks(int calories, int id, boolean isInherited, boolean sugar) {
-        super(calories, "Drinks", id, isInherited);
+    public Drinks(String name, int calories, int id, boolean sugar) {
+        super(name, calories, "Drinks", id);
         this.sugar = sugar;
     }
     public boolean hasSugar(){ return sugar; }

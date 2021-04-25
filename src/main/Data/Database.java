@@ -1,4 +1,3 @@
-// author: dandrozavr
 package main.Data;
 import java.sql.*;
 import java.util.ArrayList;
