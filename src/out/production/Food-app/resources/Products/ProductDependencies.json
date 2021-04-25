@@ -1,0 +1,23 @@
+{
+    "Solid":[
+		"Nuts",
+		"Vegetables",
+		"Fruits",
+		"Meat",
+		"Fisz",
+		"Bernies"
+	],
+	"Drinks":[
+		"Water",
+		"Juice",
+		"Soda",
+		"Milk"
+	],
+	"Species":[
+		"Sugar",
+		"Salt",
+		"Herbs"
+	],
+	"Cereals":[],
+	"Mushrooms":[]
+}
