@@ -8,16 +8,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import main.Data.Query;
 
 public class ForRecipesController {
 
     @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
+    @FXML
+    private TextArea textArea;
     @FXML
     private Label ShowRecipes;
     @FXML
@@ -29,10 +30,11 @@ public class ForRecipesController {
         try {
             ArrayList<ArrayList<String>> test = Query.getFullInformation("receipts");
             for(ArrayList<String> s: test){
-                ShowRecipes.setText(ShowRecipes.getText() + "\n"+ s.toString());
+                textArea.setText(textArea.getText() + "\n"+ s.toString());
             }
         }catch(Exception e){
             e.printStackTrace();
         }
+
     }
 }
