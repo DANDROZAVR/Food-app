@@ -1,7 +1,7 @@
 drop table if exists products cascade;
 create table products (
 	id_prod numeric(5) constraint pk_prod primary key,
-	product_type varchar(10) not null,
+	product_type varchar(10) not null, -- add product_class as enum
 	name varchar(20) not null,
 	description varchar(200),  --optional
 	area varchar(200), --optional
@@ -21,6 +21,14 @@ create table receipts (
 	check(sum_weight >= 0),
 	check(sum_calories >= 0)
 );
+
+create table solids (	
+);
+create table drinks (	
+);
+create table species (	
+);
+
 drop table if exists receipts_content cascade;
 create table receipts_content (
 	id_rec numeric(5) not null constraint fk_rec_cont references receipts(id_rec),

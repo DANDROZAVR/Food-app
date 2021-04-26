@@ -5,13 +5,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.postgresql.replication.fluent.AbstractStreamBuilder;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.stream.StreamSupport;
 
 public class Main extends Application {
+    public static Stage primaryStage;
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
+        Main.primaryStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Food-app");
         primaryStage.setScene(new Scene(root, 575, 275));
@@ -26,5 +30,21 @@ public class Main extends Application {
             System.exit(1);
         }
         launch(args);
+    }
+    public static void setScene(FXMLLoader loader) {
+        Parent root = loader.getRoot();
+        ((Stage) primaryStage.getScene().getWindow()).setScene(new Scene(root));
+    }
+    public static void goToHome() {
+        FXMLLoader loader = LoadXML.load("sample.fxml");
+        setScene(loader);
+    }
+    public static void goToProducts() {
+        FXMLLoader loader = LoadXML.load("ForProducts.fxml");
+        setScene(loader);
+    }
+    public static void goToRecipes() {
+        FXMLLoader loader = LoadXML.load("ForRecipes.fxml");
+        setScene(loader);
     }
 }

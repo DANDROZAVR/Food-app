@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForRecipesController">
+   <children>
+      <Button fx:id="cancelButton" cancelButton="true" layoutX="28.0" layoutY="21.0" mnemonicParsing="false" onAction="#goToHome" prefHeight="26.0" prefWidth="30.0" text="&lt;">
+         <font>
+            <Font name="Arial Black" size="15.0" />
+         </font>
+      </Button>
+      <ScrollPane layoutX="76.0" layoutY="111.0" prefHeight="224.0" prefWidth="409.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="223.0" prefWidth="406.0">
+               <children>
+                  <TextArea fx:id="textArea" prefHeight="218.0" prefWidth="410.0" wrapText="true" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
