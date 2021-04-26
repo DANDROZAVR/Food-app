@@ -24,6 +24,9 @@ public class ForRecipesController {
     @FXML
     public void goToHome(ActionEvent e) { Main.goToHome(); }
     @FXML
+    void openSettings(ActionEvent event) {
+    }
+    @FXML
     void initialize() {
         try {
             ArrayList<ArrayList<String>> test = Query.getFullInformation("receipts");
