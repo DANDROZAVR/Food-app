@@ -27,4 +27,12 @@ public class Query {
         String query = "SELECT calories FROM " + fromTable + " WHERE id_prod=" + String.valueOf(item) + ";";
         return Integer.parseInt(Database.execute(query).get(1).get(0));
     }
+    public static ArrayList<ArrayList<String>> getByName(String fromTable, String name) throws SQLException {
+        String query = new String("SELECT * FROM " + fromTable + " where name = '" + name + "';");
+        return Database.execute(query);
+    }
+    public static ArrayList<ArrayList<String>> getByNamePrefix(String fromTable, String prefixName) throws SQLException {
+        String query = new String("SELECT * FROM " + fromTable + " where name like '" + prefixName + "%';");
+        return Database.execute(query);
+    }
 }
