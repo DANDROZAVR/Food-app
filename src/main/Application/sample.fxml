@@ -61,5 +61,6 @@
             </LinearGradient>
          </textFill>
       </Button>
+      <Button fx:id="setProductButton" layoutX="169.0" layoutY="164.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="63.0" text="SetProduct" />
    </children>
 </AnchorPane>

@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import main.Data.Query;
 
-public class ForRecipesController {
+public class ForRecipesController extends Main {
 
     @FXML
     private ResourceBundle resources;
@@ -22,7 +22,7 @@ public class ForRecipesController {
     @FXML
     private Button cancelButton;
     @FXML
-    public void goToHome(ActionEvent e) { Main.goToHome(); }
+    public void goToHome(ActionEvent e) { goToHome();}
     @FXML
     void openSettings(ActionEvent event) {
     }

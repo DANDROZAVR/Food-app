@@ -17,7 +17,7 @@ import jdk.jfr.Event;
 import main.Data.Query;
 import javafx.scene.control.Button;
 
-public class ForProductsController {
+public class ForProductsController extends Main {
 
     @FXML
     private ResourceBundle resources;
@@ -31,7 +31,7 @@ public class ForProductsController {
     private Button cancelButton;
     @FXML
     public void goToHome(ActionEvent e) {
-        Main.goToHome();
+        goToHome();
     }
     @FXML
     void initialize() {
