@@ -11,9 +11,9 @@
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.sampleController">
+<AnchorPane prefHeight="410.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.sampleController">
    <children>
-      <HBox alignment="TOP_CENTER" prefHeight="61.0" prefWidth="600.0" spacing="5.0" AnchorPane.bottomAnchor="339.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox alignment="TOP_CENTER" prefHeight="61.0" prefWidth="610.0" spacing="5.0" AnchorPane.bottomAnchor="339.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToHome" prefHeight="61.0" prefWidth="60.0" text="Home">
                <graphic>
@@ -42,24 +42,56 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <Button fx:id="show_all_products" layoutX="366.0" layoutY="92.0" mnemonicParsing="false" text="Products" textFill="#43a69e" textOverrun="WORD_ELLIPSIS" />
-      <Button fx:id="show_all_recipes" layoutX="171.0" layoutY="92.0" mnemonicParsing="false" text="Receipts">
+      <Button fx:id="show_all_products" layoutX="230.0" layoutY="158.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Products" textFill="#43a69e" textOverrun="WORD_ELLIPSIS" />
+      <Button fx:id="show_all_recipes" layoutX="230.0" layoutY="71.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Recipes" textFill="#d148d3" />
+      <Button fx:id="ButtonAddProducts" layoutX="230.0" layoutY="250.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Add Products">
          <textFill>
-            <LinearGradient endX="1.0" endY="1.0" startX="0.3358778698753765">
+            <LinearGradient endX="1.0" endY="1.0" startY="1.0">
                <stops>
                   <Stop>
                      <color>
-                        <Color red="0.8315789699554443" green="0.07083820551633835" blue="0.45120859146118164" />
+                        <Color red="0.8815789222717285" green="0.04081384092569351" blue="0.04081384092569351" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.007407407407407408">
+                     <color>
+                        <Color red="0.8815789222717285" green="0.04081384092569351" blue="0.04081384092569351" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.22666666666666666">
+                     <color>
+                        <Color red="0.8684210777282715" green="0.7043859362602234" blue="0.048245612531900406" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.34333333333333343">
+                     <color>
+                        <Color red="0.8046296238899231" green="0.8684210777282715" blue="0.32163742184638977" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.7074074074074075">
+                     <color>
+                        <Color red="0.0348440557718277" green="0.6842105388641357" blue="0.3487045168876648" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.7555555555555555">
+                     <color>
+                        <Color red="0.19998781383037567" green="0.6543819308280945" blue="0.8815789222717285" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.8962962962962965">
+                     <color>
+                        <Color red="0.18159112334251404" green="0.044225145131349564" blue="0.8684210777282715" />
                      </color>
                   </Stop>
                   <Stop offset="1.0">
                      <color>
-                        <Color red="1.0" green="1.0" blue="1.0" />
+                        <Color red="0.8552631735801697" green="0.023757310584187508" blue="0.8275462985038757" />
                      </color>
                   </Stop>
                </stops>
             </LinearGradient>
          </textFill>
       </Button>
+      <Button fx:id="setProductButton" layoutX="169.0" layoutY="164.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="63.0" text="SetProduct" />
    </children>
 </AnchorPane>
