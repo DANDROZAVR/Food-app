@@ -1,4 +1,3 @@
-// author: dandrozavr
 package main.Data;
 
 import javax.xml.crypto.Data;
