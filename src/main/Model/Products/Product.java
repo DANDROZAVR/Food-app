@@ -22,4 +22,13 @@ public abstract class Product {
     public String[] getArea(){ return area; }
     public String[] getLinks(){ return links; }
     public String getType() { return productType; }
+    public static boolean checkParameters(String product_type, String name, String description, String area, int calories){
+        if(!(1 <= name.length() && name.length() <= 100)){
+            return false;
+        }
+        if(!(1 <= product_type.length() && product_type.length() <= 100)){
+            return false;
+        }
+        return true;
+    }
 }

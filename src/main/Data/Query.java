@@ -42,7 +42,13 @@ public class Query {
         }
         return Id;
     }
-    public static void addNewProduct(int Id, String product_type, String name, String description, String area, int calories) throws SQLException {
+    public static boolean addNewProduct(int Id, String product_type, String name, String description, String area, int calories) throws SQLException {
+        if(Integer.parseInt(Database.execute(new String("select count(*) from products where id_prod = " + Id + ";")).get(1).get(0)) != 0){
+            return false;
+        }
+        if(Integer.parseInt(Database.execute(new String("select count(*) from products where name = '" + name + "';")).get(1).get(0)) != 0){
+            return false;
+        }
         String query = new String("INSERT INTO products(id_prod, product_type, name, description, area, calories) VALUES ("
                         + Id
                         + ", '"
@@ -56,6 +62,23 @@ public class Query {
                         +"', "
                         +calories
                         +");");
-        Database.execute(query);
+        try{
+            Database.execute(query);
+        }catch (Exception e){
+
+        }
+        query = new String("select count(*) from products where " +
+                "id_prod = " + Id + " AND " +
+                "product_type = '" + product_type + "' AND " +
+                "name = '" + name + "' AND " +
+                "description = '" + description + "' AND " +
+                "area = '" + area + "' AND " +
+                "calories = " + calories + ";"
+        );
+        if(Integer.parseInt(Database.execute(query).get(1).get(0)) == 0){
+            return false;
+        }
+        return true;
+
     }
 }

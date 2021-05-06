@@ -24,5 +24,6 @@
             <Font name="Arial Black" size="15.0" />
          </font>
       </Button>
+      <Label fx:id="error_out" layoutX="412.0" layoutY="335.0" prefHeight="51.0" prefWidth="132.0" textFill="#16b221" />
    </children>
 </AnchorPane>
