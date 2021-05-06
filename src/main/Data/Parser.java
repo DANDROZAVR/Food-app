@@ -50,9 +50,9 @@ public class Parser {
      */
     public static ArrayList<Product> getProductsFrom(ArrayList<ArrayList<String>> table) throws Exception {
         ArrayList<Product> result = new ArrayList<>();
-        ArrayList<ArrayList<String>> solidsInformation = Query.getFullInformation("solids");
-        ArrayList<ArrayList<String>> drinksInformation = Query.getFullInformation("drinks");
-        ArrayList<ArrayList<String>> speciesInformation = Query.getFullInformation("species");
+        ArrayList<ArrayList<String>> solidsInformation = Query.getFullInformation("Solids");
+        ArrayList<ArrayList<String>> drinksInformation = Query.getFullInformation("Drinks");
+        ArrayList<ArrayList<String>> speciesInformation = Query.getFullInformation("Species");
         //int solidsIndex = 0, drinksIndex = 0, speciesIndex = 0;
         int columnIdNumberSolids, columnIdNumberDrinks, columnIdNumberSpecies;
         columnIdNumberSolids = columnIdNumberDrinks = columnIdNumberSpecies = 0;
@@ -62,7 +62,7 @@ public class Parser {
             columnIdNumberSpecies = findColumnInRow("id_prod", 0, speciesInformation);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
-            System.err.println(e.getMessage() + ".\nUnknown problem with indexing from table [drinks | solids | species]");
+            System.err.println(e.getMessage() + ".\nUnknown problem with indexing from table [Drinks | Solids | Species]");
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getMessage());
@@ -71,7 +71,7 @@ public class Parser {
         while(columnIdNumberDrinks < solidsInformation.get(0).size() && !solidsInformation.get(0).get(columnIdNumberDrinks).equals("id")) ++columnIdNumberDrinks;
 
         if (columnIdNumberDrinks == drinksInformation.size() || columnIdNumberSpecies == speciesInformation.size() || columnIdNumberSolids == solidsInformation.size())
-            throw new Exception("Can't find column id in [solids | species | drinks]");
+            throw new Exception("Can't find column id in [Solids | Species | Drinks]");
         for (ArrayList<String> row : table) {
             String description, name, productType, calories, id, area, productClass, taste, sugar;
             name = description = productClass = productType = calories = id = area = taste = sugar = null;
@@ -113,16 +113,16 @@ public class Parser {
                 throw new Exception("Some of non-null by definition values are null: " + name + ", " + productType + ", " + calories + ", " + id);
             Product item;
             switch (Objects.requireNonNull(productClass)) {
-                case "drinks":
+                case "Drinks":
                     item = new Drinks(name, Integer.parseInt(calories), Integer.parseInt(id), Boolean.parseBoolean(sugar));
                     break;
-                case "solid":
+                case "Solid":
                     if (taste != null)
                         item = new Solid(name, Integer.parseInt(calories), Integer.parseInt(id), Solid.getEnumTaste(taste));
                     else
                         item = new Solid(name, Integer.parseInt(calories), Integer.parseInt(id));
                     break;
-                case "species":
+                case "Species":
                     item = new Species(name, Integer.parseInt(calories), Species.getEnumTaste(taste), Integer.parseInt(id));
                     break;
                 default:
