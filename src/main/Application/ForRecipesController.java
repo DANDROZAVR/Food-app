@@ -16,7 +16,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.Data.Query;
 
-public class ForRecipesController {
+
+public class ForRecipesController extends Main {
     @FXML
     private Button ButtonFind;
     @FXML
@@ -28,7 +29,7 @@ public class ForRecipesController {
     @FXML
     private Button cancelButton;
     @FXML
-    public void goToHome(ActionEvent e) { Main.goToHome(); }
+    public void goToHome(ActionEvent e) { goToHome();}
     @FXML
     void openSettings(ActionEvent event) {
     }
@@ -55,6 +56,5 @@ public class ForRecipesController {
         }catch(Exception e){
             e.printStackTrace();
         }
-
     }
 }

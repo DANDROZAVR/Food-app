@@ -10,8 +10,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import main.Data.Parser;
+import main.Data.Query;
+import main.Model.Products.Product;
+import main.Model.Products.Solid;
 
-public class sampleController {
+public class sampleController extends Main {
     @FXML
     private ResourceBundle resources;
 
@@ -24,11 +28,12 @@ public class sampleController {
     @FXML
     private Button show_all_recipes;
     @FXML
+    private Button goToHome;
+    @FXML
     void openSettings(ActionEvent event) {
     }
     @FXML
-    void goToHome(ActionEvent event) {
-    }
+    private Button setProductButton;
     @FXML
     private Button ButtonAddProducts;
     @FXML
@@ -46,6 +51,15 @@ public class sampleController {
             Parent root = loader.getRoot();
             ((Stage) show_all_recipes.getScene().getWindow()).setScene(new Scene(root));
         });
+        setProductButton.setOnAction(event -> {
+            try {
+                //Product item = Parser.getProductsFrom(Query.getFullInformation("(select * from products left join drinks left join solids left join species)")).get(0);
+                Product item = new Solid("apple", 31, 1, Solid.getEnumTaste("Sweat"));
+                goToProduct(item);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         assert ButtonAddProducts != null : "fx:id=\"ButtonAddProducts\" was not injected: check your FXML file 'sample.fxml'.";
         ButtonAddProducts.setOnAction(event -> {
             FXMLLoader loader = LoadXML.load("ForAddingProducts.fxml");
@@ -53,6 +67,8 @@ public class sampleController {
             ((Stage) ButtonAddProducts.getScene().getWindow()).setScene(new Scene(root));
         });
     }
-}
 
-//sample.fxm;
+    public void goToHome(ActionEvent actionEvent) {
+        goToHome();
+    }
+}

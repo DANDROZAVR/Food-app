@@ -4,6 +4,7 @@ import main.Model.Products.Drinks;
 import main.Model.Products.Product;
 import main.Model.Products.Solid;
 import main.Model.Products.Species;
+import main.Model.Recipes.Recipe;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -33,15 +34,20 @@ public class Parser {
         throw new Exception("Can't found row with the same id");
     }
 
+
+    /*static void main(String...varargs) {
+
+    }*/
+
+    public static ArrayList<Recipe> getRecipesFrom(ArrayList<ArrayList<String>> table) throws Exception {
+        return null;
+    }
     /**
      *
      * @param table, from whom sql result Array is returned
      * @return Parsed ArrayList of Products from sql statement with all additional columns, like fruits, species etc.
      * @throws Exception
      */
-    /*static void main(String...varargs) {
-
-    }*/
     public static ArrayList<Product> getProductsFrom(ArrayList<ArrayList<String>> table) throws Exception {
         ArrayList<Product> result = new ArrayList<>();
         ArrayList<ArrayList<String>> solidsInformation = Query.getFullInformation("solids");
