@@ -15,7 +15,7 @@ import main.Data.Query;
 import main.Model.Products.Product;
 import main.Model.Products.Solid;
 
-public class sampleController extends Main{
+public class sampleController extends Main {
     @FXML
     private ResourceBundle resources;
 
@@ -34,6 +34,8 @@ public class sampleController extends Main{
     }
     @FXML
     private Button setProductButton;
+    @FXML
+    private Button ButtonAddProducts;
     @FXML
     void initialize() {
         assert show_all_products != null : "fx:id=\"show_all_products\" was not injected: check your FXML file 'sample.fxml'.";
@@ -58,10 +60,15 @@ public class sampleController extends Main{
                 e.printStackTrace();
             }
         });
+        assert ButtonAddProducts != null : "fx:id=\"ButtonAddProducts\" was not injected: check your FXML file 'sample.fxml'.";
+        ButtonAddProducts.setOnAction(event -> {
+            FXMLLoader loader = LoadXML.load("ForAddingProducts.fxml");
+            Parent root = loader.getRoot();
+            ((Stage) ButtonAddProducts.getScene().getWindow()).setScene(new Scene(root));
+        });
     }
 
     public void goToHome(ActionEvent actionEvent) {
+        goToHome();
     }
 }
-
-//sample.fxm;
