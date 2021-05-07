@@ -42,17 +42,19 @@ public class Query {
         }
         return Id;
     }
-    public static boolean addNewProduct(int Id, String product_type, String name, String description, String area, int calories) throws SQLException {
+    public static boolean addNewProduct(int Id, String product_group, String product_class, String name, String description, String area, int calories) throws SQLException {
         if(Integer.parseInt(Database.execute(new String("select count(*) from products where id_prod = " + Id + ";")).get(1).get(0)) != 0){
             return false;
         }
         if(Integer.parseInt(Database.execute(new String("select count(*) from products where name = '" + name + "';")).get(1).get(0)) != 0){
             return false;
         }
-        String query = new String("INSERT INTO products(id_prod, product_type, name, description, area, calories) VALUES ("
+        String query = new String("INSERT INTO products(id_prod, product_group, product_class, name, description, area, calories) VALUES ("
                         + Id
                         + ", '"
-                        + product_type
+                        + product_group
+                        +"', '"
+                        + product_class
                         +"', '"
                         + name
                         +"', '"
@@ -63,13 +65,14 @@ public class Query {
                         +calories
                         +");");
         try{
-            Database.execute(query);
+            Database.update(query);
         }catch (Exception e){
-
+            e.printStackTrace();
         }
         query = new String("select count(*) from products where " +
                 "id_prod = " + Id + " AND " +
-                "product_type = '" + product_type + "' AND " +
+                "product_group = '" + product_group + "' AND " +
+                "product_class = '" + product_class + "' AND " +
                 "name = '" + name + "' AND " +
                 "description = '" + description + "' AND " +
                 "area = '" + area + "' AND " +
