@@ -50,28 +50,28 @@ public class Parser {
      */
     public static ArrayList<Product> getProductsFrom(ArrayList<ArrayList<String>> table) throws Exception {
         ArrayList<Product> result = new ArrayList<>();
-        ArrayList<ArrayList<String>> solidsInformation = Query.getFullInformation("Solids");
-        ArrayList<ArrayList<String>> drinksInformation = Query.getFullInformation("Drinks");
-        ArrayList<ArrayList<String>> speciesInformation = Query.getFullInformation("Species");
+        //ArrayList<ArrayList<String>> solidsInformation = Query.getFullInformation("solids");
+        //ArrayList<ArrayList<String>> drinksInformation = Query.getFullInformation("drinks");
+        //ArrayList<ArrayList<String>> speciesInformation = Query.getFullInformation("species");
         //int solidsIndex = 0, drinksIndex = 0, speciesIndex = 0;
         int columnIdNumberSolids, columnIdNumberDrinks, columnIdNumberSpecies;
         columnIdNumberSolids = columnIdNumberDrinks = columnIdNumberSpecies = 0;
         try {
-            columnIdNumberDrinks = findColumnInRow("id_prod", 0, drinksInformation);
-            columnIdNumberSolids = findColumnInRow("id_prod", 0, solidsInformation);
-            columnIdNumberSpecies = findColumnInRow("id_prod", 0, speciesInformation);
+            //  columnIdNumberDrinks = findColumnInRow("id_prod", 0, drinksInformation);
+            //  columnIdNumberSolids = findColumnInRow("id_prod", 0, solidsInformation);
+            //  columnIdNumberSpecies = findColumnInRow("id_prod", 0, speciesInformation);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
-            System.err.println(e.getMessage() + ".\nUnknown problem with indexing from table [Drinks | Solids | Species]");
+            System.err.println(e.getMessage() + ".\nUnknown problem with indexing from table [drinks | solids | species]");
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getMessage());
         }
-        while(columnIdNumberSpecies < solidsInformation.get(0).size() && !solidsInformation.get(0).get(columnIdNumberSpecies).equals("id")) ++columnIdNumberSpecies;
-        while(columnIdNumberDrinks < solidsInformation.get(0).size() && !solidsInformation.get(0).get(columnIdNumberDrinks).equals("id")) ++columnIdNumberDrinks;
+        //while(columnIdNumberSpecies < solidsInformation.get(0).size() && !solidsInformation.get(0).get(columnIdNumberSpecies).equals("id")) ++columnIdNumberSpecies;
+        //while(columnIdNumberDrinks < solidsInformation.get(0).size() && !solidsInformation.get(0).get(columnIdNumberDrinks).equals("id")) ++columnIdNumberDrinks;
 
-        if (columnIdNumberDrinks == drinksInformation.size() || columnIdNumberSpecies == speciesInformation.size() || columnIdNumberSolids == solidsInformation.size())
-            throw new Exception("Can't find column id in [Solids | Species | Drinks]");
+        // if (columnIdNumberDrinks == drinksInformation.size() || columnIdNumberSpecies == speciesInformation.size() || columnIdNumberSolids == solidsInformation.size())
+        //   throw new Exception("Can't find column id in [solids | species | drinks]");
         for (ArrayList<String> row : table) {
             String description, name, productType, calories, id, area, productClass, taste, sugar;
             name = description = productClass = productType = calories = id = area = taste = sugar = null;
@@ -81,7 +81,7 @@ public class Parser {
                 switch (column) {
                     case "description" -> description = value;
                     case "name" -> name = value;
-                    case "product_type" -> productType = value;
+                    case "product_group" -> productType = value;
                     case "product_class" -> productClass = value;
                     case "id_prod" -> id = value;
                     case "area" -> area = value;
@@ -109,22 +109,25 @@ public class Parser {
             } else throw new Exception("Unknown type of product_class [" + productClass + "] from product [" + id + ", " + name + "]");
             */
 
-            if (name == null || productType == null || calories == null || id == null)
+            if (name == null || productType == null || productClass == null || calories == null || id == null)
                 throw new Exception("Some of non-null by definition values are null: " + name + ", " + productType + ", " + calories + ", " + id);
             Product item;
             switch (Objects.requireNonNull(productClass)) {
-                case "Drinks":
+                case "drinks":
                     item = new Drinks(name, Integer.parseInt(calories), Integer.parseInt(id), Boolean.parseBoolean(sugar));
                     break;
-                case "Solid":
+                case "solid":
                     if (taste != null)
-                        item = new Solid(name, Integer.parseInt(calories), Integer.parseInt(id), Solid.getEnumTaste(taste));
+                        item = new Solid(name, Integer.parseInt(calories), Integer.parseInt(id));
                     else
                         item = new Solid(name, Integer.parseInt(calories), Integer.parseInt(id));
                     break;
                 case "Species":
+                    System.out.println(taste);
                     item = new Species(name, Integer.parseInt(calories), Species.getEnumTaste(taste), Integer.parseInt(id));
                     break;
+                case "product_class":
+                    continue;
                 default:
                     throw new Exception("Illegal type of product_class [" + productClass + "] of product [" + row + "]");
             }

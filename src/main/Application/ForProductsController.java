@@ -56,6 +56,7 @@ public class ForProductsController extends Main {
                     link.setOnAction(t -> {
                         FXMLLoader loader = LoadXML.load("ForOneProductView.fxml");
                         ArrayList<ArrayList<String>> temp = new ArrayList<>();
+                        temp.add(test.get(0));
                         temp.add(s);
                         try {
                             ((ForOneProductViewController) loader.getController()).setProduct(Parser.getProductsFrom(temp).get(0));
