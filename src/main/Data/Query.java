@@ -49,7 +49,7 @@ public class Query {
         if(Integer.parseInt(Database.execute(new String("select count(*) from products where name = '" + name + "';")).get(1).get(0)) != 0){
             return false;
         }
-        String query = new String("INSERT INTO products(id_prod, product_group, product_class, name, description, area, calories) VALUES ("
+        String query = new String("INSERT INTO products(id_prod, product_group, product_class, name, description, calories) VALUES ("
                         + Id
                         + ", '"
                         + product_group
@@ -59,8 +59,6 @@ public class Query {
                         + name
                         +"', '"
                         +description
-                        +"', '"
-                        +area
                         +"', "
                         +calories
                         +");");
@@ -75,12 +73,18 @@ public class Query {
                 "product_class = '" + product_class + "' AND " +
                 "name = '" + name + "' AND " +
                 "description = '" + description + "' AND " +
-                "area = '" + area + "' AND " +
                 "calories = " + calories + ";"
         );
         if(Integer.parseInt(Database.execute(query).get(1).get(0)) == 0){
             return false;
         }
+        query = new String("INSERT INTO products_areatag(id, area) VALUES ("
+                + Id
+                + ", '"
+                + area
+                + "');"
+        );
+        Database.update(query);
         return true;
 
     }
