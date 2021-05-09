@@ -41,7 +41,6 @@ public class sampleController extends Main {
         assert show_all_products != null : "fx:id=\"show_all_products\" was not injected: check your FXML file 'sample.fxml'.";
         show_all_products.setOnAction(event -> {
             FXMLLoader loader = LoadXML.load("ForProducts.fxml");
-            ForProductsController ctr = loader.getController();
             Parent root = loader.getRoot();
             ((Stage) show_all_products.getScene().getWindow()).setScene(new Scene(root));
         });
