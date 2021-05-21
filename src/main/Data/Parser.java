@@ -123,7 +123,6 @@ public class Parser {
                         item = new Solid(name, Integer.parseInt(calories), Integer.parseInt(id));
                     break;
                 case "Species":
-                    System.out.println(taste);
                     item = new Species(name, Integer.parseInt(calories), Species.getEnumTaste(taste), Integer.parseInt(id));
                     break;
                 case "product_class":
