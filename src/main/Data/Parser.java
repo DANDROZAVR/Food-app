@@ -80,11 +80,11 @@ public class Parser {
                     case "name" -> name = value;
                     case "product_group" -> productType = value;
                     case "product_class" -> productClass = value;
-                    case "id_prod" -> id = value;
+                    case "id" -> id = value;
                     case "area" -> area = value;
                     case "calories" -> calories = value;
                     case "sugar" -> sugar = value;
-                    case "species_taste"-> taste = value;
+                    case "taste"-> taste = value;
                     default -> throw new Exception("Unknown column find due parsing: " + column);
                 }
             }

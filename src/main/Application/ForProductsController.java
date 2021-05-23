@@ -53,7 +53,7 @@ public class ForProductsController extends Main {
         List<Hyperlink> links = new ArrayList<>();
         VBox.getChildren().clear();
         try {
-            ArrayList<ArrayList<String>> output = Query.getByNamePrefix("products","");
+            ArrayList<ArrayList<String>> output = Query.getByNamePrefix_all("products","");
             for (ArrayList<String> s : output) {
                 if (s.get(4) != null && !s.get(4).equals("description")) {
                     Hyperlink link = new Hyperlink(s.get(3));
