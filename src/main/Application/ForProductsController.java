@@ -66,6 +66,7 @@ public class ForProductsController extends Main {
                         temp.add(s);
                         try {
                             ((ForOneProductViewController) loader.getController()).setProduct(Parser.getProductsFrom(temp).get(0));
+                            ((ForOneProductViewController) loader.getController()).setSceneProduct(GetText.getScene());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

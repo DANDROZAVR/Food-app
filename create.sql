@@ -1,6 +1,8 @@
 /*
+
 link to diagram
 https://github.com/DANDROZAVR/Food-app/blob/main/diagram.png
+
 */
 drop table if exists recipes cascade;
 drop table if exists products cascade;
@@ -233,6 +235,7 @@ VALUES
 	(4, 'fruits', 'orange', 'Orange has an orange colour', 'South and North America, China, Italy, Iran, Egypt', 43),
 	(6, 'meat', 'beef', 'One of the most common types of meat', 'Worldwide', 187),
 	(8, 'meat', 'chiken', 'Meat that contains a lot of protein', 'Worldwide', 239);
+
 INSERT INTO
 	recipes(id_rec, name, sum_weight, sum_calories) 
 VALUES
