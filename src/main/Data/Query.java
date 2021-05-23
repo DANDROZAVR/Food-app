@@ -45,6 +45,7 @@ public class Query {
         return Parser.getProductsFrom(Database.execute(query));
     }
     change query
+    Tags, Minerals, Vitamins
      */
     public static int getCaloriesFromProducts(String fromTable, int item) throws SQLException {
         String query = "SELECT calories FROM " + fromTable + " WHERE id_prod=" + String.valueOf(item) + ";";
