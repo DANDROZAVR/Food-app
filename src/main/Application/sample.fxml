@@ -11,40 +11,11 @@
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
 
-<AnchorPane prefHeight="410.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.sampleController">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.sampleController">
    <children>
-      <HBox alignment="TOP_CENTER" prefHeight="61.0" prefWidth="610.0" spacing="5.0" AnchorPane.bottomAnchor="339.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Button alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToHome" prefHeight="61.0" prefWidth="60.0" text="Home">
-               <graphic>
-                  <ImageView fx:id="home" fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../resources/Icons/Home.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Region nodeOrientation="RIGHT_TO_LEFT" prefHeight="52.0" prefWidth="463.0" />
-            <Button fx:id="settings" alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#openSettings" prefHeight="67.0" prefWidth="59.0" text="Settings">
-               <graphic>
-                  <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../resources/Icons/Settings.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </HBox>
-      <Button fx:id="show_all_products" layoutX="230.0" layoutY="158.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Products" textFill="#43a69e" textOverrun="WORD_ELLIPSIS" />
-      <Button fx:id="show_all_recipes" layoutX="230.0" layoutY="71.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Recipes" textFill="#d148d3" />
-      <Button fx:id="ButtonAddProducts" layoutX="230.0" layoutY="250.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Add Products">
+      <Button fx:id="show_all_recipes" layoutX="333.0" layoutY="106.0" mnemonicParsing="false" prefHeight="158.0" prefWidth="334.0" text="Recipes" textFill="#d148d3" />
+      <Button fx:id="show_all_products" layoutX="333.0" layoutY="294.0" mnemonicParsing="false" prefHeight="158.0" prefWidth="334.0" text="Products" textFill="#43a69e" textOverrun="WORD_ELLIPSIS" />
+      <Button fx:id="ButtonAddProducts" layoutX="333.0" layoutY="477.0" mnemonicParsing="false" prefHeight="158.0" prefWidth="334.0" text="Add Products">
          <textFill>
             <LinearGradient endX="1.0" endY="1.0" startY="1.0">
                <stops>
@@ -92,6 +63,35 @@
             </LinearGradient>
          </textFill>
       </Button>
-      <Button fx:id="setProductButton" layoutX="169.0" layoutY="164.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="63.0" text="SetProduct" />
+      <Button fx:id="setProductButton" layoutX="249.0" layoutY="304.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="63.0" text="SetProduct" />
+      <HBox alignment="TOP_CENTER" layoutX="-1.0" prefHeight="700.0" prefWidth="1007.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-6.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToHome" prefHeight="61.0" prefWidth="60.0" text="Home">
+               <graphic>
+                  <ImageView fx:id="home" fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../resources/Icons/Home.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Region nodeOrientation="RIGHT_TO_LEFT" prefHeight="691.0" prefWidth="861.0" />
+            <Button fx:id="settings" alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#openSettings" prefHeight="67.0" prefWidth="59.0" text="Settings">
+               <graphic>
+                  <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../resources/Icons/Settings.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
    </children>
 </AnchorPane>

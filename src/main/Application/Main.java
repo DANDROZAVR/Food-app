@@ -19,7 +19,7 @@ public class Main extends Application {
         Main.primaryStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Food-app");
-        primaryStage.setScene(new Scene(root, 610, 410));
+        primaryStage.setScene(new Scene(root, 1000,700 ));
         primaryStage.show();
     }
     public static void main(String[] args) {
