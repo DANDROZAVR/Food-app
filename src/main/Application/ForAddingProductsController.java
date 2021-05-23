@@ -4,12 +4,16 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
@@ -29,7 +33,10 @@ public class ForAddingProductsController {
     private TextField GetName;
 
     @FXML
-    private TextField GetProductType;
+    private TextField GetProductGroup;
+
+    @FXML
+    private ChoiceBox<String> GetProductClass;
 
     @FXML
     private TextField GetDescription;
@@ -50,7 +57,15 @@ public class ForAddingProductsController {
     private Label error_out;
 
     @FXML
+    private void start_GetProductClass(){
+        ObservableList<String> GetProductClassList = FXCollections.observableArrayList("Species", "Solids", "Drinks");
+        GetProductClass.setValue("Species");
+        GetProductClass.setItems(GetProductClassList);
+    }
+
+    @FXML
     void initialize(){
+        start_GetProductClass();
         AddProduct.setOnAction(event -> {
             int Id = 0;
             try{
@@ -59,14 +74,14 @@ public class ForAddingProductsController {
                 e.printStackTrace();
             }
             try {
-                String product_type = GetProductType.getText(), name = GetName.getText(), description = GetDescription.getText(), area = GetArea.getText();
+                String product_group = GetProductGroup.getText(), product_class = GetProductClass.getValue(), name = GetName.getText(), description = GetDescription.getText(), area = GetArea.getText();
                 int calories = Integer.parseInt(GetCalories.getText());
-                if(!Product.checkParameters(product_type, name, description, area, calories)){
+                if(!Product.checkParameters(product_group, product_class, name, description, area, calories)){
                     error_out.setTextFill(Color.web("#dd0e0e", 0.8));
                     error_out.setText("ERROR");
                     return;
                 }
-                boolean _try = Query.addNewProduct(Id, product_type, name, description, area, calories);
+                boolean _try = Query.addNewProduct(Id, product_group, product_class, name, description, area, calories);
                 if(_try){
                     error_out.setTextFill(Color.web("#16b221", 0.8));
                     error_out.setText("OK");
