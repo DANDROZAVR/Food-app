@@ -1,5 +1,7 @@
 package main.Application;
 
+import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,13 +49,16 @@ public class ForProductsController extends Main {
     private Button ButtonFind;
     @FXML
     void initialize() {
+        Tooltip toolTip = new Tooltip();
         List<Hyperlink> links = new ArrayList<>();
         VBox.getChildren().clear();
         try {
             ArrayList<ArrayList<String>> output = Query.getByNamePrefix("products","");
             for (ArrayList<String> s : output) {
-                if (!s.get(4).equals("description")) {
+                if (s.get(4) != null && !s.get(4).equals("description")) {
                     Hyperlink link = new Hyperlink(s.get(3));
+                    link.setTooltip(new Tooltip("Product group: " + s.get(1) + "\n" +
+                            "Product class: " + s.get(2)+ "\n" + "Calories " + s.get(5)));
                     link.setOnAction(t -> {
                         FXMLLoader loader = LoadXML.load("ForOneProductView.fxml");
                         ArrayList<ArrayList<String>> temp = new ArrayList<>();
