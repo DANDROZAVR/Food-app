@@ -117,4 +117,15 @@ public class Parser {
         }
         return result;
     }
+    public static String getProductClass(Class cl){
+        String longName = cl.getName();
+        String shortName = new String();
+        for(int i = longName.length() - 1; i >= 0; i--){
+            if(longName.charAt(i) == '.'){
+                break;
+            }
+            shortName = longName.charAt(i) + shortName;
+        }
+        return shortName;
+    }
 }
