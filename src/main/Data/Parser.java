@@ -36,7 +36,6 @@ public class Parser {
 
 
     /*static void main(String...varargs) {
-
     }*/
 
     public static ArrayList<Recipe> getRecipesFrom(ArrayList<ArrayList<String>> table) throws Exception {
@@ -56,22 +55,22 @@ public class Parser {
         //int solidsIndex = 0, drinksIndex = 0, speciesIndex = 0;
         int columnIdNumberSolids, columnIdNumberDrinks, columnIdNumberSpecies;
         columnIdNumberSolids = columnIdNumberDrinks = columnIdNumberSpecies = 0;
-        //try {
-          //  columnIdNumberDrinks = findColumnInRow("id_prod", 0, drinksInformation);
-          //  columnIdNumberSolids = findColumnInRow("id_prod", 0, solidsInformation);
-          //  columnIdNumberSpecies = findColumnInRow("id_prod", 0, speciesInformation);
-        //} catch (IndexOutOfBoundsException e) {
-          //  e.printStackTrace();
-            //System.err.println(e.getMessage() + ".\nUnknown problem with indexing from table [drinks | solids | species]");
-        //} catch (Exception e) {
-          //  e.printStackTrace();
-            //System.err.println(e.getMessage());
-        //}
+        try {
+            //  columnIdNumberDrinks = findColumnInRow("id_prod", 0, drinksInformation);
+            //  columnIdNumberSolids = findColumnInRow("id_prod", 0, solidsInformation);
+            //  columnIdNumberSpecies = findColumnInRow("id_prod", 0, speciesInformation);
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+            System.err.println(e.getMessage() + ".\nUnknown problem with indexing from table [drinks | solids | species]");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getMessage());
+        }
         //while(columnIdNumberSpecies < solidsInformation.get(0).size() && !solidsInformation.get(0).get(columnIdNumberSpecies).equals("id")) ++columnIdNumberSpecies;
         //while(columnIdNumberDrinks < solidsInformation.get(0).size() && !solidsInformation.get(0).get(columnIdNumberDrinks).equals("id")) ++columnIdNumberDrinks;
 
-       // if (columnIdNumberDrinks == drinksInformation.size() || columnIdNumberSpecies == speciesInformation.size() || columnIdNumberSolids == solidsInformation.size())
-         //   throw new Exception("Can't find column id in [solids | species | drinks]");
+        // if (columnIdNumberDrinks == drinksInformation.size() || columnIdNumberSpecies == speciesInformation.size() || columnIdNumberSolids == solidsInformation.size())
+        //   throw new Exception("Can't find column id in [solids | species | drinks]");
         for (ArrayList<String> row : table) {
             String description, name, productType, calories, id, area, productClass, taste, sugar;
             name = description = productClass = productType = calories = id = area = taste = sugar = null;
@@ -81,7 +80,7 @@ public class Parser {
                 switch (column) {
                     case "description" -> description = value;
                     case "name" -> name = value;
-                    case "product_type" -> productType = value;
+                    case "product_group" -> productType = value;
                     case "product_class" -> productClass = value;
                     case "id_prod" -> id = value;
                     case "area" -> area = value;
@@ -122,9 +121,12 @@ public class Parser {
                     else
                         item = new Solid(name, Integer.parseInt(calories), Integer.parseInt(id));
                     break;
-                case "species":
+                case "Species":
+                    System.out.println(taste);
                     item = new Species(name, Integer.parseInt(calories), Species.getEnumTaste(taste), Integer.parseInt(id));
                     break;
+                case "product_class":
+                    continue;
                 default:
                     throw new Exception("Illegal type of product_class [" + productClass + "] of product [" + row + "]");
             }

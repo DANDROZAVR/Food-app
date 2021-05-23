@@ -14,18 +14,22 @@ public class Species extends Product {
         this.taste = taste;
     }
     public static Taste getEnumTaste(String taste) {
-        switch (taste) {
-            case "Sweet":
-                return Taste.Sweet;
-            case "Salty":
-                return Taste.Salty;
-            case "Bitter":
-                return Taste.Bitter;
-            case "Spicy":
-                return Taste.Spicy;
-            default:
-                System.err.println("Can't get taste " + taste);
-                break;
+        if(taste == null){
+            System.err.println("taste is null");
+        }else {
+            switch (taste) {
+                case "Sweet":
+                    return Taste.Sweet;
+                case "Salty":
+                    return Taste.Salty;
+                case "Bitter":
+                    return Taste.Bitter;
+                case "Spicy":
+                    return Taste.Spicy;
+                default:
+                    System.err.println("Can't get taste " + taste);
+                    break;
+            }
         }
         return Taste.None;
     }
