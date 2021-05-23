@@ -1,8 +1,6 @@
 /*
-
 link to diagram
 https://github.com/DANDROZAVR/Food-app/blob/main/diagram.png
-
 */
 drop table if exists recipes cascade;
 drop table if exists products cascade;
@@ -53,16 +51,16 @@ create table products (
 	calories numeric(5) not null check(calories >= 0)
 );
 create table products_areatag (
-	id integer unique constraint fk_prod_area references products(id_prod),
+	id_prod integer unique constraint fk_prod_area references products(id_prod),
 	area varchar(40) not null
 );
 create table drinks_taste (	
-	id integer not null primary key constraint fk_prod_dk references products(id_prod),
+	id_prod integer not null primary key constraint fk_prod_dk references products(id_prod),
 	sugar boolean not null, 
 	colour varchar(15)
 );
 create table species_taste (	
-	id integer not null primary key constraint fk_prod_ss references products(id_prod),
+	id_prod integer not null primary key constraint fk_prod_ss references products(id_prod),
 	taste species_taste_enum not null
 );	
 
@@ -184,7 +182,7 @@ create sequence for_id_restaurants start with 2 increment by 2 maxvalue 100000;
 
 
 ALTER TABLE ONLY products_areatag
-    ADD CONSTRAINT prod_area_ee FOREIGN KEY (id) references products(id_prod);
+    ADD CONSTRAINT prod_area_ee FOREIGN KEY (id_prod) references products(id_prod);
 ALTER TABLE ONLY recipes_tag
     ADD CONSTRAINT rec_tag FOREIGN KEY (id) references recipes(id_rec);	
 /*ALTER TABLE ONLY group_meals_content
@@ -218,9 +216,9 @@ ALTER TABLE ONLY shops_content_products
 /*ALTER TABLE ONLY recipes_content
     ADD CONSTRAINT fk_rec_coewnt FOREIGN KEY (id_rec) references recipes(id_rec);*/	
 ALTER TABLE ONLY species_taste
-    ADD CONSTRAINT fk_proed_ss FOREIGN KEY (id) references products(id_prod);		
+    ADD CONSTRAINT fk_proed_ss FOREIGN KEY (id_prod) references products(id_prod);		
 ALTER TABLE ONLY drinks_taste
-    ADD CONSTRAINT fk_pwrod_dk FOREIGN KEY (id) references products(id_prod);	
+    ADD CONSTRAINT fk_pwrod_dk FOREIGN KEY (id_prod) references products(id_prod);	
 ALTER TABLE ONLY shops_info
     ADD CONSTRAINT fk_shoep_des FOREIGN KEY (id) references shops_main(id);	
 /*ALTER TABLE ONLY restaurants_info
@@ -235,7 +233,6 @@ VALUES
 	(4, 'fruits', 'orange', 'Orange has an orange colour', 'South and North America, China, Italy, Iran, Egypt', 43),
 	(6, 'meat', 'beef', 'One of the most common types of meat', 'Worldwide', 187),
 	(8, 'meat', 'chiken', 'Meat that contains a lot of protein', 'Worldwide', 239);
-
 INSERT INTO
 	recipes(id_rec, name, sum_weight, sum_calories) 
 VALUES
