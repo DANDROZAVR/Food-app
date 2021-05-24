@@ -13,7 +13,7 @@ import javafx.scene.control.Button;
 import main.Data.Parser;
 import main.Data.Query;
 import main.Model.Products.Product;
-import main.Model.Products.Solid;
+import main.Model.Products.Solids;
 
 public class sampleController extends Main {
     @FXML

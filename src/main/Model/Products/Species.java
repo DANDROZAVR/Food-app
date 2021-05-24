@@ -33,4 +33,18 @@ public class Species extends Product {
         }
         return Taste.None;
     }
+    public String getTaste(){
+        switch (taste) {
+            case Sweet:
+                return "Sweet";
+            case Salty:
+                return "Salty";
+            case Bitter:
+                return "Bitter";
+            case Spicy:
+                return "Spicy";
+            default:
+                return "";
+        }
+    }
 }

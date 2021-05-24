@@ -2,7 +2,7 @@ package main.Data;
 
 import main.Model.Products.Drinks;
 import main.Model.Products.Product;
-import main.Model.Products.Solid;
+import main.Model.Products.Solids;
 import main.Model.Products.Species;
 import main.Model.Recipes.Recipe;
 
@@ -95,11 +95,10 @@ public class Parser {
             Product item = null;
             switch (Objects.requireNonNull(productClass)) {
                 case "Drinks":
-                    //add colour
                     item = new Drinks(name, Integer.parseInt(calories), Integer.parseInt(id), Boolean.parseBoolean(sugar), productType, colour);
                     break;
                 case "Solids":
-                    item = new Solid(name, Integer.parseInt(calories), Integer.parseInt(id), productType);
+                    item = new Solids(name, Integer.parseInt(calories), Integer.parseInt(id), productType);
                     break;
                 case "Species":
                     if (taste == null) {
@@ -118,5 +117,16 @@ public class Parser {
             if (item != null) result.add(item);
         }
         return result;
+    }
+    public static String getProductClass(Class cl){
+        String longName = cl.getName();
+        String shortName = new String();
+        for(int i = longName.length() - 1; i >= 0; i--){
+            if(longName.charAt(i) == '.'){
+                break;
+            }
+            shortName = longName.charAt(i) + shortName;
+        }
+        return shortName;
     }
 }
