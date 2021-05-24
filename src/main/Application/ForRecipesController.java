@@ -37,15 +37,15 @@ public class ForRecipesController extends Main {
     private TextField GetText;
     @FXML
     void initialize() {
-        try {
-            ArrayList<ArrayList<String>> test = Query.getFullInformation("receipts");
+        /*try {
+            /*ArrayList<ArrayList<String>> test = Query.getFullInformation("recipes");
             for(ArrayList<String> s: test){
                 textArea.setText(textArea.getText() + "\n"+ s.toString());
             }
             ButtonFind.setOnAction(event -> {
                 try{
                     textArea.setText("");
-                    ArrayList<ArrayList<String>> output = Query.getByNamePrefix("receipts", GetText.getText());
+                    ArrayList<ArrayList<String>> output = Query.getByNamePrefix("recipes", GetText.getText());
                     for(ArrayList<String> s: output){
                         textArea.setText(textArea.getText() + "\n"+ s.toString());
                     }
@@ -55,6 +55,6 @@ public class ForRecipesController extends Main {
             });
         }catch(Exception e){
             e.printStackTrace();
-        }
+        }*/
     }
 }

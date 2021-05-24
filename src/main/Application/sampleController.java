@@ -13,7 +13,7 @@ import javafx.scene.control.Button;
 import main.Data.Parser;
 import main.Data.Query;
 import main.Model.Products.Product;
-import main.Model.Products.Solid;
+import main.Model.Products.Solids;
 
 public class sampleController extends Main {
     @FXML
@@ -49,15 +49,6 @@ public class sampleController extends Main {
             FXMLLoader loader = LoadXML.load("ForRecipes.fxml");
             Parent root = loader.getRoot();
             ((Stage) show_all_recipes.getScene().getWindow()).setScene(new Scene(root));
-        });
-        setProductButton.setOnAction(event -> {
-            try {
-                //Product item = Parser.getProductsFrom(Query.getFullInformation("(select * from products left join drinks left join solids left join species)")).get(0);
-                Product item = new Solid("apple", 31, 1, Solid.getEnumTaste("Sweat"));
-                goToProduct(item);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         });
         assert ButtonAddProducts != null : "fx:id=\"ButtonAddProducts\" was not injected: check your FXML file 'sample.fxml'.";
         ButtonAddProducts.setOnAction(event -> {

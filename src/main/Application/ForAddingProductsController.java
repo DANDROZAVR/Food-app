@@ -117,7 +117,7 @@ public class ForAddingProductsController {
                 String sugar = getSugar.getText(), colour = getColour.getText(), taste = getTaste.getValue();
                 ArrayList< ArrayList<String> > forNewProduct = new ArrayList<>();
                 ArrayList<String> row = new ArrayList<String>();
-                row.add("id"); row.add("product_group"); row.add("product_class"); row.add("name"); row.add("description"); row.add("calories"); row.add("area"); row.add("sugar"); row.add("taste");
+                row.add("id_prod"); row.add("product_group"); row.add("product_class"); row.add("name"); row.add("description"); row.add("calories"); row.add("area"); row.add("sugar"); row.add("taste");
                 forNewProduct.add(new ArrayList<>(row));
                 row.clear();
                 row.add(Integer.toString(Id)); row.add(product_group); row.add(product_class); row.add(name); row.add(description); row.add(calories); row.add(area); row.add(sugar); row.add(taste);
