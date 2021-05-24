@@ -50,15 +50,6 @@ public class sampleController extends Main {
             Parent root = loader.getRoot();
             ((Stage) show_all_recipes.getScene().getWindow()).setScene(new Scene(root));
         });
-        setProductButton.setOnAction(event -> {
-            try {
-                //Product item = Parser.getProductsFrom(Query.getFullInformation("(select * from products left join drinks left join solids left join species)")).get(0);
-                Product item = new Solid("apple", 31, 1, Solid.getEnumTaste("Sweat"));
-                goToProduct(item);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
         assert ButtonAddProducts != null : "fx:id=\"ButtonAddProducts\" was not injected: check your FXML file 'sample.fxml'.";
         ButtonAddProducts.setOnAction(event -> {
             FXMLLoader loader = LoadXML.load("ForAddingProducts.fxml");
