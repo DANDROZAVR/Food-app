@@ -73,18 +73,23 @@ public class Query {
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_all(String fromTable, String prefixName) throws SQLException {
         String query = new String(
-                "SELECT * FROM(" +
                         "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 left join species_taste using(id_prod)"
-                        + ") as products2 left join products_areatag using(id_prod);");
+                        + " left join drinks_info using(id_prod);");
         return Database.execute(query);
     }
     public static int getNewIdFor(String S) throws SQLException {
-        String query = new String("SELECT COUNT(*) FROM " + S + ";");
-        int Id = 2 * (1 + Integer.parseInt(Database.execute(query).get(1).get(0)));
-        if(S == "Recipes"){
-            Id++;
+        int start = 0;
+        String Id = "id_rec";
+        if(S == "products"){
+            start = 1;
+            Id = "id_prod";
         }
-        return Id;
+        for(int i = start; ; i += 2){
+            String query = new String("SELECT COUNT(*) FROM " + S + " where " + Id + "=" + i + ";");
+            if(Integer.parseInt(Database.execute(query).get(1).get(0)) == 0){
+                return i;
+            }
+        }
     }
     public static void addNewProduct(Product p) throws SQLException, ClassNotFoundException, Exception {
         if(Integer.parseInt(Database.execute(new String("select count(*) from products where id_prod = " + p.getId() + ";")).get(1).get(0)) != 0){
@@ -143,26 +148,22 @@ public class Query {
             }
         }
         if(Parser.getProductClass(p.getClass()).equals("Drinks")){
-            query = new String("delete from products where id_prod = " + p.getId() + ";");
-            Database.update(query);
-            throw new Exception("can't add to Drinks");
-            /*
             try{
-                query = new String("INSERT INTO drinks_taste(id_prod, sugar, colour) VALUES("
+                query = new String("INSERT INTO drinks_info(id_prod, sugar, colour) VALUES("
                         +p.getId()
                         +", "
-                        +((Drinks)p)
+                        +((Drinks)p).hasSugar()
+                        +", "
+                        +((Drinks)p).getColour()
                         +");"
                 );
                 Database.update(query);
             } catch (Exception e){
                 e.printStackTrace();
-                query = new String("delete * from products where id = " + p.getId() + ";");
+                query = new String("delete from products where id_prod = " + p.getId() + ";");
                 Database.update(query);
                 throw new Exception("can't add to Drinks");
             }
-
-             */
         }
         /*
         query = new String("INSERT INTO products_areatag(id_prod, area) VALUES ("
