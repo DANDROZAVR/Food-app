@@ -70,8 +70,8 @@ public class Parser {
     public static ArrayList<Product> getProductsFrom(ArrayList<ArrayList<String>> query) throws Exception {
         ArrayList<Product> result = new ArrayList<>();
         for (ArrayList<String> row : query) {
-            String description, name, productType, calories, id, area, productClass, taste, sugar;
-            name = description = productClass = productType = calories = id = area = taste = sugar = null;
+            String description, name, productType, calories, id, area, productClass, taste, sugar, colour;
+            name = description = productClass = productType = calories = id = area = taste = sugar = colour = null;
             for (int j = 0; j < row.size(); ++j) {
                 String column = query.get(0).get(j);
                 String value = row.get(j);
@@ -80,11 +80,12 @@ public class Parser {
                     case "name" -> name = value;
                     case "product_group" -> productType = value;
                     case "product_class" -> productClass = value;
-                    case "id" -> id = value;
+                    case "id_prod" -> id = value;
                     case "area" -> area = value;
                     case "calories" -> calories = value;
                     case "sugar" -> sugar = value;
                     case "taste"-> taste = value;
+                    case "colour"-> colour = value;
                     default -> throw new Exception("Unknown column find due parsing: " + column);
                 }
             }
@@ -94,17 +95,18 @@ public class Parser {
             Product item = null;
             switch (Objects.requireNonNull(productClass)) {
                 case "Drinks":
-                    item = new Drinks(name, Integer.parseInt(calories), Integer.parseInt(id), Boolean.parseBoolean(sugar));
+                    //add colour
+                    item = new Drinks(name, Integer.parseInt(calories), Integer.parseInt(id), Boolean.parseBoolean(sugar), productType, colour);
                     break;
                 case "Solids":
-                    item = new Solid(name, Integer.parseInt(calories), Integer.parseInt(id));
+                    item = new Solid(name, Integer.parseInt(calories), Integer.parseInt(id), productType);
                     break;
                 case "Species":
                     if (taste == null) {
                         System.err.println("Taste is null for [" + name + "]\n");
                         break;
                     }
-                    item = new Species(name, Integer.parseInt(calories), Species.getEnumTaste(taste), Integer.parseInt(id));
+                    item = new Species(name, Integer.parseInt(calories), Species.getEnumTaste(taste), Integer.parseInt(id), productType);
                     break;
                 case "product_class":
                     continue;
