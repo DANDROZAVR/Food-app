@@ -8,15 +8,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Recipe {
-    private int id, Calories, weight, all_calories; // All calories
+    private int id, calories, weight, all_calories; // All calories
     private String Name = null, description = null;
     private ArrayList<Pair<Integer, Integer>> Components; // [ id, weight ]
+
+    public Recipe(int id, String name, String description, int sum_calories, int sum_weight) {
+        this.id = id;
+        this.Name = name;
+        this.description = description;
+        this.all_calories = sum_calories;
+        this.weight = sum_weight;
+    }
 
     public Recipe(int id,  String Name, String Description, ArrayList < Pair <Integer, Integer> > List) throws SQLException {
         this.id = id;
         this.Name = Name;
         this.description = Description;
-        this.Calories = 0;
+        this.calories = 0;
         this.all_calories = 0;
         this.weight = 0;
         for(Pair <Integer, Integer> new_component : List) {
@@ -32,19 +40,17 @@ public class Recipe {
                 this.all_calories += (calories * new_component.getValue()) / 100;
                 this.weight += new_component.getValue();
             }
-            this.Calories = (this.all_calories * this.weight) / 100;
+            this.calories = (this.all_calories * this.weight) / 100;
             Components.add(new_component);
         }
     }
 
     public int getCalories(){
-        return this.Calories;
+        return this.calories;
     }
-
     public int getId(){
         return this.id;
     }
-
     public int getWeight(){
         return this.weight;
     }

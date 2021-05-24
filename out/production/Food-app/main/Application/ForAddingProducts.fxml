@@ -1,29 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForAddingProductsController">
+<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForAddingProductsController">
    <children>
-      <TextField fx:id="GetName" layoutX="105.0" layoutY="47.0" prefHeight="35.0" prefWidth="373.0" />
-      <TextField fx:id="GetProductType" layoutX="105.0" layoutY="107.0" prefHeight="35.0" prefWidth="373.0" />
-      <TextField fx:id="GetDescription" layoutX="105.0" layoutY="167.0" prefHeight="35.0" prefWidth="373.0" />
-      <TextField fx:id="GetArea" layoutX="105.0" layoutY="227.0" prefHeight="35.0" prefWidth="373.0" />
-      <TextField fx:id="GetCalories" layoutX="105.0" layoutY="287.0" prefHeight="35.0" prefWidth="373.0" />
-      <Label layoutX="491.0" layoutY="47.0" prefHeight="35.0" prefWidth="71.0" text="Name" />
-      <Label layoutX="491.0" layoutY="107.0" prefHeight="35.0" prefWidth="99.0" text="Product Type" />
-      <Label layoutX="491.0" layoutY="167.0" prefHeight="35.0" prefWidth="85.0" text="Description" />
-      <Label layoutX="491.0" layoutY="227.0" prefHeight="35.0" prefWidth="71.0" text="Area" />
-      <Label layoutX="491.0" layoutY="287.0" prefHeight="35.0" prefWidth="71.0" text="Calories" />
-      <Button fx:id="AddProduct" layoutX="206.0" layoutY="335.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="188.0" text="ADD" />
-      <Button fx:id="cancelButton" cancelButton="true" layoutX="14.0" layoutY="18.0" mnemonicParsing="false" onAction="#goToHome" prefHeight="26.0" prefWidth="30.0" text="&lt;">
+      <TextField fx:id="GetName" layoutX="105.0" layoutY="30.0" prefHeight="35.0" prefWidth="643.0" />
+      <TextField fx:id="GetProductGroup" layoutX="103.0" layoutY="80.0" prefHeight="35.0" prefWidth="643.0" />
+      <TextField fx:id="GetDescription" layoutX="105.0" layoutY="180.0" prefHeight="35.0" prefWidth="643.0" />
+      <TextField fx:id="GetArea" layoutX="105.0" layoutY="230.0" prefHeight="35.0" prefWidth="643.0" />
+      <Label layoutX="764.0" layoutY="30.0" prefHeight="35.0" prefWidth="125.0" text="Name" />
+      <Label layoutX="764.0" layoutY="80.0" prefHeight="35.0" prefWidth="99.0" text="Product Group" />
+      <Label layoutX="764.0" layoutY="180.0" prefHeight="35.0" prefWidth="85.0" text="Description" />
+      <Label layoutX="764.0" layoutY="230.0" prefHeight="35.0" prefWidth="71.0" text="Area" />
+      <Label layoutX="764.0" layoutY="280.0" prefHeight="35.0" prefWidth="71.0" text="Calories" />
+      <Button fx:id="AddProduct" layoutX="270.0" layoutY="384.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="276.0" text="ADD" />
+      <Button fx:id="cancelButton" cancelButton="true" layoutX="14.0" layoutY="18.0" mnemonicParsing="false" onAction="#goToHome" prefHeight="42.0" prefWidth="71.0" text="&lt;">
          <font>
             <Font name="Arial Black" size="15.0" />
          </font>
       </Button>
-      <Label fx:id="error_out" layoutX="412.0" layoutY="335.0" prefHeight="51.0" prefWidth="132.0" textFill="#16b221" />
+      <Label fx:id="error_out" layoutX="587.0" layoutY="384.0" prefHeight="63.0" prefWidth="189.0" textFill="#16b221" />
+      <TextField fx:id="GetCalories" layoutX="105.0" layoutY="280.0" prefHeight="35.0" prefWidth="643.0" />
+      <Label layoutX="764.0" layoutY="130.0" prefHeight="35.0" prefWidth="99.0" text="Product Class" />
+      <ChoiceBox fx:id="GetProductClass" layoutX="105.0" layoutY="130.0" prefHeight="35.0" prefWidth="125.0" />
+      <HBox fx:id="clASSField" layoutX="239.0" layoutY="130.0" prefHeight="35.0" prefWidth="508.0" />
    </children>
 </AnchorPane>
