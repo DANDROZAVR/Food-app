@@ -2,6 +2,7 @@ from PIL import Image
 import requests
 import io
 import sys
+import sys
 
 BASE_ENDPOINT = 'https://api.iconfinder.com/v4/'
 API_SECRET    = "ql5epLrO1hVeHpVeLuikCGpLInsyYcffPZBcng6zerbG7SDFwUdqxNwEMRWChQ1d" # Keep this secret
@@ -29,8 +30,11 @@ def download_icons(product_name):
   download_response = requests.request("GET", download_url, headers=headers)
   in_memory_file = io.BytesIO(download_response.content)
   im = Image.open(in_memory_file)
-  im.save(product_name + ".png")
+  path = sys.argv[0].rsplit('/',1)
+  im.save(path[0] + "/../../../resources/Icons/" + product_name + ".png")
 
 
 for index in range(1, len(sys.argv)):
   download_icons(sys.argv[index])
+
+
