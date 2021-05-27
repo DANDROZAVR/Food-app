@@ -54,6 +54,7 @@ public class Recipe {
     public int getWeight(){
         return this.weight;
     }
+    public String getName(){return this.Name;}
 
     /*
     public void add(Product x, int weight){

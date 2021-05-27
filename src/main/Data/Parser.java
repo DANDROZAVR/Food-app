@@ -41,7 +41,8 @@ public class Parser {
 
     public static ArrayList<Recipe> getRecipesFrom(ArrayList<ArrayList<String>> query) throws Exception {
         ArrayList<Recipe> result = new ArrayList<>();
-        for (ArrayList<String> row : query) {
+        for (int idx = 1; idx < query.size(); idx++) {
+            ArrayList <String> row = query.get(idx);
             String id, name, sum_weight, sum_calories, description, links;
             id = name = description = sum_weight = sum_calories = links = null;
             for (int j = 0; j < row.size(); ++j) {
