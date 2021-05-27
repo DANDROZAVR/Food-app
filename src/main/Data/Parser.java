@@ -58,7 +58,8 @@ public class Parser {
                     default -> throw new Exception("Unknown column find due parsing: " + column);
                 }
             }
-            result.add(new Recipe(Integer.parseInt(id), name, description, Integer.parseInt(sum_calories), Integer.parseInt(sum_weight)));
+            result.add(new Recipe(Integer.parseInt(id), Integer.parseInt(sum_weight), Integer.parseInt(sum_calories), name, description, links));
+            //result.add(new Recipe(Integer.parseInt(id), name, description, Integer.parseInt(sum_calories), Integer.parseInt(sum_weight)));
         }
         return result;
     }

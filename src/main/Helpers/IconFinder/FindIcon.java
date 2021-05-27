@@ -10,7 +10,7 @@ public class FindIcon {
      * @param iconName name of icon to search
      * @return true, the icon was successfully founded and added to the "recources" folder
      */
-    static boolean findIcon(String iconName) {
+    static public boolean loadIconFromNet(String iconName) {
         Process p = null;
         try {
             String project_path =  new File(".").getCanonicalPath();

@@ -37,4 +37,6 @@ def download_icons(product_name):
 for index in range(1, len(sys.argv)):
   download_icons(sys.argv[index])
 
+sys.exit(0)
+
 

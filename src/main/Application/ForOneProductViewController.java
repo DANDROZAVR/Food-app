@@ -46,9 +46,6 @@ public class ForOneProductViewController extends Main {
         this.sceneProduct = sceneProduct;
     }
     void setProduct(Product item) {
-        ToProducts.setOnAction(t -> {
-            ((Stage) product_area.getScene().getWindow()).setScene(sceneProduct);
-        });
         //((TextArea)((HBox)VBoxProduct.getChildren().get(0)).getChildren().get(0)).setAccessibleText(item.getName());
         product_name.setText(item.getName());
         product_area.setText(Arrays.toString(item.getArea()));
@@ -74,6 +71,8 @@ public class ForOneProductViewController extends Main {
     @FXML
     void initialize() {
         assert product_name != null : "fx:id=\"product_name\" was not injected: check your FXML file 'ForProductIcon.fxml'.";
-
+        ToProducts.setOnAction(t -> {
+            ((Stage) product_area.getScene().getWindow()).setScene(sceneProduct);
+        });
     }
 }
