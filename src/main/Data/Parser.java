@@ -40,7 +40,39 @@ public class Parser {
     }*/
 
     public static ArrayList<Recipe> getRecipesFrom(ArrayList<ArrayList<String>> table) throws Exception {
-        return null;
+        ArrayList<Recipe> result = new ArrayList<>();
+        for (ArrayList<String> row : table) {
+            if(row.get(0).equals("id_rec")){
+                continue;
+            }
+            String description, name, allCalories, id, weight, link;
+            name = description = allCalories = id = weight = link= null;
+            for (int j = 0; j < row.size(); ++j) {
+                String column = table.get(0).get(j);
+                String value = row.get(j);
+                switch (column) {
+                    case "description" -> description = value;
+                    case "name" -> name = value;
+                    case "id_rec" -> id = value;
+                    case "sum_calories" -> allCalories  = value;
+                    case "sum_weight" -> weight  = value;
+                    case "links" -> link  = value;
+                    default -> throw new Exception("Unknown column find due parsing: " + column);
+                }
+            }
+
+            if (name == null || weight == null || allCalories == null || id == null)
+                throw new Exception("Some of non-null by definition values are null: " + name + ", " + allCalories + ", " + id);
+            Recipe item = new Recipe(Integer.parseInt(id),Integer.parseInt(weight), Integer.parseInt(allCalories), name,description,null);
+            if(Integer.parseInt(weight) < 0){
+                throw new Exception("weight is negative " + name + ", " + allCalories + ", " + id);
+            }
+            if(Integer.parseInt(allCalories) < 0){
+                throw new Exception("sum_calories is negative " + name + ", " + allCalories + ", " + id);
+            }
+            result.add(item);
+        }
+        return result;
     }
     /**
      *

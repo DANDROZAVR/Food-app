@@ -41,23 +41,23 @@ public class ForRecipesController extends Main {
     private TextField GetText;
     @FXML
     void initialize() {
-        /*Tooltip toolTip = new Tooltip();
         List<Hyperlink> links = new ArrayList<>();
         VBox.getChildren().clear();
         try {
-            ArrayList<ArrayList<String>> output = Query.getFullInformation("receipts");
+            ArrayList<ArrayList<String>> output = Query.getFullInformation("recipes");
             for (ArrayList<String> s : output) {
                 if (!s.get(4).equals("description")) {
-                    Hyperlink link = new Hyperlink(s.get(3));
-                    link.setTooltip(new Tooltip("Product group: " + s.get(1) + "\n" +
-                            "Product class: " + s.get(2)+ "\n" + "Calories " + s.get(5)));
+                    Hyperlink link = new Hyperlink(s.get(1));
+                    link.setTooltip(new Tooltip("weight: " + s.get(2) + "\n" +
+                            "All calories: " + s.get(3)+ "\n" + "Description: " + s.get(4)));
                     link.setOnAction(t -> {
-                        FXMLLoader loader = LoadXML.load("ForOneProductView.fxml");
+                        FXMLLoader loader = LoadXML.load("ForOneRecipe.fxml");
                         ArrayList<ArrayList<String>> temp = new ArrayList<>();
                         temp.add(output.get(0));
                         temp.add(s);
                         try {
-                            ((ForOneProductViewController) loader.getController()).setProduct(Parser.getProductsFrom(temp).get(0));
+                            ((forOneRecipeController) loader.getController()).setRecipe(Parser.getRecipesFrom(temp).get(0));
+                            ((forOneRecipeController) loader.getController()).setSceneProduct(GetText.getScene());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -77,17 +77,20 @@ public class ForRecipesController extends Main {
             VBox.getChildren().clear();
             listView.getItems().clear();
             try {
-                ArrayList<ArrayList<String>> output = Query.getFullInformation("receipts");
+                ArrayList<ArrayList<String>> output = Query.getByNamePrefix("recipes", GetText.getText());
                 for (ArrayList<String> s : output) {
                     if (!s.get(4).equals("description")) {
-                        Hyperlink link = new Hyperlink(s.get(3));
+                        Hyperlink link = new Hyperlink(s.get(1));
+                        link.setTooltip(new Tooltip("weight: " + s.get(2) + "\n" +
+                                "All calories: " + s.get(3)+ "\n" + "Description: " + s.get(4)));
                         link.setOnAction(t -> {
-                            FXMLLoader loader = LoadXML.load("ForOneProductView.fxml");
+                            FXMLLoader loader = LoadXML.load("ForOneRecipeView.fxml");
                             ArrayList<ArrayList<String>> temp = new ArrayList<>();
                             temp.add(output.get(0));
                             temp.add(s);
                             try {
-                                ((ForOneProductViewController) loader.getController()).setProduct(Parser.getProductsFrom(temp).get(0));
+                                ((forOneRecipeController) loader.getController()).setRecipe(Parser.getRecipesFrom(temp).get(0));
+                                ((forOneRecipeController) loader.getController()).setSceneProduct(GetText.getScene());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -103,26 +106,5 @@ public class ForRecipesController extends Main {
                 e.printStackTrace();
             }
         });
-
-         */
-        try {
-            ArrayList<ArrayList<String>> test = Query.getFullInformation("receipts");
-            for(ArrayList<String> s: test){
-                textArea.setText(textArea.getText() + "\n"+ s.toString());
-            }
-            ButtonFind.setOnAction(event -> {
-                try{
-                    textArea.setText("");
-                    ArrayList<ArrayList<String>> output = Query.getByNamePrefix("receipts", GetText.getText());
-                    for(ArrayList<String> s: output){
-                        textArea.setText(textArea.getText() + "\n"+ s.toString());
-                    }
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-            });
-        }catch(Exception e){
-            e.printStackTrace();
-        }
     }
 }
