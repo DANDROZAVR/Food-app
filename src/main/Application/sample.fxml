@@ -42,9 +42,9 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <Button fx:id="show_all_products" layoutX="230.0" layoutY="158.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Products" textFill="#43a69e" textOverrun="WORD_ELLIPSIS" />
-      <Button fx:id="show_all_recipes" layoutX="230.0" layoutY="71.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Recipes" textFill="#d148d3" />
-      <Button fx:id="ButtonAddProducts" layoutX="230.0" layoutY="250.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Add Products">
+      <Button fx:id="show_all_products" layoutX="222.0" layoutY="134.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Products" textFill="#43a69e" textOverrun="WORD_ELLIPSIS" />
+      <Button fx:id="show_all_recipes" layoutX="222.0" layoutY="48.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Recipes" textFill="#d148d3" />
+      <Button fx:id="ButtonAddProducts" layoutX="222.0" layoutY="220.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Add Products">
          <textFill>
             <LinearGradient endX="1.0" endY="1.0" startY="1.0">
                <stops>
@@ -92,6 +92,6 @@
             </LinearGradient>
          </textFill>
       </Button>
-      <Button fx:id="setProductButton" layoutX="169.0" layoutY="164.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="63.0" text="SetProduct" />
+      <Button fx:id="ButtonAddRecipes" layoutX="222.0" layoutY="306.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Add Recipes" textFill="#d907d2" />
    </children>
 </AnchorPane>

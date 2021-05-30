@@ -10,4 +10,5 @@ public class Drinks extends Product {
         this.colour = colour;
     }
     public boolean hasSugar(){ return sugar; }
+    public String getColour(){ return colour; }
 }

@@ -17,12 +17,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import main.Data.Parser;
 import main.Data.Query;
+import main.Helpers.IconFinder.FindIcon;
 import main.Model.Products.Product;
+
 
 public class ForAddingProductsController {
 
@@ -65,6 +69,22 @@ public class ForAddingProductsController {
         ObservableList<String> GetProductClassList = FXCollections.observableArrayList("Species", "Drinks", "Solids");
         GetProductClass.setValue("");
         GetProductClass.setItems(GetProductClassList);
+    }
+
+    @FXML
+    private ImageView product_icon;
+    @FXML
+    private Button findIcon;
+    @FXML
+    void tryToFindIcon(ActionEvent event) {
+        try {
+            System.out.println(FindIcon.loadIconFromNet(GetName.getText()));
+            System.out.println("@../../resources/Icons/" + GetName.getText() + ".png");
+            Thread.sleep(500);
+            product_icon.setImage(new Image("@../../resources/Icons/" + GetName.getText() + ".png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
