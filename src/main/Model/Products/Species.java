@@ -9,8 +9,8 @@ public class Species extends Product {
         None
     }
     Taste taste;
-    public Species(String name, int calories, Taste taste, int id) {
-        super(name, calories, "Species", id);
+    public Species(String name, int calories, Taste taste, int id, String productGroup) {
+        super(name, calories, id, productGroup);
         this.taste = taste;
     }
     public static Taste getEnumTaste(String taste) {
@@ -32,5 +32,19 @@ public class Species extends Product {
             }
         }
         return Taste.None;
+    }
+    public String getTaste(){
+        switch (taste) {
+            case Sweet:
+                return "Sweet";
+            case Salty:
+                return "Salty";
+            case Bitter:
+                return "Bitter";
+            case Spicy:
+                return "Spicy";
+            default:
+                return "";
+        }
     }
 }

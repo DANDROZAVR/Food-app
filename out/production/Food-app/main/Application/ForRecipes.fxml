@@ -2,6 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -9,12 +11,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForRecipesController">
+<AnchorPane prefHeight="410.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForRecipesController">
    <children>
-      <HBox alignment="TOP_CENTER" layoutY="-2.0" prefHeight="87.0" prefWidth="1000.0" spacing="5.0">
+      <HBox alignment="TOP_CENTER" layoutY="-2.0" prefHeight="61.0" prefWidth="610.0" spacing="5.0">
          <children>
             <Button alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToHome" prefHeight="61.0" prefWidth="60.0" text="Home">
                <graphic>
@@ -25,20 +26,22 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Pane prefHeight="42.0" prefWidth="1234.0">
+            <Button fx:id="cancelButton" alignment="CENTER_RIGHT" cancelButton="true" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#goToHome" prefHeight="26.0" prefWidth="30.0" text="&lt;" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="Arial Black" size="15.0" />
+               </font>
+            </Button>
+            <Pane prefHeight="60.0" prefWidth="1005.0">
                <children>
-                  <TextField fx:id="GetText" layoutX="47.0" layoutY="2.0" prefHeight="48.0" prefWidth="707.0" />
-                  <Button fx:id="ButtonFind" layoutX="754.0" layoutY="2.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="39.0" />
-                  <ImageView fitHeight="48.0" fitWidth="76.0" layoutX="798.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../resources/Icons/iconfinder_search_115695.png" />
-                     </image>
-                  </ImageView>
-                  <Button fx:id="cancelButton" alignment="CENTER_RIGHT" cancelButton="true" layoutX="10.0" layoutY="2.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#goToHome" prefHeight="48.0" prefWidth="37.0" text="&lt;">
-                     <font>
-                        <Font name="Arial Black" size="15.0" />
-                     </font>
-                  </Button>
+                  <TextField fx:id="GetText" layoutX="7.0" layoutY="2.0" prefHeight="24.0" prefWidth="409.0" />
+                  <Button fx:id="ButtonFind" layoutX="416.0" layoutY="2.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="39.0">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../resources/Icons/iconfinder_search_115695.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
                </children>
             </Pane>
             <Region nodeOrientation="RIGHT_TO_LEFT" prefHeight="73.0" prefWidth="426.0">
@@ -63,6 +66,14 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <VBox fx:id="VBox" layoutX="174.0" layoutY="69.0" prefHeight="601.0" prefWidth="566.0" />
+      <ScrollPane layoutX="76.0" layoutY="111.0" prefHeight="224.0" prefWidth="409.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="227.0" prefWidth="405.0">
+               <children>
+                  <TextArea fx:id="textArea" layoutX="-3.0" prefHeight="224.0" prefWidth="409.0" wrapText="true" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
    </children>
 </AnchorPane>
