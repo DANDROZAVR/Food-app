@@ -1,5 +1,6 @@
 package main.Data;
 
+import javafx.util.Pair;
 import main.Model.Products.Drinks;
 import main.Model.Products.Product;
 import main.Model.Products.Solids;
@@ -39,6 +40,30 @@ public class Parser {
 
     }*/
 
+    public static ArrayList<Recipe> getRecipesFrom(ArrayList<ArrayList<String>> query, ArrayList<Pair<Integer,Integer>> recipesContent) throws Exception {
+        ArrayList<Recipe> result = new ArrayList<>();
+        for (int idx = 1; idx < query.size(); idx++) {
+            ArrayList <String> row = query.get(idx);
+            String id, name, sum_weight, sum_calories, description, links;
+            id = name = description = sum_weight = sum_calories = links = null;
+            for (int j = 0; j < row.size(); ++j) {
+                String column = query.get(0).get(j);
+                String value = row.get(j);
+                switch (column) {
+                    case "description" -> description = value;
+                    case "name" -> name = value;
+                    case "id_rec" -> id = value;
+                    case "sum_calories" -> sum_calories = value;
+                    case "sum_weight" -> sum_weight = value;
+                    case "links" -> links = value;
+                    default -> throw new Exception("Unknown column find due parsing: " + column);
+                }
+            }
+            result.add(new Recipe(Integer.parseInt(id),name, description,recipesContent));
+            //result.add(new Recipe(Integer.parseInt(id), name, description, Integer.parseInt(sum_calories), Integer.parseInt(sum_weight)));
+        }
+        return result;
+    }
     public static ArrayList<Recipe> getRecipesFrom(ArrayList<ArrayList<String>> query) throws Exception {
         ArrayList<Recipe> result = new ArrayList<>();
         for (int idx = 1; idx < query.size(); idx++) {

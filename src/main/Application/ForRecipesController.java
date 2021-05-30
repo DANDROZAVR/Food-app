@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import main.Data.Parser;
 import main.Data.Query;
 import javafx.scene.layout.VBox;
@@ -56,7 +57,8 @@ public class ForRecipesController extends Main {
                         temp.add(output.get(0));
                         temp.add(s);
                         try {
-                            ((forOneRecipeController) loader.getController()).setRecipe(Parser.getRecipesFrom(temp).get(0));
+                            ArrayList<Pair<Integer,Integer>> content = Query.getAllContentOfRecipe(Integer.parseInt(s.get(0)));
+                            ((forOneRecipeController) loader.getController()).setRecipe(Parser.getRecipesFrom(temp, content).get(0));
                             ((forOneRecipeController) loader.getController()).setSceneProduct(GetText.getScene());
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -89,7 +91,8 @@ public class ForRecipesController extends Main {
                             temp.add(output.get(0));
                             temp.add(s);
                             try {
-                                ((forOneRecipeController) loader.getController()).setRecipe(Parser.getRecipesFrom(temp).get(0));
+                                ArrayList<Pair<Integer,Integer>> content = Query.getAllContentOfRecipe(Integer.parseInt(s.get(0)));
+                                ((forOneRecipeController) loader.getController()).setRecipe(Parser.getRecipesFrom(temp, content).get(0));
                                 ((forOneRecipeController) loader.getController()).setSceneProduct(GetText.getScene());
                             } catch (Exception e) {
                                 e.printStackTrace();
