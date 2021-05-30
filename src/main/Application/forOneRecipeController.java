@@ -77,7 +77,7 @@ public class forOneRecipeController {
                 }
                 if (c.getKey() % 2 == 0) {
                     ArrayList<ArrayList<String>> component = Database.execute("select * from recipes where id_rec =" + c.getKey() + ";");
-                    Hyperlink temp = new Hyperlink(component.get(1).get(3));
+                    Hyperlink temp = new Hyperlink(component.get(1).get(1));
                     temp.setTooltip(new Tooltip("weight: " + component.get(1).get(2) + "\n" +
                             "All calories: " + component.get(1).get(3) + "\n" + "Description: " + component.get(1).get(4)));
                     temp.setOnAction(t -> {
