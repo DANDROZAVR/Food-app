@@ -8,6 +8,6 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.HistoryController">
    <children>
       <VBox fx:id="history" layoutX="243.0" layoutY="106.0" prefHeight="200.0" prefWidth="100.0" />
-      <Button fx:id="Back" layoutX="63.0" layoutY="28.0" mnemonicParsing="false" text="Button" />
+      <Button fx:id="Back" layoutX="63.0" layoutY="28.0" mnemonicParsing="false" text="Back" />
    </children>
 </AnchorPane>

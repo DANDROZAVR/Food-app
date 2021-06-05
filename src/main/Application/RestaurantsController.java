@@ -57,7 +57,7 @@ public class RestaurantsController {
                 }
                 ((forOneRecipeController) loader.getController()).setSceneProduct(Vbox.getScene());
                 Parent root = loader.getRoot();
-                ((Stage) Vbox.getScene().getWindow()).setScene(new Scene(root));
+                ((Stage) link.getScene().getWindow()).setScene(new Scene(root));
             });
             links.add(link);
         }
@@ -96,6 +96,8 @@ public class RestaurantsController {
             }else {
                 content.get(restaurant).add(new Order(order1, dateFormat.format(date)));
             }
+            Vbox.getChildren().addAll(VBoxOrder.getChildren());
+            VBoxOrder.getChildren().clear();
         });
         history.setOnAction(t -> {
             FXMLLoader loader = LoadXML.load("history.fxml");
@@ -104,7 +106,6 @@ public class RestaurantsController {
             Parent root = loader.getRoot();
             ((Stage) Vbox.getScene().getWindow()).setScene(new Scene(root));
         });
-
     }
     void setSceneBack(Scene scene){
         Back.setOnAction(t -> {
