@@ -1,5 +1,6 @@
 package main.Data;
 
+import javafx.util.Pair;
 import main.Model.Products.Drinks;
 import main.Model.Products.Product;
 import main.Model.Products.Species;
@@ -29,6 +30,30 @@ public class Query {
         String query = new String("SELECT * FROM " + fromTable + ";");
         return Database.execute(query);
     }
+    public static ArrayList<Pair<Integer,Integer>> getAllContentOfRecipe(int id) throws SQLException {
+        ArrayList<ArrayList<String>> content = Database.execute("select getRecipeContentRecipes(" + id+ ");");
+        content.addAll(Database.execute("select getRecipeContentProducts(" + id+ ");"));
+        ArrayList<Pair<Integer,Integer>> trueContent = new ArrayList<>();
+        for(ArrayList<String> s: content){
+            if(s.get(0) == null || s.get(0).equals("getrecipecontentrecipes") || s.get(0).equals("getrecipecontentproducts")){
+                continue;
+            }
+                StringBuilder id1 = new StringBuilder();
+                StringBuilder weight1 = new StringBuilder();
+                int i=2;
+                while(s.get(0).charAt(i) != ','){
+                   id1.append(s.get(0).charAt(i));
+                   i++;
+                }
+                i++;
+                while(s.get(0).charAt(i) != ','){
+                    weight1.append(s.get(0).charAt(i));
+                    i++;
+                }
+                trueContent.add(new Pair<Integer, Integer>(Integer.parseInt(id1.toString()), Integer.parseInt(weight1.toString())));
+        }
+        return trueContent;
+    }
     public static ArrayList<Product> getSimpleProductsWithoutSpecies() throws Exception {
         String query = new String("SELECT * FROM products;");
         return Parser.getProductsFrom(Database.execute(query));
@@ -51,6 +76,10 @@ public class Query {
      */
     public static int getCaloriesFromProducts(String fromTable, int item) throws SQLException {
         String query = "SELECT calories FROM " + fromTable + " WHERE id_prod=" + String.valueOf(item) + ";";
+        return Integer.parseInt(Database.execute(query).get(1).get(0));
+    }
+    public static int getCaloriesFromRecipes(String fromTable, int item) throws SQLException {
+        String query = "SELECT sum_calories FROM " + fromTable + " WHERE id_rec=" + String.valueOf(item) + ";";
         return Integer.parseInt(Database.execute(query).get(1).get(0));
     }
     public static ArrayList<ArrayList<String>> getByName(String fromTable, String name) throws SQLException {

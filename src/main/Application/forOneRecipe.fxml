@@ -21,7 +21,7 @@
       <Label layoutX="490.0" layoutY="108.0" prefHeight="24.0" prefWidth="62.0" text="Weight" />
       <Label layoutX="493.0" layoutY="176.0" prefHeight="24.0" prefWidth="62.0" text="Calories" />
       <Label layoutX="493.0" layoutY="230.0" prefHeight="24.0" prefWidth="70.0" text="Description" />
-      <Label layoutX="493.0" layoutY="291.0" prefHeight="24.0" prefWidth="69.0" text="Link" />
+      <Label layoutX="493.0" layoutY="291.0" prefHeight="24.0" prefWidth="69.0" text="Content" />
       <Button fx:id="Back" layoutX="42.0" layoutY="14.0" mnemonicParsing="false" text="Back" />
    </children>
 </AnchorPane>
