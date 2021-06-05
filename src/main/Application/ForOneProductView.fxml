@@ -29,6 +29,6 @@
             <TextArea fx:id="product_links" editable="false" prefHeight="76.0" prefWidth="515.0" />
          </children>
       </VBox>
-      <Button fx:id="ToProducts" layoutX="89.0" layoutY="44.0" mnemonicParsing="false" text="назад" />
+      <Button fx:id="ToProducts" layoutX="89.0" layoutY="44.0" mnemonicParsing="false" text="Back" />
    </children>
 </AnchorPane>

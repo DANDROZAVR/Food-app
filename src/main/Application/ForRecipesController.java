@@ -2,6 +2,7 @@ package main.Application;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -9,15 +10,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import main.Data.Parser;
 import main.Data.Query;
+import javafx.scene.layout.VBox;
 
 
 public class ForRecipesController extends Main {
+    final ListView listView = new ListView();
+    @FXML
+    private VBox VBox;
     @FXML
     private Button ButtonFind;
     @FXML
@@ -37,24 +41,70 @@ public class ForRecipesController extends Main {
     private TextField GetText;
     @FXML
     void initialize() {
-        /*try {
-            /*ArrayList<ArrayList<String>> test = Query.getFullInformation("recipes");
-            for(ArrayList<String> s: test){
-                textArea.setText(textArea.getText() + "\n"+ s.toString());
-            }
-            ButtonFind.setOnAction(event -> {
-                try{
-                    textArea.setText("");
-                    ArrayList<ArrayList<String>> output = Query.getByNamePrefix("recipes", GetText.getText());
-                    for(ArrayList<String> s: output){
-                        textArea.setText(textArea.getText() + "\n"+ s.toString());
-                    }
-                }catch(Exception e){
-                    e.printStackTrace();
+        List<Hyperlink> links = new ArrayList<>();
+        VBox.getChildren().clear();
+        try {
+            ArrayList<ArrayList<String>> output = Query.getFullInformation("recipes");
+            for (ArrayList<String> s : output) {
+                if (!s.get(4).equals("description")) {
+                    Hyperlink link = new Hyperlink(s.get(1));
+                    link.setTooltip(new Tooltip("weight: " + s.get(2) + "\n" +
+                            "All calories: " + s.get(3)+ "\n" + "Description: " + s.get(4)));
+                    link.setOnAction(t -> {
+                        FXMLLoader loader = LoadXML.load("ForOneRecipe.fxml");
+                        ArrayList<ArrayList<String>> temp = new ArrayList<>();
+                        temp.add(output.get(0));
+                        temp.add(s);
+                        try {
+                            ((forOneRecipeController) loader.getController()).setRecipe(Parser.getRecipesFrom(temp).get(0));
+                            ((forOneRecipeController) loader.getController()).setSceneProduct(GetText.getScene());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Parent root = loader.getRoot();
+                        ((Stage) GetText.getScene().getWindow()).setScene(new Scene(root));
+                    });
+                    links.add(link);
                 }
-            });
-        }catch(Exception e){
+            }
+            listView.getItems().addAll(links);
+            VBox.getChildren().addAll(listView);
+        } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
+        ButtonFind.setOnAction(event -> {
+            links.clear();
+            VBox.getChildren().clear();
+            listView.getItems().clear();
+            try {
+                ArrayList<ArrayList<String>> output = Query.getByNamePrefix("recipes", GetText.getText());
+                for (ArrayList<String> s : output) {
+                    if (!s.get(4).equals("description")) {
+                        Hyperlink link = new Hyperlink(s.get(1));
+                        link.setTooltip(new Tooltip("weight: " + s.get(2) + "\n" +
+                                "All calories: " + s.get(3)+ "\n" + "Description: " + s.get(4)));
+                        link.setOnAction(t -> {
+                            FXMLLoader loader = LoadXML.load("ForOneRecipeView.fxml");
+                            ArrayList<ArrayList<String>> temp = new ArrayList<>();
+                            temp.add(output.get(0));
+                            temp.add(s);
+                            try {
+                                ((forOneRecipeController) loader.getController()).setRecipe(Parser.getRecipesFrom(temp).get(0));
+                                ((forOneRecipeController) loader.getController()).setSceneProduct(GetText.getScene());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            Parent root = loader.getRoot();
+                            ((Stage) GetText.getScene().getWindow()).setScene(new Scene(root));
+                        });
+                        links.add(link);
+                    }
+                }
+                listView.getItems().addAll(links);
+                VBox.getChildren().addAll(listView);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

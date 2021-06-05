@@ -4,11 +4,12 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForAddingProductsController">
+<AnchorPane prefHeight="583.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForAddingProductsController">
    <children>
       <TextField fx:id="GetName" layoutX="105.0" layoutY="30.0" prefHeight="35.0" prefWidth="643.0" />
       <TextField fx:id="GetProductGroup" layoutX="103.0" layoutY="80.0" prefHeight="35.0" prefWidth="643.0" />
@@ -19,16 +20,22 @@
       <Label layoutX="764.0" layoutY="180.0" prefHeight="35.0" prefWidth="85.0" text="Description" />
       <Label layoutX="764.0" layoutY="230.0" prefHeight="35.0" prefWidth="71.0" text="Area" />
       <Label layoutX="764.0" layoutY="280.0" prefHeight="35.0" prefWidth="71.0" text="Calories" />
-      <Button fx:id="AddProduct" layoutX="270.0" layoutY="384.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="276.0" text="ADD" />
+      <Button fx:id="AddProduct" layoutX="101.0" layoutY="412.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="190.0" text="ADD" />
       <Button fx:id="cancelButton" cancelButton="true" layoutX="14.0" layoutY="18.0" mnemonicParsing="false" onAction="#goToHome" prefHeight="42.0" prefWidth="71.0" text="&lt;">
          <font>
             <Font name="Arial Black" size="15.0" />
          </font>
       </Button>
-      <Label fx:id="error_out" layoutX="587.0" layoutY="384.0" prefHeight="63.0" prefWidth="189.0" textFill="#16b221" />
+      <Label fx:id="error_out" layoutX="394.0" layoutY="479.0" prefHeight="70.0" prefWidth="149.0" textFill="#16b221" />
       <TextField fx:id="GetCalories" layoutX="105.0" layoutY="280.0" prefHeight="35.0" prefWidth="643.0" />
       <Label layoutX="764.0" layoutY="130.0" prefHeight="35.0" prefWidth="99.0" text="Product Class" />
       <ChoiceBox fx:id="GetProductClass" layoutX="105.0" layoutY="130.0" prefHeight="35.0" prefWidth="125.0" />
       <HBox fx:id="clASSField" layoutX="239.0" layoutY="130.0" prefHeight="35.0" prefWidth="508.0" />
+      <ImageView fx:id="product_icon" fitHeight="134.0" fitWidth="149.0" layoutX="598.0" layoutY="345.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="findIcon" layoutX="414.0" layoutY="345.0" mnemonicParsing="false" onAction="#tryToFindIcon" prefHeight="42.0" prefWidth="162.0" text="Try to find icon">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

@@ -6,11 +6,17 @@ drop table if exists recipes cascade;
 drop table if exists products cascade;
 drop table if exists products_tag cascade;
 drop table if exists products_areatag cascade;
+drop table if exists products_nutrient_main cascade;
+drop table if exists products_nutrient_additional cascade;
+
 drop table if exists recipes_areatag cascade;
 drop table if exists recipes_tag cascade;
-drop table if exists recipes_content cascade;
+drop table if exists recipes_content_products cascade;
+drop table if exists recipes_content_recipes cascade;
+drop table if exists recipes_nutrient_main cascade;
+drop table if exists recipes_nutrient_additional cascade;
 
-drop table if exists drinks_taste cascade;
+drop table if exists drinks_info cascade;
 drop table if exists species_taste cascade;
 
 drop type if exists prod_class_enum cascade;
@@ -21,10 +27,21 @@ drop table if exists restaurants_info cascade;
 drop table if exists restaurants_main cascade;
 drop table if exists restaurants_group_meals cascade;
 drop table if exists group_meals_content cascade;
-	
+
+drop table if exists restaurants_geoposition cascade;
+drop table if exists restaurants_plan_weekdays;
+drop table if exists restaurants_plan_saturday;
+drop table if exists restaurants_plan_sunday;
+
 
 drop table if exists shop_description cascade;
 drop table if exists shops_main cascade;
+drop table if exists shops_geoposition cascade;
+
+drop table if exists shops_plan_weekdays;
+drop table if exists shops_plan_saturday;
+drop table if exists shops_plan_sunday;
+
 drop table if exists shops_content_recipes cascade;
 drop table if exists shops_content_products cascade;
 drop table if exists shops_discounts_recipes cascade;
@@ -47,7 +64,7 @@ create table products (
 	id_prod integer constraint pk_prod primary key,
 	product_group varchar(30) not null,
 	product_class prod_class_enum not null,
-	name varchar(20) not null,
+	name varchar(20) not null unique,
 	description varchar(200),
 	calories numeric(5) not null check(calories >= 0)
 );
@@ -69,6 +86,21 @@ create table species_taste (
 	taste species_taste_enum not null
 );	
 
+create table products_nutrient_main(
+	id_prod integer not null unique constraint fk_nut_main references products(id_prod),
+	fat smallint not null check(fat >= 0 AND fat <= 100),
+	protein smallint not null check(protein >= 0 AND protein <= 100), 
+	carbo smallint not null check(carbo >= 0 AND carbo <= 100),
+	sugar smallint check(sugar is null OR (sugar >= 0 AND sugar <= carbo)),
+	check(carbo + fat + protein <= 100)
+);
+create table products_nutrient_additional(
+	id_prod integer not null unique constraint fk_nut_main references products(id_prod),
+	zinc real default 0.00 check(zinc >= 0.00 AND zinc <= 100.00),
+	iron real default 0.00 check(iron >= 0.00 AND iron <= 100.00), 
+	calcium real default 0.00 check(calcium >= 0.00 AND iron <= 100.00), 
+	magnesium real default 0.00 check(magnesium >= 0.00 AND magnesium <= 100.00)
+);
 
 create table recipes (
 	id_rec integer constraint pk_reci primary key,
@@ -80,6 +112,21 @@ create table recipes (
 	check(sum_weight >= 0),
 	check(sum_calories >= 0)
 );
+create table recipes_nutrient_main(
+	id_rec integer not null unique constraint fk_nut_main references recipes(id_rec),
+	fat smallint not null constraint fat1 check(fat >= 0 AND fat <= 100),
+	protein smallint not null constraint protein1 check(protein >= 0 AND protein <= 100), 
+	carbo smallint not null constraint carbo1 check(carbo >= 0 AND carbo <= 100),
+	sugar smallint constraint sugar1 check(sugar is null OR (sugar >= 0 AND sugar <= carbo)),
+	constraint sum_check1 check(carbo + fat + protein <= 100)
+);
+create table recipes_nutrient_additional(
+	id_rec integer not null unique constraint fk_nut_main references recipes(id_rec),
+	zinc real default 0.00 check(zinc >= 0.00 AND zinc <= 100.00),
+	iron real default 0.00 check(iron >= 0.00 AND iron <= 100.00), 
+	calcium real default 0.00 check(calcium >= 0.00 AND iron <= 100.00), 
+	magnesium real default 0.00 check(magnesium >= 0.00 AND magnesium <= 100.00)
+);
 create table recipes_areatag (
 	id integer constraint fk_rec_area references recipes(id_rec),
 	area varchar(40) not null
@@ -88,14 +135,20 @@ create table recipes_tag (
 	id integer constraint fk_rec_tag references recipes(id_rec),
 	tag varchar(30) not null
 );
-create table recipes_content (
+
+create table recipes_content_products (
 	id_rec integer not null constraint fk_rec_cont references recipes(id_rec),
-	id_prod integer not null constraint fk_prod references products(id_prod),
+	id integer not null constraint fk_prod references products(id_prod),
 	weight numeric(6) not null check(weight >= 0),  
 	weight_type char(4) not null check(weight_type in ('g', 'ml'))
 );
-
-
+create table recipes_content_recipes (
+	id_rec integer not null constraint fk_rec_cont references recipes(id_rec),
+	id integer not null constraint fk_prod references recipes(id_rec) check(id != id_rec), 
+	weight numeric(6) not null check(weight >= 0),  
+	weight_type char(4) not null check(weight_type in ('g', 'ml'))
+);
+--check for cycle
 
 
 create table restaurants_main(
@@ -112,6 +165,28 @@ create table restaurants_info(
        stars integer check (stars <= 5 OR stars is null),
        description varchar(100),
        food_delivery boolean not null
+);
+create table restaurants_geoposition(
+		id integer not null primary key references restaurants_main(id),	
+		geoposition varchar(30) not null
+);
+create table restaurants_plan_weekdays(
+	   id integer not null primary key constraint fk_shop_des references restaurants_main(id), 
+	   open time,
+       close time
+       constraint con_open_close check((open is null and close is null) or (close>open))
+);
+create table restaurants_plan_saturday(
+	   id integer not null primary key constraint fk_shop_des references restaurants_main(id), 
+	   open time,
+       close time
+       constraint con_open_close check((open is null and close is null) or (close>open))
+);
+create table restaurants_plan_sunday(
+	   id integer not null primary key constraint fk_shop_des references restaurants_main(id), 
+	   open time,
+       close time
+       constraint con_open_close check((open is null and close is null) or (close>open))
 );
 create table restaurants_group_meals(
        id_restaurant integer not null references restaurants_main(id),
@@ -130,21 +205,36 @@ create table group_meals_content(
 
 create table shops_main(
         id integer not null primary key,
-        "name" varchar(10) not null,
-        geoposition varchar(30) not null, 
+        "name" varchar(10) not null, 
 		adres varchar(100)
 );
 create table shops_info(
        id integer not null primary key constraint fk_shop_des references shops_main(id), 
-       open time,
-       close time
-       constraint con_open_close check((open is null and close is null) or (close>open)),
        description varchar(100),
        food_delivery boolean not null
 );
-
-
-
+create table shops_geoposition(
+		id integer not null primary key references shops_main(id),	
+		geoposition varchar(30) not null
+);
+create table shops_plan_weekdays(
+	   id integer not null primary key constraint fk_shop_des references shops_main(id), 
+	   open time,
+       close time
+       constraint con_open_close check((open is null and close is null) or (close>open))
+);
+create table shops_plan_saturday(
+	   id integer not null primary key constraint fk_shop_des references shops_main(id), 
+	   open time,
+       close time
+       constraint con_open_close check((open is null and close is null) or (close>open))
+);
+create table shops_plan_sunday(
+	   id integer not null primary key constraint fk_shop_des references shops_main(id), 
+	   open time,
+       close time
+       constraint con_open_close check((open is null and close is null) or (close>open))
+);
 
 create table shops_content_products(
        id_shop integer not null references shops_main(id),
@@ -185,6 +275,12 @@ create sequence for_id_recipes start with 2 increment by 2 maxvalue 100000;
 create sequence for_id_shop start with 1 increment by 2 maxvalue 100000;
 create sequence for_id_restaurants start with 2 increment by 2 maxvalue 100000;
 
+/*
+
+for diagram
+
+
+*/
 
 ALTER TABLE ONLY products_areatag
     ADD CONSTRAINT prod_area_ee FOREIGN KEY (id_prod) references products(id_prod);
@@ -222,11 +318,10 @@ ALTER TABLE ONLY shops_content_products
     ADD CONSTRAINT fk_rec_coewnt FOREIGN KEY (id_rec) references recipes(id_rec);*/	
 ALTER TABLE ONLY species_taste
     ADD CONSTRAINT fk_proed_ss FOREIGN KEY (id_prod) references products(id_prod);		
-ALTER TABLE ONLY drinks_taste
+ALTER TABLE ONLY drinks_info
     ADD CONSTRAINT fk_pwrod_dk FOREIGN KEY (id_prod) references products(id_prod);	
 ALTER TABLE ONLY shops_info
     ADD CONSTRAINT fk_shoep_des FOREIGN KEY (id) references shops_main(id);	
-	
 	
 create or replace function getProductAreaTags(item integer)
 	returns varchar as 
@@ -238,7 +333,6 @@ $$
 	end;
 $$ language plpgsql;
 
-
 create or replace function getProductTags(item integer)
 	returns varchar as 
 $$
@@ -249,32 +343,35 @@ $$
 	end;
 $$ language plpgsql;
 
-	
-	
-/*ALTER TABLE ONLY restaurants_info
-    ADD CONSTRAINT fk_shop_des2 FOREIGN KEY (id) references restaurants_main(id);*/
-	
-/*
-Przykład logiki produktów i przepisów
-INSERT INTO
-	products(id_prod, product_type, name, description, area, calories)
-VALUES
-	(2, 'fruits', 'apple', 'A very useful product', 'Worldwide', 47),
-	(4, 'fruits', 'orange', 'Orange has an orange colour', 'South and North America, China, Italy, Iran, Egypt', 43),
-	(6, 'meat', 'beef', 'One of the most common types of meat', 'Worldwide', 187),
-	(8, 'meat', 'chiken', 'Meat that contains a lot of protein', 'Worldwide', 239);
-INSERT INTO
-	recipes(id_rec, name, sum_weight, sum_calories) 
-VALUES
-	(1, 'Simple fruit salad', 300, 137);
-	
-INSERT INTO
-	recipes_content(id_rec, id_prod, weight, weight_type)
-VALUES
-	(1, 2, 200, 'g'),
-	(1, 4, 100, 'g');
-*/
+create or replace function getRecipeContentProducts(id_rec_find integer)
+	returns varchar as 
+$$
+	begin
+		return (select array_agg(array[id::varchar, weight::varchar, weight_type]) 
+		from recipes_content_products
+		where id_rec = id_rec_find);
+	end;
+$$ language plpgsql;
 
+create or replace function getRecipeContentRecipes(id_rec_find integer)
+	returns varchar as 
+$$
+	begin
+		return (select array_agg(array[id::varchar, weight::varchar, weight_type]) 
+		from recipes_content_recipes
+		where id_rec = id_rec_find);
+	end;
+$$ language plpgsql;
+
+/*
+
+
+
+inserts
+
+
+*/
+	
 insert into products(id_prod, product_group, product_class, name, description, calories)
 	values
 (nextval('for_id_products'), 'fruits', 'Solids', 'apple', 'A very useful product, pleasant', 47),
