@@ -392,3 +392,7 @@ insert into products_tag(id_prod, tag)
 insert into species_taste(id_prod, taste)
 	values 
 (7, 'Salty');	
+
+insert into recipes(id_rec, name, sum_weight,sum_calories,description,links) 
+	values 
+(13,'sdfgsdgs',14,15,'csdfgsd','link');

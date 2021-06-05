@@ -32,6 +32,7 @@ def download_icons(product_name):
   im = Image.open(in_memory_file)
   path = sys.argv[0].rsplit('/',1)
   im.save(path[0] + "/../../../resources/Icons/" + product_name + ".png")
+  im.save(path[0] + "/../../../../out/production/Food-app/resources/Icons/" + product_name + ".png")
 
 
 for index in range(1, len(sys.argv)):
