@@ -101,7 +101,7 @@ public class RestaurantsController {
         });
         history.setOnAction(t -> {
             FXMLLoader loader = LoadXML.load("history.fxml");
-            if(content.get(restaurant.getId())!= null){
+            if(content != null && content.get(restaurant.getId())!= null){
                 ((HistoryController) loader.getController()).setRestaurant(content.get(restaurant.getId()));
                 ((HistoryController) loader.getController()).setSceneBack(Vbox.getScene());
                 Parent root = loader.getRoot();
