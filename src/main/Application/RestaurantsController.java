@@ -23,7 +23,7 @@ import main.Data.Query;
 import main.Model.Recipes.Recipe;
 
 public class RestaurantsController {
-    static Map<Restaurant, ArrayList<Order>> content;
+    static Map<Integer, ArrayList<Order>> content;
     private final ListView listView = new ListView();
     @FXML
     private ResourceBundle resources;
@@ -92,7 +92,7 @@ public class RestaurantsController {
             if(!content.containsKey(restaurant)){
                 ArrayList<Order> temp = new ArrayList<>();
                 temp.add(new Order(order1, dateFormat.format(date)));
-                content.put(restaurant, temp);
+                content.put(restaurant.getId(), temp);
             }else {
                 content.get(restaurant).add(new Order(order1, dateFormat.format(date)));
             }
@@ -101,10 +101,14 @@ public class RestaurantsController {
         });
         history.setOnAction(t -> {
             FXMLLoader loader = LoadXML.load("history.fxml");
-            ((HistoryController) loader.getController()).setRestaurant(content.get(restaurant));
-            ((HistoryController) loader.getController()).setSceneBack(Vbox.getScene());
-            Parent root = loader.getRoot();
-            ((Stage) Vbox.getScene().getWindow()).setScene(new Scene(root));
+            if(content.get(restaurant.getId())!= null){
+                ((HistoryController) loader.getController()).setRestaurant(content.get(restaurant.getId()));
+                ((HistoryController) loader.getController()).setSceneBack(Vbox.getScene());
+                Parent root = loader.getRoot();
+                ((Stage) Vbox.getScene().getWindow()).setScene(new Scene(root));
+            }else{
+                System.out.println("Empty");
+            }
         });
     }
     void setSceneBack(Scene scene){

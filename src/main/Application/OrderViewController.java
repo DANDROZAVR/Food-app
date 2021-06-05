@@ -33,8 +33,5 @@ public class OrderViewController {
         });
     }
     @FXML
-    void initialize() {
-
-
-    }
+    void initialize() {}
 }
