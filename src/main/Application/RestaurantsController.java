@@ -24,6 +24,7 @@ import main.Model.Recipes.Recipe;
 
 public class RestaurantsController {
     static Map<Integer, ArrayList<Order>> content;
+    Map<Hyperlink, Recipe> helper;
     private final ListView listView = new ListView();
     @FXML
     private ResourceBundle resources;
@@ -39,13 +40,15 @@ public class RestaurantsController {
     private Button history;
 
     void setRestaurant(Restaurant restaurant)  throws Exception {
+        helper = new HashMap<>();
         ArrayList<Recipe> menu = restaurant.getMenu();
         List<Hyperlink> links = new ArrayList<>();
         links.clear();
         Vbox.getChildren().clear();
         listView.getItems().clear();
         for (Recipe res : menu) {
-            Hyperlink link = new Hyperlink(String.valueOf(res.getName()));
+            Hyperlink link = new Hyperlink(res.getName());
+            helper.put(link, res);
             link.setTooltip(new Tooltip("weight: " + res.getWeight() + "\n" +
                     "All calories: " + res.getAllCalories()+ "\n" + "Description: " + res.getDescription()));
             link.setOnAction(t -> {
@@ -61,7 +64,7 @@ public class RestaurantsController {
             });
             links.add(link);
         }
-        ArrayList<Hyperlink> order1 = new ArrayList<>();
+        ArrayList<Recipe> order1 = new ArrayList<>();
         for(Hyperlink l: links){
             HBox temp1 = new HBox();
             Button add = new Button("add");
@@ -72,10 +75,10 @@ public class RestaurantsController {
                 HBox temp2 = new HBox();
                 Button delete = new Button("delete");
                 temp2.getChildren().addAll(l,delete);
-                order1.add(l);
+                order1.add(helper.get(l));
                 VBoxOrder.getChildren().add(temp2);
                 delete.setOnAction(t2 -> {
-                    order1.remove(l);
+                    order1.remove(helper.get(l));
                     temp1.getChildren().remove(add);
                     temp1.getChildren().addAll(l,add);
                     VBoxOrder.getChildren().remove(temp2);
@@ -91,17 +94,22 @@ public class RestaurantsController {
             }
             if(!content.containsKey(restaurant)){
                 ArrayList<Order> temp = new ArrayList<>();
-                temp.add(new Order(order1, dateFormat.format(date)));
+                temp.add(new Order(order1, dateFormat.format(date),restaurant));
                 content.put(restaurant.getId(), temp);
             }else {
-                content.get(restaurant).add(new Order(order1, dateFormat.format(date)));
+                content.get(restaurant).add(new Order(order1, dateFormat.format(date),restaurant));
             }
-            Vbox.getChildren().addAll(VBoxOrder.getChildren());
+            try {
+                setRestaurant(restaurant);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             VBoxOrder.getChildren().clear();
         });
         history.setOnAction(t -> {
             FXMLLoader loader = LoadXML.load("history.fxml");
             if(content != null && content.get(restaurant.getId())!= null){
+                System.out.println(content.get(restaurant.getId()));
                 ((HistoryController) loader.getController()).setRestaurant(content.get(restaurant.getId()));
                 ((HistoryController) loader.getController()).setSceneBack(Vbox.getScene());
                 Parent root = loader.getRoot();
