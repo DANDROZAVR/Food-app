@@ -1,6 +1,7 @@
 package main.Application;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import main.Data.Parser;
 import main.Data.Query;
@@ -145,14 +147,40 @@ public class ForAddingRecipesController {
         AddRecipe.setOnAction(event -> {
             try {
                 int Id = Query.getNewIdFor("Recipes");
-                ArrayList<Pair<Product, Integer>> list_of_products = new ArrayList<Pair<Product, Integer>>();
-                ArrayList<Pair<Recipe, Integer>> list_of_recipes = new ArrayList<Pair<Recipe, Integer>>();
-//                for(Node i : AddProducts.getChildren()){
-//                   HBox c = i.getScene();
-//
-//                }
 
+                ArrayList<Pair<Product, Integer>> list_of_products = new ArrayList<Pair<Product, Integer>>();
+                for(Node h: AddProducts.getChildren()){
+                    HBox temp = (HBox) h;
+                    String Name = ((ChoiceBox<String>)temp.getChildren().get(0)).getValue();
+                    String Weight = ((TextField)temp.getChildren().get(2)).getText();
+                    list_of_products.add(new Pair<>(Parser.getProductsFrom(Query.getByName("products", Name)).get(0), Integer.parseInt(Weight)));
+                }
+
+
+                ArrayList<Pair<Recipe, Integer>> list_of_recipes = new ArrayList<Pair<Recipe, Integer>>();
+                for(Node h: AddRecipes.getChildren()){
+                    HBox temp = (HBox) h;
+                    String Name = ((ChoiceBox<String>)temp.getChildren().get(0)).getValue();
+                    String Weight = ((TextField)temp.getChildren().get(2)).getText();
+                    list_of_recipes.add(new Pair<>(Parser.getRecipesFrom(Query.getByName("recipes", Name)).get(0), Integer.parseInt(Weight)));
+                }
+
+                ArrayList <Pair<Integer, Integer> > List_of_elements = new ArrayList<>();
+
+                for(Pair<Recipe, Integer> i : list_of_recipes){
+                    List_of_elements.add(new Pair<>(i.getKey().getId(), i.getValue()));
+                }
+                for(Pair<Product, Integer> i : list_of_products){
+                    List_of_elements.add(new Pair<>(i.getKey().getId(), i.getValue()));
+                }
+
+                Recipe new_recipe = new Recipe(Id, GetName.getText(), GetDescription.getText(), List_of_elements);
+                Query.addNewRecipe(new_recipe, list_of_recipes, list_of_products);
+                error_out.setTextFill(Color.web("#16b221", 0.8));
+                error_out.setText("OK");
             }catch (Exception e){
+                error_out.setTextFill(Color.web("#dd0e0e", 0.8));
+                error_out.setText("ERROR");
                 e.printStackTrace();
             }
         });
