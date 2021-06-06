@@ -1,6 +1,7 @@
 package main.Data;
 
 import javafx.util.Pair;
+import main.Application.Restaurant;
 import main.Model.Products.Drinks;
 import main.Model.Products.Product;
 import main.Model.Products.Solids;
@@ -39,7 +40,27 @@ public class Parser {
     /*static void main(String...varargs) {
 
     }*/
-
+    public static ArrayList<Restaurant> getRestaurantsFrom(ArrayList<ArrayList<String>> query)throws Exception {
+        ArrayList<Restaurant> result = new ArrayList<>();
+        for (int idx = 1; idx < query.size(); idx++) {
+            ArrayList<String> row = query.get(idx);
+            String id, name, adres, geoposition;
+            id = name = adres = geoposition = null;
+            for (int j = 0; j < row.size(); ++j) {
+                String column = query.get(0).get(j);
+                String value = row.get(j);
+                switch (column) {
+                    case "name" -> name = value;
+                    case "id" -> id = value;
+                    case "adres" -> adres = value;
+                    case "geoposition" -> geoposition = value;
+                    default -> throw new Exception("Unknown column find due parsing: " + column);
+                }
+            }
+            result.add(new Restaurant(Integer.parseInt(id), geoposition, adres, name));
+        }
+        return result;
+    }
     public static ArrayList<Recipe> getRecipesFrom(ArrayList<ArrayList<String>> query, ArrayList<Pair<Integer,Integer>> recipesContent) throws Exception {
         ArrayList<Recipe> result = new ArrayList<>();
         for (int idx = 1; idx < query.size(); idx++) {

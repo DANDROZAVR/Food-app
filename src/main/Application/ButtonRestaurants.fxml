@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForButtonRestaurantsController">
+   <children>
+      <VBox fx:id="Vbox" layoutX="92.0" layoutY="117.0" prefHeight="236.0" prefWidth="460.0" />
+      <Label layoutX="219.0" layoutY="39.0" prefHeight="23.0" prefWidth="126.0" text="Restaurants" textAlignment="CENTER" />
+      <Button fx:id="Back" layoutX="46.0" layoutY="14.0" mnemonicParsing="false" text="Back" />
+   </children>
+</AnchorPane>
