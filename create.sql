@@ -89,9 +89,10 @@ create table species_taste (
 create table products_nutrient_main(
 	id_prod integer not null unique constraint fk_nut_main references products(id_prod),
 	fat smallint not null check(fat >= 0 AND fat <= 100),
+	monounsaturated_fat smallint check(monounsaturated_fat is null or monounsaturated_fat <= fat),
 	protein smallint not null check(protein >= 0 AND protein <= 100), 
 	carbo smallint not null check(carbo >= 0 AND carbo <= 100),
-	sugar smallint check(sugar is null OR (sugar >= 0 AND sugar <= carbo)),
+	sugar smallint check(sugar is null OR (sugar >= 0 AND sugar <= carbo))
 	check(carbo + fat + protein <= 100)
 );
 create table products_nutrient_additional(

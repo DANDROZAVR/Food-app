@@ -2,10 +2,7 @@ package main.Data;
 
 import javafx.util.Pair;
 import main.Application.Restaurant;
-import main.Model.Products.Drinks;
-import main.Model.Products.Product;
-import main.Model.Products.Solids;
-import main.Model.Products.Species;
+import main.Model.Products.*;
 import main.Model.Recipes.Recipe;
 
 import java.util.ArrayList;
@@ -18,6 +15,7 @@ public class Parser {
             if (table.get(row).get(i).equals(columnName)) return i;
         throw new Exception("Can't find column with name [" + columnName + "] in table [" + table + "]");
     }
+
     public static int getRowByIdFromSortedTable(String id, ArrayList<ArrayList<String>> table, int columnIdNumber, int from) throws Exception {
         for (int i = from; i < table.size(); ++i) {
             int compareResult = table.get(i).get(columnIdNumber).compareTo(id);
@@ -119,11 +117,34 @@ public class Parser {
         ArrayList<Product> result = new ArrayList<>();
         for (ArrayList<String> row : query) {
             String description, name, productType, calories, id, area, productClass, taste, sugar, colour;
+            String fat, monounsaturated_fat, protein, carbo, sugar_total, zinc, iron, calcium, magnesium;
+            String va, vc, vb6, vb12, vk, ve;
+            fat = monounsaturated_fat = protein = calcium = carbo = sugar_total = zinc = iron = calcium = magnesium = null;
+            va = vc = ve = vb6 = vb12 = vk = null;
             name = description = productClass = productType = calories = id = area = taste = sugar = colour = null;
             for (int j = 0; j < row.size(); ++j) {
                 String column = query.get(0).get(j);
                 String value = row.get(j);
                 switch (column) {
+
+                    case "fat" -> fat = value;
+                    case "protein" -> protein = value;
+                    case "productType" -> productType = value;
+                    case "carbo" -> carbo = value;
+                    case "sugar_total" -> sugar_total = value;
+                    case "zinc" -> zinc = value;
+                    case "iron" -> iron = value;
+                    case "calcium" -> calcium = value;
+                    case "magnesium" -> magnesium = value;
+                    case "monounsaturated_fat" -> monounsaturated_fat = value;
+
+                    case "vitamin_A" -> va = value;
+                    case "vitamin_B6" -> vb6 = value;
+                    case "vitamin_B12" -> vb12 = value;
+                    case "vitamin_C" -> vc = value;
+                    case "vitamin_E" -> ve = value;
+                    case "vitamin_K" -> vk = value;
+
                     case "description" -> description = value;
                     case "name" -> name = value;
                     case "product_group" -> productType = value;
@@ -141,12 +162,18 @@ public class Parser {
             if (name == null || productType == null || productClass == null || calories == null || id == null)
                 throw new Exception("Some of non-null by definition values are null: " + name + ", " + productType + ", " + calories + ", " + id);
             Product item = null;
+
             switch (Objects.requireNonNull(productClass)) {
                 case "Drinks":
                     item = new Drinks(name, Integer.parseInt(calories), Integer.parseInt(id), Boolean.parseBoolean(sugar), productType, colour);
                     break;
                 case "Solids":
-                    item = new Solids(name, Integer.parseInt(calories), Integer.parseInt(id), productType);
+                    Solids itemRet = new Solids(name, Integer.parseInt(calories), Integer.parseInt(id), productType);
+                    if (fat != null && monounsaturated_fat != null && protein != null && carbo != null && sugar_total != null)
+                        itemRet.setNutrient(new Nutrient(Double.parseDouble(fat), Double.parseDouble(protein), Double.parseDouble(carbo), Double.parseDouble(sugar_total), Double.parseDouble(zinc), Double.parseDouble(iron), Double.parseDouble(calcium), Double.parseDouble(magnesium), Double.parseDouble(monounsaturated_fat)));
+                    if (va != null && vb6 != null && vb12 != null && vc != null && vk != null && ve != null)
+                        itemRet.setVitamins(new Vitamins(Double.parseDouble(va), Double.parseDouble(vb6), Double.parseDouble(vb12), Double.parseDouble(vc), Double.parseDouble(ve), Double.parseDouble(vk)));
+                    item = itemRet;
                     break;
                 case "Species":
                     if (taste == null) {
@@ -168,13 +195,13 @@ public class Parser {
     }
     public static String getProductClass(Class cl){
         String longName = cl.getName();
-        String shortName = new String();
+        String DoubleName = new String();
         for(int i = longName.length() - 1; i >= 0; i--){
             if(longName.charAt(i) == '.'){
                 break;
             }
-            shortName = longName.charAt(i) + shortName;
+            DoubleName = longName.charAt(i) + DoubleName;
         }
-        return shortName;
+        return DoubleName;
     }
 }
