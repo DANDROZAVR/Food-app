@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 
 
 public class ForRecipesController extends Main {
-    final ListView listView = new ListView();
+    private final ListView listView = new ListView();
     @FXML
     private VBox VBox;
     @FXML

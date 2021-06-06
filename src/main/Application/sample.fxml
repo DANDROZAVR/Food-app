@@ -11,7 +11,7 @@
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
 
-<AnchorPane prefHeight="410.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.sampleController">
+<AnchorPane prefHeight="498.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.sampleController">
    <children>
       <HBox alignment="TOP_CENTER" prefHeight="61.0" prefWidth="610.0" spacing="5.0" AnchorPane.bottomAnchor="339.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -92,6 +92,7 @@
             </LinearGradient>
          </textFill>
       </Button>
-      <Button fx:id="ButtonAddRecipes" layoutX="222.0" layoutY="306.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Add Recipes" textFill="#d907d2" />
+      <Button fx:id="ButtonAddRecipes" layoutX="221.0" layoutY="306.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Add Recipes" textFill="#d907d2" />
+      <Button fx:id="Restaurants" layoutX="221.0" layoutY="400.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="167.0" text="Restaurants" />
    </children>
 </AnchorPane>
