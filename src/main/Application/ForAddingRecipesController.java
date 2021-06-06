@@ -1,31 +1,23 @@
 package main.Application;
 
-import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+import javafx.util.Pair;
 import main.Data.Parser;
 import main.Data.Query;
 import main.Model.Products.Product;
 import main.Model.Recipes.Recipe;
-import javafx.scene.layout.HBox;
 
 public class ForAddingRecipesController {
 
@@ -151,7 +143,18 @@ public class ForAddingRecipesController {
             }
         });
         AddRecipe.setOnAction(event -> {
+            try {
+                int Id = Query.getNewIdFor("Recipes");
+                ArrayList<Pair<Product, Integer>> list_of_products = new ArrayList<Pair<Product, Integer>>();
+                ArrayList<Pair<Recipe, Integer>> list_of_recipes = new ArrayList<Pair<Recipe, Integer>>();
+//                for(Node i : AddProducts.getChildren()){
+//                   HBox c = i.getScene();
+//
+//                }
 
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         });
     }
 }
