@@ -12,24 +12,24 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForRecipesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForRecipesController">
    <children>
       <HBox alignment="TOP_CENTER" layoutY="-2.0" prefHeight="87.0" prefWidth="1000.0" spacing="5.0">
          <children>
-            <Button alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToHome" prefHeight="61.0" prefWidth="60.0" text="Home">
+            <Button alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToHome" prefHeight="62.0" prefWidth="66.0" text="Home">
                <graphic>
-                  <ImageView fx:id="home" fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="home" fitHeight="31.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../resources/Icons/Home.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Pane prefHeight="42.0" prefWidth="1234.0">
+            <Pane prefHeight="78.0" prefWidth="904.0">
                <children>
-                  <TextField fx:id="GetText" layoutX="47.0" layoutY="2.0" prefHeight="48.0" prefWidth="707.0" />
-                  <Button fx:id="ButtonFind" layoutX="754.0" layoutY="2.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="39.0" />
-                  <ImageView fitHeight="48.0" fitWidth="76.0" layoutX="798.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                  <TextField fx:id="GetText" layoutX="59.0" layoutY="2.0" prefHeight="48.0" prefWidth="555.0" />
+                  <Button fx:id="ButtonFind" layoutX="617.0" layoutY="2.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="39.0" />
+                  <ImageView fitHeight="48.0" fitWidth="76.0" layoutX="656.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../resources/Icons/iconfinder_search_115695.png" />
                      </image>
@@ -39,22 +39,22 @@
                         <Font name="Arial Black" size="15.0" />
                      </font>
                   </Button>
+                  <Button fx:id="settings" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="740.0" layoutY="3.0" mnemonicParsing="false" onAction="#openSettings" prefHeight="48.0" prefWidth="73.0" text="Settings">
+                     <graphic>
+                        <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../resources/Icons/Settings.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
             </Pane>
-            <Region nodeOrientation="RIGHT_TO_LEFT" prefHeight="73.0" prefWidth="426.0">
+            <Region nodeOrientation="RIGHT_TO_LEFT" prefHeight="78.0" prefWidth="0.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </Region>
-            <Button fx:id="settings" alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#openSettings" prefHeight="67.0" prefWidth="59.0" text="Settings">
-               <graphic>
-                  <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../resources/Icons/Settings.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
          </children>
          <opaqueInsets>
             <Insets bottom="5.0" left="5.0" right="5.0" top="50.0" />
@@ -63,6 +63,6 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <VBox fx:id="VBox" layoutX="174.0" layoutY="69.0" prefHeight="601.0" prefWidth="566.0" />
+      <VBox fx:id="VBox" layoutX="122.0" layoutY="69.0" prefHeight="602.0" prefWidth="670.0" />
    </children>
 </AnchorPane>

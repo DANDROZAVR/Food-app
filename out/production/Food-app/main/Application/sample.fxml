@@ -11,9 +11,9 @@
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
 
-<AnchorPane prefHeight="498.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.sampleController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.sampleController">
    <children>
-      <HBox alignment="TOP_CENTER" prefHeight="61.0" prefWidth="610.0" spacing="5.0" AnchorPane.bottomAnchor="339.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox alignment="TOP_CENTER" prefHeight="95.0" prefWidth="900.0" spacing="5.0" AnchorPane.bottomAnchor="505.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToHome" prefHeight="61.0" prefWidth="60.0" text="Home">
                <graphic>
@@ -24,7 +24,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Region nodeOrientation="RIGHT_TO_LEFT" prefHeight="52.0" prefWidth="463.0" />
+            <Region nodeOrientation="RIGHT_TO_LEFT" prefHeight="182.0" prefWidth="754.0" />
             <Button fx:id="settings" alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#openSettings" prefHeight="67.0" prefWidth="59.0" text="Settings">
                <graphic>
                   <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
@@ -42,9 +42,9 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <Button fx:id="show_all_products" layoutX="222.0" layoutY="134.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Products" textFill="#43a69e" textOverrun="WORD_ELLIPSIS" />
-      <Button fx:id="show_all_recipes" layoutX="222.0" layoutY="48.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Recipes" textFill="#d148d3" />
-      <Button fx:id="ButtonAddProducts" layoutX="222.0" layoutY="220.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Add Products">
+      <Button fx:id="show_all_products" layoutX="366.0" layoutY="204.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Products" textFill="#43a69e" textOverrun="WORD_ELLIPSIS" />
+      <Button fx:id="show_all_recipes" layoutX="366.0" layoutY="117.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Recipes" textFill="#d148d3" />
+      <Button fx:id="ButtonAddProducts" layoutX="366.0" layoutY="294.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Add Products">
          <textFill>
             <LinearGradient endX="1.0" endY="1.0" startY="1.0">
                <stops>
@@ -92,7 +92,7 @@
             </LinearGradient>
          </textFill>
       </Button>
-      <Button fx:id="ButtonAddRecipes" layoutX="221.0" layoutY="306.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Add Recipes" textFill="#d907d2" />
-      <Button fx:id="Restaurants" layoutX="221.0" layoutY="400.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="167.0" text="Restaurants" />
+      <Button fx:id="ButtonAddRecipes" layoutX="366.0" layoutY="383.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Add Recipes" textFill="#d907d2" />
+      <Button fx:id="Restaurants" layoutX="366.0" layoutY="474.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="167.0" text="Restaurants" />
    </children>
 </AnchorPane>

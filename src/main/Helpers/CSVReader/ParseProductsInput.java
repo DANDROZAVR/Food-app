@@ -2,6 +2,7 @@ package main.Helpers.CSVReader;
 
 
 import main.Data.Parser;
+import main.Data.Query;
 import main.Model.Products.Product;
 import main.Model.Products.Solids;
 
@@ -36,20 +37,20 @@ public class ParseProductsInput {
             writer.write("INSERT INTO solids_full(id_prod, product_group, product_class, name, description, calories, fat, saturated_fat, protein, carbo, sugar, zinc, iron, calcium, magnesium, " +
                     "vitamin_A, vitamin_B6, vitamin_B12, vitamin_C, vitamin_E, vitamin_K)\n  VALUES\n");
 
-            int start = 1001;
+            boolean was = false;
             for (Product prod : info) {
                 if (!(prod instanceof Solids)) throw new Exception("Product there should be instance of Solids class");
                 Solids item = (Solids) prod;
                 item.setName(item.getProductType().split(" ")[0]);
                 if (item.nutrient.getCarbo() < item.nutrient.getSugar()) continue;
                 if (item.nutrient.getCarbo() + item.nutrient.getFat() + item.nutrient.getProtein() > 100.0) continue;
-                if (start != 1001)
+                if (was)
                     writer.println(",");
-                writer.printf("(%d, '%s', '%s', '%s', '%s', %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", start, item.getProductType(), "Solids", item.getName(), item.getDescription(), item.getCalories(),
+                was = true;
+                writer.printf("(nextval('for_id_products'), '%s', '%s', '%s', '%s', %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", item.getProductType(), "Solids", item.getName(), item.getDescription(), item.getCalories(),
                         item.nutrient.getFat(), item.nutrient.getsaturated_fat(), item.nutrient.getProtein(), item.nutrient.getCarbo(), item.nutrient.getSugar(), item.nutrient.getZinc(),
                         item.nutrient.getIron(), item.nutrient.getCalcium(), item.nutrient.getMagnesium(), item.vitamins.a, item.vitamins.b6, item.vitamins.b12, item.vitamins.c, item.vitamins.e,
                         item.vitamins.k);
-                start += 2;
             }
             writer.write(";");
             writer.close();
@@ -57,7 +58,7 @@ public class ParseProductsInput {
             e.printStackTrace();
         }
     }
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         parse();
-    }
+    }*/
 }
