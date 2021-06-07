@@ -104,19 +104,22 @@ public class Query {
         return Database.execute(query);
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_withSpecies(String fromTable, String prefixName) throws SQLException {
-        String query = new String("SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 left join species_taste using(id_prod);");
+        String query = new String("SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 " +
+                            "left join species_taste using(id_prod);");
         System.out.println(query);
         return Database.execute(query);
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_withDrinks(String fromTable, String prefixName) throws SQLException {
-        String query = new String("SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 left join drinks_info using(id_prod);");
+        String query = new String("SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 " +
+                            "left join drinks_info using(id_prod);");
         System.out.println(query);
         return Database.execute(query);
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_all(String fromTable, String prefixName) throws SQLException {
         String query = new String(
-                        "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 left join species_taste using(id_prod)"
-                        + " left join drinks_info using(id_prod);");
+                        "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 " +
+                                "left join species_taste using(id_prod)"
+                             + " left join drinks_info using(id_prod);");
         return Database.execute(query);
     }
     public static int getNewIdFor(String S) throws SQLException {
