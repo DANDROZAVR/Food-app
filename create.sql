@@ -58,7 +58,7 @@ drop sequence if exists for_id_shop cascade;
 
 
 create type prod_class_enum as ENUM('Drinks', 'Solids', 'Species');
-create type species_taste_enum as ENUM('Sweet', 'Salty', 'Bitter', 'Sour');
+create type species_taste_enum as ENUM('Sweet', 'Salty', 'Bitter', 'Sour', 'Burning', 'Spicy');
 
 
 create table products (
@@ -66,7 +66,7 @@ create table products (
 	product_group varchar(60) not null,
 	product_class prod_class_enum not null,
 	name varchar(30) not null,
-	description varchar(200),
+	description varchar(400),
 	calories numeric(5) not null check(calories >= 0)
 );
 create table products_areatag (
@@ -379,6 +379,28 @@ $$
 		where id_rec = id_rec_find);
 	end;
 $$ language plpgsql;
+
+create or replace view Species as
+	select * from species_taste
+	natural join products;
+
+create or replace function spec_insert(i record)
+	returns void as
+$$
+	begin
+		INSERT INTO PRODUCTS(id_prod, product_group, product_class, name, description, calories)
+			values (i.id_prod, i.product_group, i.product_class, i.name, i.description, i.calories);
+		INSERT INTO SPECIES_TASTE(id_prod, taste)
+			values (i.id_prod, i.taste);
+	end;
+$$ language plpgsql;
+
+create or replace rule spec_insert as
+on insert to Species
+do instead(
+	select spec_insert(new);
+);
+
 
 /*
 
