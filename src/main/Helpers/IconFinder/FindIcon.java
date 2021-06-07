@@ -15,7 +15,7 @@ public class FindIcon {
         try {
             String project_path =  new File(".").getCanonicalPath();
             String file_path = "/src/main/Helpers/IconFinder";
-            String command = "python " + project_path + file_path + "/iconAPI.py";
+            String command = "python3 " + project_path + file_path + "/iconAPI.py";
             System.out.println(command);
             p = Runtime.getRuntime().exec(command + " " + iconName);
             long startTime = System.currentTimeMillis();

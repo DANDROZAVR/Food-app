@@ -8,6 +8,7 @@ drop table if exists products_tag cascade;
 drop table if exists products_areatag cascade;
 drop table if exists products_nutrient_main cascade;
 drop table if exists products_nutrient_additional cascade;
+drop table if exists products_vitamins cascade;
 
 drop table if exists recipes_areatag cascade;
 drop table if exists recipes_tag cascade;
@@ -22,8 +23,8 @@ drop table if exists species_taste cascade;
 drop type if exists prod_class_enum cascade;
 drop type if exists species_taste_enum cascade;
 
-
 drop table if exists restaurants_info cascade;
+drop table if exists orders cascade;
 drop table if exists restaurants_main cascade;
 drop table if exists restaurants_group_meals cascade;
 drop table if exists group_meals_content cascade;
@@ -62,9 +63,9 @@ create type species_taste_enum as ENUM('Sweet', 'Salty', 'Bitter', 'Sour');
 
 create table products (
 	id_prod integer constraint pk_prod primary key,
-	product_group varchar(30) not null,
+	product_group varchar(60) not null,
 	product_class prod_class_enum not null,
-	name varchar(20) not null unique,
+	name varchar(30) not null,
 	description varchar(200),
 	calories numeric(5) not null check(calories >= 0)
 );
@@ -89,9 +90,10 @@ create table species_taste (
 create table products_nutrient_main(
 	id_prod integer not null unique constraint fk_nut_main references products(id_prod),
 	fat smallint not null check(fat >= 0 AND fat <= 100),
+	monounsaturated_fat smallint check(monounsaturated_fat is null or monounsaturated_fat <= fat),
 	protein smallint not null check(protein >= 0 AND protein <= 100), 
 	carbo smallint not null check(carbo >= 0 AND carbo <= 100),
-	sugar smallint check(sugar is null OR (sugar >= 0 AND sugar <= carbo)),
+	sugar smallint check(sugar is null OR (sugar >= 0 AND sugar <= carbo))
 	check(carbo + fat + protein <= 100)
 );
 create table products_nutrient_additional(
@@ -101,7 +103,15 @@ create table products_nutrient_additional(
 	calcium real default 0.00 check(calcium >= 0.00 AND iron <= 100.00), 
 	magnesium real default 0.00 check(magnesium >= 0.00 AND magnesium <= 100.00)
 );
-
+create table products_vitamins(
+	id_prod integer not null unique constraint fk_vit_main references products(id_prod),
+	vitamin_A real default 0.00 check(vitamin_A >= 0.00 AND vitamin_A <= 100.00),
+	vitamin_B6 real default 0.00 check(vitamin_B6 >= 0.00 AND vitamin_B6 <= 100.00),
+	vitamin_B12 real default 0.00 check(vitamin_B12 >= 0.00 AND vitamin_B12 <= 100.00),
+	vitamin_C real default 0.00 check(vitamin_C >= 0.00 AND vitamin_C <= 100.00),
+	vitamin_E real default 0.00 check(vitamin_E >= 0.00 AND vitamin_E <= 100.00),
+	vitamin_K real default 0.00 check(vitamin_K >= 0.00 AND vitamin_K <= 100.00)
+); 
 create table recipes (
 	id_rec integer constraint pk_reci primary key,
 	name varchar(30) not null,
@@ -268,6 +278,13 @@ create table discounts(
        sum_for_discount numeric(10) not null,
        discount numeric check(discount >0 and discount<=100)
 );
+create table orders(
+       id_order integer not null,
+       id_restaurant integer not null references restaurants_main(id),
+       id_rec integer not null references recipes(id_rec),
+       date date not null,
+       primary key(id_order,id_restaurant,id_rec,date)
+);
 
 
 create sequence for_id_products start with 1 increment by 2 maxvalue 100000;
@@ -393,6 +410,7 @@ insert into species_taste(id_prod, taste)
 	values 
 (7, 'Salty');	
 
-insert into recipes(id_rec, name, sum_weight,sum_calories,description,links) 
-	values 
-(13,'sdfgsdgs',14,15,'csdfgsd','link');
+ insert into restaurants_main(id,name,geoposition,adres) values (10, 'Andrew', 'CS', 'Dust');
+insert into recipes(id_rec, name, sum_weight,sum_calories,description,links) values (12,'sdfgsdgs',14,15,'csdfgsd','link');
+insert into restaurants_group_meals(id_restaurant,id_group,cena,min_cena,max_cena) values (10,5,3424,1213,4535);
+insert into group_meals_content(id_group,id_rec) values (5,12);

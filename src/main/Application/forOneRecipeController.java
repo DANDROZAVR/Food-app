@@ -20,6 +20,8 @@ import main.Data.Query;
 import main.Model.Products.Product;
 import main.Model.Recipes.Recipe;
 
+import javax.swing.*;
+
 public class forOneRecipeController {
     final ListView listView = new ListView();
     Scene sceneProduct;
@@ -81,7 +83,7 @@ public class forOneRecipeController {
                     temp.setTooltip(new Tooltip("weight: " + component.get(1).get(2) + "\n" +
                             "All calories: " + component.get(1).get(3) + "\n" + "Description: " + component.get(1).get(4)));
                     temp.setOnAction(t -> {
-                        FXMLLoader loader = LoadXML.load("ForOneRecipe.fxml");
+                        FXMLLoader loader = LoadXML.load("forOneRecipe.fxml");
                         try {
                             ArrayList<Pair<Integer, Integer>> content = Query.getAllContentOfRecipe(Integer.parseInt(component.get(1).get(0)));
                             ((forOneRecipeController) loader.getController()).setRecipe(Parser.getRecipesFrom(component, content).get(0));

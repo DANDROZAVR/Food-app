@@ -52,7 +52,7 @@ public class ForRecipesController extends Main {
                     link.setTooltip(new Tooltip("weight: " + s.get(2) + "\n" +
                             "All calories: " + s.get(3)+ "\n" + "Description: " + s.get(4)));
                     link.setOnAction(t -> {
-                        FXMLLoader loader = LoadXML.load("ForOneRecipe.fxml");
+                        FXMLLoader loader = LoadXML.load("forOneRecipe.fxml");
                         ArrayList<ArrayList<String>> temp = new ArrayList<>();
                         temp.add(output.get(0));
                         temp.add(s);

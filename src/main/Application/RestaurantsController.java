@@ -1,5 +1,7 @@
 package main.Application;
 
+import main.Data.Database;
+import main.Model.Restaurants.Restaurant;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,8 +24,13 @@ import main.Data.Parser;
 import main.Data.Query;
 import main.Model.Recipes.Recipe;
 
+import javax.xml.crypto.Data;
+
 public class RestaurantsController {
-    static Map<Integer, ArrayList<Order>> content;
+    int id_order(int id_restaurant,int s){
+         return id_restaurant+s*1000;
+    }
+    Map<Hyperlink, Recipe> helper;
     private final ListView listView = new ListView();
     @FXML
     private ResourceBundle resources;
@@ -37,15 +44,18 @@ public class RestaurantsController {
     private Button order;
     @FXML
     private Button history;
-
+    @FXML
+    private VBox Vbox;
     void setRestaurant(Restaurant restaurant)  throws Exception {
+        helper = new HashMap<>();
         ArrayList<Recipe> menu = restaurant.getMenu();
         List<Hyperlink> links = new ArrayList<>();
         links.clear();
         Vbox.getChildren().clear();
         listView.getItems().clear();
         for (Recipe res : menu) {
-            Hyperlink link = new Hyperlink(String.valueOf(res.getName()));
+            Hyperlink link = new Hyperlink(res.getName());
+            helper.put(link, res);
             link.setTooltip(new Tooltip("weight: " + res.getWeight() + "\n" +
                     "All calories: " + res.getAllCalories()+ "\n" + "Description: " + res.getDescription()));
             link.setOnAction(t -> {
@@ -61,7 +71,7 @@ public class RestaurantsController {
             });
             links.add(link);
         }
-        ArrayList<Hyperlink> order1 = new ArrayList<>();
+        ArrayList<Recipe> order1 = new ArrayList<>();
         for(Hyperlink l: links){
             HBox temp1 = new HBox();
             Button add = new Button("add");
@@ -72,10 +82,10 @@ public class RestaurantsController {
                 HBox temp2 = new HBox();
                 Button delete = new Button("delete");
                 temp2.getChildren().addAll(l,delete);
-                order1.add(l);
+                order1.add(helper.get(l));
                 VBoxOrder.getChildren().add(temp2);
                 delete.setOnAction(t2 -> {
-                    order1.remove(l);
+                    order1.remove(helper.get(l));
                     temp1.getChildren().remove(add);
                     temp1.getChildren().addAll(l,add);
                     VBoxOrder.getChildren().remove(temp2);
@@ -86,23 +96,38 @@ public class RestaurantsController {
         order.setOnAction(t -> {
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
-            if(content == null){
-                content = new HashMap<>();
+            for(Recipe r: order1){
+                try {
+                    Database.execute("insert into orders(id_order, id_restaurant, id_rec, date) values ("
+                            + id_order(restaurant.getId(),order1.size())
+                            +','
+                            + restaurant.getId()
+                            + ','
+                            + r.getId()
+                            +",'"
+                            +  dateFormat.format(date)
+                            +"');");
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
             }
-            if(!content.containsKey(restaurant)){
-                ArrayList<Order> temp = new ArrayList<>();
-                temp.add(new Order(order1, dateFormat.format(date)));
-                content.put(restaurant.getId(), temp);
-            }else {
-                content.get(restaurant).add(new Order(order1, dateFormat.format(date)));
+            try {
+                setRestaurant(restaurant);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            Vbox.getChildren().addAll(VBoxOrder.getChildren());
             VBoxOrder.getChildren().clear();
         });
         history.setOnAction(t -> {
             FXMLLoader loader = LoadXML.load("history.fxml");
-            if(content.get(restaurant.getId())!= null){
-                ((HistoryController) loader.getController()).setRestaurant(content.get(restaurant.getId()));
+            ArrayList<Order> hist = new ArrayList<>();
+            try {
+               hist = Restaurant.getOrders(restaurant.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if(!hist.isEmpty()){
+                ((HistoryController) loader.getController()).setRestaurant(hist);
                 ((HistoryController) loader.getController()).setSceneBack(Vbox.getScene());
                 Parent root = loader.getRoot();
                 ((Stage) Vbox.getScene().getWindow()).setScene(new Scene(root));
@@ -116,8 +141,6 @@ public class RestaurantsController {
             ((Stage) Back.getScene().getWindow()).setScene(scene);
         });
     }
-    @FXML
-    private VBox Vbox;
 
     @FXML
     void initialize() {

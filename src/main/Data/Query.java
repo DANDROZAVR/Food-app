@@ -4,6 +4,7 @@ import javafx.util.Pair;
 import main.Model.Products.Drinks;
 import main.Model.Products.Product;
 import main.Model.Products.Species;
+import main.Model.Recipes.Recipe;
 
 import javax.xml.crypto.Data;
 import java.sql.SQLException;
@@ -38,19 +39,31 @@ public class Query {
             if(s.get(0) == null || s.get(0).equals("getrecipecontentrecipes") || s.get(0).equals("getrecipecontentproducts")){
                 continue;
             }
-                StringBuilder id1 = new StringBuilder();
-                StringBuilder weight1 = new StringBuilder();
-                int i=2;
-                while(s.get(0).charAt(i) != ','){
-                   id1.append(s.get(0).charAt(i));
-                   i++;
-                }
-                i++;
-                while(s.get(0).charAt(i) != ','){
-                    weight1.append(s.get(0).charAt(i));
+            int i=0;
+                while(!(s.get(0).charAt(i)=='}' && s.get(0).charAt(i+1)=='}')) {
+                    if(s.get(0).charAt(i+1)==','){
+                        i+=3;
+                    }else {
+                        i += 2;
+                    }
+                    StringBuilder id1 = new StringBuilder();
+                    StringBuilder weight1 = new StringBuilder();
+                    while (s.get(0).charAt(i) != ',') {
+                        id1.append(s.get(0).charAt(i));
+                        i++;
+                    }
                     i++;
+                    while (s.get(0).charAt(i) != ',') {
+                        weight1.append(s.get(0).charAt(i));
+                        i++;
+                    }
+                    if(s.get(0).charAt(i+1) == 'g'){
+                        i+=2;
+                    }else{
+                        i+=3;
+                    }
+                    trueContent.add(new Pair<Integer, Integer>(Integer.parseInt(id1.toString()), Integer.parseInt(weight1.toString())));
                 }
-                trueContent.add(new Pair<Integer, Integer>(Integer.parseInt(id1.toString()), Integer.parseInt(weight1.toString())));
         }
         return trueContent;
     }
@@ -203,5 +216,101 @@ public class Query {
         );
         Database.update(query);
         */
+    }
+
+    public static void addNewRecipe(Recipe p, ArrayList<Pair<Recipe, Integer>> list_of_recipes, ArrayList<Pair<Product, Integer>> list_of_products) throws SQLException, Exception {
+        if(Integer.parseInt(Database.execute(new String("select count(*) from recipes where id_rec = " + p.getId() + ";")).get(1).get(0)) != 0){
+            throw new Exception("has this id");
+        }
+        if(Integer.parseInt(Database.execute(new String("select count(*) from recipes where name = '" + p.getName() + "';")).get(1).get(0)) != 0){
+            throw new Exception("has this name");
+        }
+        String query = new String("INSERT INTO recipes(id_rec, name, sum_weight, sum_calories, description, links) VALUES ("
+                + p.getId()
+                + ", '"
+                + p.getName()
+                +"', "
+                + p.getWeight()
+                +", "
+                + p.getAllCalories()
+                +", '"
+                +p.getDescription()
+                +"', '"
+                +p.getLink()
+                +"');");
+        try{
+            Database.update(query);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        query = new String("select count(*) from recipes where " +
+                "id_rec = " + p.getId() + " AND " +
+                "name = '" + p.getName() + "' AND " +
+                "sum_weight = " + p.getWeight() + " AND " +
+                "sum_calories = " + p.getAllCalories() + " AND " +
+                "description = '" + p.getDescription() + "' AND " +
+                "links = '" + p.getLink() + "';"
+        );
+        if(Integer.parseInt(Database.execute(query).get(1).get(0)) == 0){
+            throw new Exception("can't add to recipes");
+        }
+
+        try{
+            boolean is_all_good = true;
+            for(Pair<Recipe, Integer> i : list_of_recipes){
+                if(Integer.parseInt(Database.execute(new String("select count(*) from recipes where id_rec=" + i.getKey().getId() + ";")).get(1).get(0)) == 0){
+                    is_all_good = false;
+                    break;
+                }
+                String qry = new String("insert into recipes_content_recipes(id_rec, id, weight, weight_type) values(" + p.getId() + "," + i.getKey().getId() + "," + i.getValue() + ",'g');");
+                Database.update(qry);
+                if(Integer.parseInt(Database.execute(new String(
+                                                            "select count(*) from recipes_content_recipes where id_rec="
+                                                                    + p.getId()
+                                                                    + " AND id="
+                                                                    + i.getKey().getId()
+                                                                    + "AND weight="
+                                                                    + i.getValue()
+                                                                    + "AND weight_type='g'"
+                                                                    + ";")).get(1).get(0)) == 0){
+                    is_all_good = false;
+                    break;
+                }
+            }
+            for(Pair<Product, Integer> i : list_of_products){
+                if(Integer.parseInt(Database.execute(new String("select count(*) from products where id_prod=" + i.getKey().getId() + ";")).get(1).get(0)) == 0){
+                    is_all_good = false;
+                    break;
+                }
+                String qry = new String("insert into recipes_content_products(id_rec, id, weight, weight_type) values(" + p.getId() + "," + i.getKey().getId() + "," + i.getValue() + ",'g');");
+                Database.update(qry);
+                if(Integer.parseInt(Database.execute(new String(
+                        "select count(*) from recipes_content_products where id_rec="
+                                + p.getId()
+                                + " AND id="
+                                + i.getKey().getId()
+                                + " AND weight="
+                                + i.getValue()
+                                + " AND weight_type='g'"
+                                + ";")).get(1).get(0)) == 0){
+                    is_all_good = false;
+                    break;
+                }
+            }
+            if(!is_all_good) {
+                Database.update(new String("delete from recipes_content_recipes where id_rec=" + p.getId() + ";"));
+                Database.update(new String("delete from recipes_content_products where id_rec=" + p.getId() + ";"));
+                Database.update(new String("delete from recipes where id_rec=" + p.getId() + ";"));
+                throw new Exception("Something bad with products or recipes from list");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            Database.update(new String("delete from recipes_content_recipes where id_rec=" + p.getId() + ";"));
+            Database.update(new String("delete from recipes_content_products where id_rec=" + p.getId() + ";"));
+            Database.update(new String("delete from recipes where id_rec=" + p.getId() + ";"));
+            throw new Exception("Something bad with products or recipes from list");
+        }
+
     }
 }

@@ -2,7 +2,7 @@ from PIL import Image
 import requests
 import io
 import sys
-import sys
+
 
 BASE_ENDPOINT = 'https://api.iconfinder.com/v4/'
 API_SECRET    = "ql5epLrO1hVeHpVeLuikCGpLInsyYcffPZBcng6zerbG7SDFwUdqxNwEMRWChQ1d" # Keep this secret
