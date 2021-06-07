@@ -8,6 +8,7 @@ drop table if exists products_tag cascade;
 drop table if exists products_areatag cascade;
 drop table if exists products_nutrient_main cascade;
 drop table if exists products_nutrient_additional cascade;
+drop table if exists products_vitamins cascade;
 
 drop table if exists recipes_areatag cascade;
 drop table if exists recipes_tag cascade;
@@ -102,7 +103,15 @@ create table products_nutrient_additional(
 	calcium real default 0.00 check(calcium >= 0.00 AND iron <= 100.00), 
 	magnesium real default 0.00 check(magnesium >= 0.00 AND magnesium <= 100.00)
 );
-
+create table products_vitamins(
+	id_prod integer not null unique constraint fk_vit_main references products(id_prod),
+	vitamin_A real default 0.00 check(vitamin_A >= 0.00 AND vitamin_A <= 100.00),
+	vitamin_B6 real default 0.00 check(vitamin_B6 >= 0.00 AND vitamin_B6 <= 100.00),
+	vitamin_B12 real default 0.00 check(vitamin_B12 >= 0.00 AND vitamin_B12 <= 100.00),
+	vitamin_C real default 0.00 check(vitamin_C >= 0.00 AND vitamin_C <= 100.00),
+	vitamin_E real default 0.00 check(vitamin_E >= 0.00 AND vitamin_E <= 100.00),
+	vitamin_K real default 0.00 check(vitamin_K >= 0.00 AND vitamin_K <= 100.00)
+); 
 create table recipes (
 	id_rec integer constraint pk_reci primary key,
 	name varchar(30) not null,
