@@ -130,16 +130,15 @@ public class Parser {
         ArrayList<Product> result = new ArrayList<>();
         for (ArrayList<String> row : query) {
             String description, name, productType, calories, id, area, productClass, taste, sugar, colour;
-            String fat, monounsaturated_fat, protein, carbo, sugar_total, zinc, iron, calcium, magnesium;
+            String fat, saturated_fat, protein, carbo, sugar_total, zinc, iron, calcium, magnesium;
             String va, vc, vb6, vb12, vk, ve;
-            fat = monounsaturated_fat = protein = calcium = carbo = sugar_total = zinc = iron = calcium = magnesium = null;
+            fat = saturated_fat = protein = calcium = carbo = sugar_total = zinc = iron = calcium = magnesium = null;
             va = vc = ve = vb6 = vb12 = vk = null;
             name = description = productClass = productType = calories = id = area = taste = sugar = colour = null;
             for (int j = 0; j < row.size(); ++j) {
                 String column = query.get(0).get(j);
                 String value = row.get(j);
                 switch (column) {
-
                     case "fat" -> fat = value;
                     case "protein" -> protein = value;
                     case "productType" -> productType = value;
@@ -149,7 +148,7 @@ public class Parser {
                     case "iron" -> iron = value;
                     case "calcium" -> calcium = value;
                     case "magnesium" -> magnesium = value;
-                    case "monounsaturated_fat" -> monounsaturated_fat = value;
+                    case "saturated_fat" -> saturated_fat = value;
 
                     case "vitamin_A" -> va = value;
                     case "vitamin_B6" -> vb6 = value;
@@ -185,8 +184,8 @@ public class Parser {
                     break;
                 case "Solids":
                     Solids itemRet = new Solids(name, Integer.parseInt(calories), Integer.parseInt(id), productType);
-                    if (fat != null && monounsaturated_fat != null && protein != null && carbo != null && sugar_total != null)
-                        itemRet.setNutrient(new Nutrient(Double.parseDouble(fat), Double.parseDouble(protein), Double.parseDouble(carbo), Double.parseDouble(sugar_total), Double.parseDouble(zinc), Double.parseDouble(iron), Double.parseDouble(calcium), Double.parseDouble(magnesium), Double.parseDouble(monounsaturated_fat)));
+                    if (fat != null && saturated_fat != null && protein != null && carbo != null && sugar_total != null)
+                        itemRet.setNutrient(new Nutrient(Double.parseDouble(fat), Double.parseDouble(protein), Double.parseDouble(carbo), Double.parseDouble(sugar_total), Double.parseDouble(zinc), Double.parseDouble(iron), Double.parseDouble(calcium), Double.parseDouble(magnesium), Double.parseDouble(saturated_fat)));
                     if (va != null && vb6 != null && vb12 != null && vc != null && vk != null && ve != null)
                         itemRet.setVitamins(new Vitamins(Double.parseDouble(va), Double.parseDouble(vb6), Double.parseDouble(vb12), Double.parseDouble(vc), Double.parseDouble(ve), Double.parseDouble(vk)));
                     item = itemRet;

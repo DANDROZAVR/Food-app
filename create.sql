@@ -90,7 +90,7 @@ create table species_taste (
 create table products_nutrient_main(
 	id_prod integer not null unique constraint fk_nut_main references products(id_prod),
 	fat smallint not null check(fat >= 0 AND fat <= 100),
-	monounsaturated_fat smallint check(monounsaturated_fat is null or monounsaturated_fat <= fat),
+	saturated_fat smallint check(saturated_fat is null or saturated_fat <= fat),
 	protein smallint not null check(protein >= 0 AND protein <= 100), 
 	carbo smallint not null check(carbo >= 0 AND carbo <= 100),
 	sugar smallint check(sugar is null OR (sugar >= 0 AND sugar <= carbo))
@@ -98,19 +98,20 @@ create table products_nutrient_main(
 );
 create table products_nutrient_additional(
 	id_prod integer not null unique constraint fk_nut_main references products(id_prod),
-	zinc real default 0.00 check(zinc >= 0.00 AND zinc <= 100.00),
-	iron real default 0.00 check(iron >= 0.00 AND iron <= 100.00), 
-	calcium real default 0.00 check(calcium >= 0.00 AND iron <= 100.00), 
-	magnesium real default 0.00 check(magnesium >= 0.00 AND magnesium <= 100.00)
+	zinc real default 0.00 check(zinc >= 0.00 AND zinc <= 100000.00),
+	iron real default 0.00 check(iron >= 0.00 AND iron <= 100000.00), 
+	calcium real default 0.00 check(calcium >= 0.00 AND iron <= 100000.00), 
+	magnesium real default 0.00 check(magnesium >= 0.00 AND magnesium <= 100000.00)
 );
 create table products_vitamins(
 	id_prod integer not null unique constraint fk_vit_main references products(id_prod),
-	vitamin_A real default 0.00 check(vitamin_A >= 0.00 AND vitamin_A <= 100.00),
-	vitamin_B6 real default 0.00 check(vitamin_B6 >= 0.00 AND vitamin_B6 <= 100.00),
-	vitamin_B12 real default 0.00 check(vitamin_B12 >= 0.00 AND vitamin_B12 <= 100.00),
-	vitamin_C real default 0.00 check(vitamin_C >= 0.00 AND vitamin_C <= 100.00),
-	vitamin_E real default 0.00 check(vitamin_E >= 0.00 AND vitamin_E <= 100.00),
-	vitamin_K real default 0.00 check(vitamin_K >= 0.00 AND vitamin_K <= 100.00)
+	vitamin_A real default 0.00 check(vitamin_A >= 0.00 AND vitamin_A <= 100000.00),
+	vitamin_B6 real default 0.00 check(vitamin_B6 >= 0.00 AND vitamin_B6 <= 100000.00),
+	vitamin_B12 real default 0.00 check(vitamin_B12 >= 0.00 AND vitamin_B12 <= 100000.00),
+	vitamin_C real default 0.00 check(vitamin_C >= 0.00 AND vitamin_C <= 100000.00),
+	vitamin_E real default 0.00 check(vitamin_E >= 0.00 AND vitamin_E <= 100000.00),
+	vitamin_K real default 0.00 check(vitamin_K >= 0.00 AND vitamin_K <= 100000.00)
+	check (vitamin_A + vitamin_B6 + vitamin_B12 + vitamin_C + vitamin_E + vitamin_K <= 100000.00)
 ); 
 create table recipes (
 	id_rec integer constraint pk_reci primary key,
@@ -402,6 +403,36 @@ do instead(
 );
 
 
+create or replace view solids_full(id_prod, product_group, product_class, name, description, calories, fat, saturated_fat, protein, carbo, sugar, zinc, iron, calcium, magnesium, vitamin_A, vitamin_B6, vitamin_B12, vitamin_C, vitamin_E, vitamin_K)
+	as
+	select * from products 
+	natural join products_nutrient_main
+	natural join products_nutrient_additional
+	natural join products_vitamins;	
+
+create or replace function solids_full_insert(i record)
+	returns void as
+$$
+	begin
+		INSERT INTO PRODUCTS
+			values (i.id_prod, i.product_group, i.product_class, i.name, i.description, i.calories);
+		INSERT INTO products_nutrient_main
+			values (i.id_prod, i.fat, i.saturated_fat, i.protein, i.carbo, i.sugar);
+		INSERT INTO products_nutrient_additional
+			values (i.id_prod, i.zinc, i.iron, i.calcium, i.magnesium);
+		INSERT INTO products_vitamins
+			values (i.id_prod, i.vitamin_A, i.vitamin_B6, i.vitamin_B12, i.vitamin_C, i.vitamin_E, i.vitamin_K);
+	end;
+$$ language plpgsql;
+
+create or replace rule spec_insert as
+on insert to solids_full
+do instead(
+	select solids_full_insert(new);
+);
+	
+
+
 /*
 
 
@@ -432,7 +463,7 @@ insert into species_taste(id_prod, taste)
 	values 
 (7, 'Salty');	
 
- insert into restaurants_main(id,name,geoposition,adres) values (10, 'Andrew', 'CS', 'Dust');
+insert into restaurants_main(id,name,geoposition,adres) values (10, 'Andrew', 'CS', 'Dust');
 insert into recipes(id_rec, name, sum_weight,sum_calories,description,links) values (12,'sdfgsdgs',14,15,'csdfgsd','link');
 insert into restaurants_group_meals(id_restaurant,id_group,cena,min_cena,max_cena) values (10,5,3424,1213,4535);
 insert into group_meals_content(id_group,id_rec) values (5,12);
