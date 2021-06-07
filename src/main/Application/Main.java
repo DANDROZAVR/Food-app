@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import main.Data.Parser;
+import main.Helpers.CSVReader.ParseProductsInput;
 import main.Model.Products.Product;
 import org.postgresql.replication.fluent.AbstractStreamBuilder;
 
@@ -19,7 +21,7 @@ public class Main extends Application {
         Main.primaryStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Food-app");
-        primaryStage.setScene(new Scene(root, 610, 498));
+        primaryStage.setScene(new Scene(root, 900, 600));
         primaryStage.show();
     }
     public static void main(String[] args) {
@@ -30,6 +32,7 @@ public class Main extends Application {
             System.err.println("Error set connection to the database");
             System.exit(1);
         }
+        //ParseProductsInput.parse();
         launch(args);
     }
     public static void setScene(FXMLLoader loader) {

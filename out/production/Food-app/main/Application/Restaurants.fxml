@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.RestaurantsController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.RestaurantsController">
    <children>
       <VBox fx:id="Vbox" layoutX="33.0" layoutY="79.0" prefHeight="287.0" prefWidth="100.0" />
       <Label layoutX="67.0" layoutY="52.0" text="Menu" />

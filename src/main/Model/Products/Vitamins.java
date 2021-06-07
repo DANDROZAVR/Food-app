@@ -1,7 +1,7 @@
 package main.Model.Products;
 
 public class Vitamins {
-    double a, b6, b12, c, e, k;
+    public double a, b6, b12, c, e, k;
     public Vitamins(double a, double b6, double b12, double c, double e, double k) {
         this.a = a;
         this.b6 = b6;

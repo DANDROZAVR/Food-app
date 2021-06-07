@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="583.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForAddingProductsController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForAddingProductsController">
    <children>
       <TextField fx:id="GetName" layoutX="105.0" layoutY="30.0" prefHeight="35.0" prefWidth="643.0" />
       <TextField fx:id="GetProductGroup" layoutX="103.0" layoutY="80.0" prefHeight="35.0" prefWidth="643.0" />
