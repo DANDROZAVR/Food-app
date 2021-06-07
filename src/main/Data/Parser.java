@@ -1,10 +1,16 @@
 package main.Data;
 
 import javafx.util.Pair;
-import main.Application.Restaurant;
+import main.Model.Restaurants.*;
 import main.Model.Products.*;
+import main.Model.Restaurants.Restaurant;
+import main.Model.Products.Drinks;
+import main.Model.Products.Product;
+import main.Model.Products.Solids;
+import main.Model.Products.Species;
 import main.Model.Recipes.Recipe;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -33,8 +39,15 @@ public class Parser {
         // can be optimized with bin search
         throw new Exception("Can't found row with the same id");
     }
-
-
+    public static Recipe parseRecipeById(int id) throws SQLException,Exception {
+        ArrayList<ArrayList<String>> temp = Database.execute("select * from recipes where id_rec =" + id +";");
+        ArrayList<Pair<Integer,Integer>> content = Query.getAllContentOfRecipe(Integer.parseInt(temp.get(1).get(0)));
+        return getRecipesFrom(temp,content).get(0);
+    }
+    public static Restaurant parseRestaurantById(int id) throws SQLException,Exception {
+        ArrayList<ArrayList<String>> temp = Database.execute("select * from restaurants_main where id =" + id +";");
+        return getRestaurantsFrom(temp).get(0);
+    }
     /*static void main(String...varargs) {
 
     }*/
