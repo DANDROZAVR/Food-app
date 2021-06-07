@@ -62,9 +62,9 @@ create type species_taste_enum as ENUM('Sweet', 'Salty', 'Bitter', 'Sour');
 
 create table products (
 	id_prod integer constraint pk_prod primary key,
-	product_group varchar(30) not null,
+	product_group varchar(60) not null,
 	product_class prod_class_enum not null,
-	name varchar(20) not null unique,
+	name varchar(30) not null,
 	description varchar(200),
 	calories numeric(5) not null check(calories >= 0)
 );

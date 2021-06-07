@@ -155,12 +155,15 @@ public class Parser {
                     case "sugar" -> sugar = value;
                     case "taste"-> taste = value;
                     case "colour"-> colour = value;
-                    default -> throw new Exception("Unknown column find due parsing: " + column);
+                    //default -> throw new Exception("Unknown column find due parsing: " + column);
                 }
             }
-
-            if (name == null || productType == null || productClass == null || calories == null || id == null)
-                throw new Exception("Some of non-null by definition values are null: " + name + ", " + productType + ", " + calories + ", " + id);
+            if (id == null)
+                id = "0";
+            if (name == null)
+                name = "";
+            if (name == null || productType == null || productClass == null || calories == null)
+                throw new Exception("Some of non-null by definition values are null:" + name + ", " + productType + ", " + productClass + ", " + calories + ", " + id);
             Product item = null;
 
             switch (Objects.requireNonNull(productClass)) {

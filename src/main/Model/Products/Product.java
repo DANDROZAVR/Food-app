@@ -17,6 +17,7 @@ public abstract class Product {
     public void setDescription(String description){ this.description = description; }
     public void setLinks(String[] links){ this.links = links; }
     public void setArea(String[] area){ this.area = area; }
+    public void setName(String name){ this.name = name; }
     public int getCalories(){ return callories; }
     public int getId(){ return id; }
     public String getName(){ return name; }
