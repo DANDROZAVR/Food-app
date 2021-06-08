@@ -1,4 +1,4 @@
-package main.Application;
+package main.Model.Restaurants;
 
 public class Building {
     private int id;
@@ -9,28 +9,28 @@ public class Building {
         this.adres = adres;
         this.name = name;
     }
-    void setId(int id){
+    public void setId(int id){
         this.id = id;
     }
-    void setName(String name){
+    public void setName(String name){
         this.name = name;
     }
-    void setGeoposition(String geoposition){
+    public void setGeoposition(String geoposition){
         this.geoposition = geoposition;
     }
-    void setAdres(String adres){
+    public void setAdres(String adres){
         this.adres = adres;
     }
-    int getId(){
+    public int getId(){
         return id;
     }
-    String getName(){
+    public String getName(){
         return name;
     }
-    String getAdres(){
+    public String getAdres(){
         return adres;
     }
-    String getGeoposition(){
+    public String getGeoposition(){
         return geoposition;
     }
     Building(){

@@ -84,7 +84,7 @@ public class ForRecipesController extends Main {
                     if (!s.get(4).equals("description")) {
                         Hyperlink link = new Hyperlink(s.get(1));
                         link.setTooltip(new Tooltip("weight: " + s.get(2) + "\n" +
-                                "All calories: " + s.get(3)+ "\n" + "Description: " + s.get(4)));
+                                "Calories per 100 g: " + s.get(3)+ "\n" + "Description: " + s.get(4)));
                         link.setOnAction(t -> {
                             FXMLLoader loader = LoadXML.load("ForOneRecipeView.fxml");
                             ArrayList<ArrayList<String>> temp = new ArrayList<>();

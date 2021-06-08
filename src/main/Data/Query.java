@@ -104,19 +104,29 @@ public class Query {
         return Database.execute(query);
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_withSpecies(String fromTable, String prefixName) throws SQLException {
-        String query = new String("SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 left join species_taste using(id_prod);");
+        String query = new String("SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 " +
+                            "left join species_taste using(id_prod);");
         System.out.println(query);
         return Database.execute(query);
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_withDrinks(String fromTable, String prefixName) throws SQLException {
-        String query = new String("SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 left join drinks_info using(id_prod);");
+        String query = new String("SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 " +
+                            "left join drinks_info using(id_prod);");
         System.out.println(query);
         return Database.execute(query);
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_all(String fromTable, String prefixName) throws SQLException {
         String query = new String(
-                        "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 left join species_taste using(id_prod)"
-                        + " left join drinks_info using(id_prod);");
+                        "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 " +
+                                "left join species_taste using(id_prod)"
+                             + " left join drinks_info using(id_prod);");
+        return Database.execute(query);
+    }
+    public static ArrayList<ArrayList<String>> getByNamePrefix_all_first(String fromTable, String prefixName) throws SQLException {
+        String query = new String(
+                "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 " +
+                        "left join species_taste using(id_prod)"
+                        + " left join drinks_info using(id_prod) limit 1;");
         return Database.execute(query);
     }
     public static int getNewIdFor(String S) throws SQLException {
@@ -236,7 +246,7 @@ public class Query {
                 +", '"
                 +p.getDescription()
                 +"', '"
-                +p.getLink()
+                +p.getInstruction()
                 +"');");
         try{
             Database.update(query);
@@ -247,10 +257,11 @@ public class Query {
         query = new String("select count(*) from recipes where " +
                 "id_rec = " + p.getId() + " AND " +
                 "name = '" + p.getName() + "' AND " +
+                "prep_time = '" + p.getName() + "' AND " +
                 "sum_weight = " + p.getWeight() + " AND " +
                 "sum_calories = " + p.getAllCalories() + " AND " +
                 "description = '" + p.getDescription() + "' AND " +
-                "links = '" + p.getLink() + "';"
+                "instruction = '" + p.getInstruction() + "';"
         );
         if(Integer.parseInt(Database.execute(query).get(1).get(0)) == 0){
             throw new Exception("can't add to recipes");
