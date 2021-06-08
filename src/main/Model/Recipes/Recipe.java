@@ -14,14 +14,14 @@ public class Recipe {
     private int calories;
     private ArrayList<Pair<Integer, Integer>> Components; // [ id, weight ]
     private ArrayList<Product> NormComp = null;
-    private String repair(String input) {
+    public String repair(String input) {
         StringBuilder res = new StringBuilder();
         int last = 0;
         int end = 0;
         while(end < input.length()) { //125 max
             int i = end;
             while(end < input.length() && input.charAt(end) != ' ') ++end;
-            if (end - last > 120) {
+            if (end - last > 115) {
                 res.append('\n');
                 last = end;
             }
@@ -35,16 +35,16 @@ public class Recipe {
     public Recipe(int id, int weight,int calories, String Name, String Description, String Instruction) {
         this.id = id;
         this.Name = Name;
-        this.description = repair(Description);
+        this.description = Description;
         this.calories = calories;
         this.weight = weight;
-        this.instruction = repair(Instruction);
+        this.instruction = Instruction;
     }
     public Recipe(int id,  String Name, String Description, ArrayList < Pair <Integer, Integer> > List, String Instruction) throws SQLException {
         this.id = id;
         this.Name = Name;
-        this.description = repair(Description);
-        this.instruction = repair(Instruction);
+        this.description = Description;
+        this.instruction = Instruction;
         this.calories = 0;
         this.all_calories = 0;
         this.weight = 0;
@@ -69,8 +69,8 @@ public class Recipe {
     public Recipe(int id,  String Name, String Description, ArrayList < Pair <Product, Integer> > List, String Instruction, boolean ignored) throws SQLException {
         this.id = id;
         this.Name = Name;
-        this.description = repair(Description);
-        this.instruction = repair(Instruction);
+        this.description = Description;
+        this.instruction = Instruction;
         this.calories = 0;
         this.all_calories = 0;
         this.weight = 0;
@@ -93,8 +93,12 @@ public class Recipe {
             this.time = Integer.parseInt(time);
         } catch (Exception e) {
             e.printStackTrace();
+            this.time = 0;
         }
-        this.time = 0;
+        return this;
+    }
+    public Recipe setTime(int time) {
+        this.time = time;
         return this;
     }
     public Recipe setNormalComponent(ArrayList<Product> content) {

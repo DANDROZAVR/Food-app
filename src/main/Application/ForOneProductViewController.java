@@ -48,10 +48,9 @@ public class ForOneProductViewController extends Main {
     void setProduct(Product item) {
         //((TextArea)((HBox)VBoxProduct.getChildren().get(0)).getChildren().get(0)).setAccessibleText(item.getName());
         product_name.setText(item.getName());
-        product_area.setText(Arrays.toString(item.getArea()));
         product_type.setText(item.getType());
         product_calories.setText(String.valueOf(item.getCalories()));
-        product_description.setText(item.getDescription());
+        product_description.setText(item.repair(item.getDescription()));
         if (item.getLinks() != null) {
             StringBuilder linksString = new StringBuilder();
             for (int i = 0; i < item.getLinks().length; ++i) {

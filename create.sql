@@ -116,7 +116,7 @@ create table products_vitamins(
 create table recipes (
 	id_rec integer constraint pk_reci primary key,
 	name varchar(200) not null,
-	prep_time smallint default 0 check(prep_time >= 0 AND prep_time <= 1000),
+	prep_time smallint default 0 check(prep_time >= 0 AND prep_time <= 30000),
 	sum_weight numeric(7) not null,
 	sum_calories numeric(7) not null, 
 	description varchar(1000), 
@@ -420,7 +420,6 @@ create or replace view solids_full(id_prod, product_group, product_class, name, 
 	natural join products_nutrient_main
 	natural join products_nutrient_additional
 	natural join products_vitamins;	
-
 create or replace function solids_full_insert(i record)
 	returns void as
 $$
