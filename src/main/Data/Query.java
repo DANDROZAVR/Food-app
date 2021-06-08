@@ -235,11 +235,13 @@ public class Query {
         if(Integer.parseInt(Database.execute(new String("select count(*) from recipes where name = '" + p.getName() + "';")).get(1).get(0)) != 0){
             throw new Exception("has this name");
         }
-        String query = new String("INSERT INTO recipes(id_rec, name, sum_weight, sum_calories, description, links) VALUES ("
+        String query = new String("INSERT INTO recipes(id_rec, name, prep_time,sum_weight, sum_calories, description, instruction) VALUES ("
                 + p.getId()
                 + ", '"
                 + p.getName()
                 +"', "
+                + p.getTime()
+                +", "
                 + p.getWeight()
                 +", "
                 + p.getAllCalories()
@@ -257,7 +259,7 @@ public class Query {
         query = new String("select count(*) from recipes where " +
                 "id_rec = " + p.getId() + " AND " +
                 "name = '" + p.getName() + "' AND " +
-                "prep_time = '" + p.getName() + "' AND " +
+                "prep_time = " + p.getTime() + " AND " +
                 "sum_weight = " + p.getWeight() + " AND " +
                 "sum_calories = " + p.getAllCalories() + " AND " +
                 "description = '" + p.getDescription() + "' AND " +

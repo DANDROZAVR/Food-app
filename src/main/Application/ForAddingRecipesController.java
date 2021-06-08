@@ -56,12 +56,21 @@ public class ForAddingRecipesController {
     @FXML
     private Button MinusProducts;
 
+    @FXML
+    private TextField GetTimeHours;
+
+    @FXML
+    private TextField GetTimeMinutes;
+
     ObservableList<String> AllProducts, AllRecipes;
 
     @FXML
     void goToHome(ActionEvent event) {
         Main.goToHome();
     }
+
+    @FXML
+    private TextField GetInstruction;
 
     int SizeRecipes, SizeProducts;
 
@@ -174,7 +183,15 @@ public class ForAddingRecipesController {
                     List_of_elements.add(new Pair<>(i.getKey().getId(), i.getValue()));
                 }
 
-                Recipe new_recipe = new Recipe(Id, GetName.getText(), GetDescription.getText(), List_of_elements, "");
+                Recipe new_recipe = new Recipe(Id, GetName.getText(), GetDescription.getText(), List_of_elements, GetInstruction.getText());
+                Integer hours = 0, minutes = 0;
+                if(GetTimeHours.getText() != ""){
+                    hours = Integer.parseInt(GetTimeHours.getText());
+                }
+                if(GetTimeMinutes.getText() != ""){
+                    minutes = Integer.parseInt(GetTimeMinutes.getText());
+                }
+                new_recipe.setTime(Integer.toString(hours * 60 + minutes));
                 Query.addNewRecipe(new_recipe, list_of_recipes, list_of_products);
                 error_out.setTextFill(Color.web("#16b221", 0.8));
                 error_out.setText("OK");
