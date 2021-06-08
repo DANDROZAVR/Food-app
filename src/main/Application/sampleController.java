@@ -42,6 +42,9 @@ public class sampleController extends Main {
     private Button ButtonAddRecipes;
 
     @FXML
+    private Button ButtonAddRestaurants;
+
+    @FXML
     void initialize() {
         assert show_all_products != null : "fx:id=\"show_all_products\" was not injected: check your FXML file 'sample.fxml'.";
         show_all_products.setOnAction(event -> {
@@ -73,6 +76,12 @@ public class sampleController extends Main {
             Parent root = loader.getRoot();
             ((ForButtonRestaurantsController) loader.getController()).setSceneBack(Restaurants.getScene());
             ((Stage) ButtonAddRecipes.getScene().getWindow()).setScene(new Scene(root));
+        });
+        assert ButtonAddRestaurants != null : "fx:id=\"ButtonAddRestaurants\" was not injected: check your FXML file 'sample.fxml'.";
+        ButtonAddRestaurants.setOnAction(event -> {
+            FXMLLoader loader = LoadXML.load("ForAddingRestaurants.fxml");
+            Parent root = loader.getRoot();
+            ((Stage) ButtonAddRestaurants.getScene().getWindow()).setScene(new Scene(root));
         });
     }
 
