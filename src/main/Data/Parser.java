@@ -72,26 +72,83 @@ public class Parser {
         }
         return result;
     }
+    public static boolean isInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        int length = str.length();
+        if (length == 0) {
+            return false;
+        }
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (length == 1) {
+                return false;
+            }
+            i = 1;
+        }
+        for (; i < length; i++) {
+            char c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
+    }
+    public static Recipe getRecipe(ArrayList<String> row, ArrayList<String> head, boolean strongNull) throws Exception {
+        String id, name, sum_weight, sum_calories, description, instruction, prepTime, ingredients;
+        id = name = description = sum_weight = sum_calories = instruction = prepTime = ingredients = null;
+        for (int j = 0; j < row.size(); ++j) {
+            String column = head.get(j);
+            String value = row.get(j);
+            switch (column) {
+                case "description" -> description = value;
+                case "name" -> name = value;
+                case "minutes", "prep_time" -> prepTime = value;
+                case "id_rec" -> id = value;
+                case "steps", "instruction" -> instruction = value;
+                case "ingredients" -> ingredients = value;
+                case "sum_calories" -> sum_calories = value;
+                case "sum_weight" -> sum_weight = value;
+            }
+        }
+        if (strongNull && (id == null || name == null || sum_calories == null || sum_weight == null || !isInteger(prepTime)))
+            throw new Exception("Some of non-null by definition values are null:" + name + ", " + sum_weight + ", " + sum_calories);
+        if (id == null) id = "-1";
+        if (sum_calories == null) sum_calories = "-1";
+        if (sum_weight == null) sum_weight = "-1";
+        if (name == null) name = "-1";
+        if (!isInteger(prepTime) || name.length() >= 200 || description.length() >= 1000 || instruction.length() >= 1000)
+            return null;
+        return new Recipe(Integer.parseInt(id), Integer.parseInt(sum_weight), Integer.parseInt(sum_calories), name, description, instruction).setIngredients(ingredients).setTime(prepTime);
+    }
+    public static Recipe getRecipe(ArrayList<String> row, ArrayList<String> head, ArrayList<Pair<Integer,Integer>> recipesContent) throws Exception {
+        String id, name, sum_weight, sum_calories, description, instruction, prepTime, ingredients;
+        id = name = description = sum_weight = sum_calories = instruction = prepTime = ingredients = null;
+        for (int j = 0; j < row.size(); ++j) {
+            String column = head.get(j);
+            String value = row.get(j);
+            switch (column) {
+                case "description" -> description = value;
+                case "name" -> name = value;
+                case "minutes", "prep_time" -> prepTime = value;
+                case "id_rec" -> id = value;
+                case "steps", "instruction" -> instruction = value;
+                case "ingredients" -> ingredients = value;
+                case "sum_calories" -> sum_calories = value;
+                case "sum_weight" -> sum_weight = value;
+            }
+        }
+        if (id == null || name == null || sum_calories == null || sum_weight == null || !isInteger(prepTime))
+            throw new Exception("Some of non-null by definition values are null:" + name + ", " + sum_weight + ", " + sum_calories);
+        //result.add(new Recipe(Integer.parseInt(id), name, description, Integer.parseInt(sum_calories), Integer.parseInt(sum_weight)));
+        return new Recipe(Integer.parseInt(id), name, description, recipesContent, instruction).setIngredients(ingredients).setTime(prepTime);
+    }
     public static ArrayList<Recipe> getRecipesFrom(ArrayList<ArrayList<String>> query, ArrayList<Pair<Integer,Integer>> recipesContent) throws Exception {
         ArrayList<Recipe> result = new ArrayList<>();
         for (int idx = 1; idx < query.size(); idx++) {
-            ArrayList <String> row = query.get(idx);
-            String id, name, sum_weight, sum_calories, description, links;
-            id = name = description = sum_weight = sum_calories = links = null;
-            for (int j = 0; j < row.size(); ++j) {
-                String column = query.get(0).get(j);
-                String value = row.get(j);
-                switch (column) {
-                    case "description" -> description = value;
-                    case "name" -> name = value;
-                    case "id_rec" -> id = value;
-                    case "sum_calories" -> sum_calories = value;
-                    case "sum_weight" -> sum_weight = value;
-                    case "links" -> links = value;
-                    default -> throw new Exception("Unknown column find due parsing: " + column);
-                }
-            }
-            result.add(new Recipe(Integer.parseInt(id),name, description,recipesContent));
+            Recipe res = getRecipe(query.get(idx), query.get(0), recipesContent);
+            result.add(res);
             //result.add(new Recipe(Integer.parseInt(id), name, description, Integer.parseInt(sum_calories), Integer.parseInt(sum_weight)));
         }
         return result;
@@ -99,24 +156,17 @@ public class Parser {
     public static ArrayList<Recipe> getRecipesFrom(ArrayList<ArrayList<String>> query) throws Exception {
         ArrayList<Recipe> result = new ArrayList<>();
         for (int idx = 1; idx < query.size(); idx++) {
-            ArrayList <String> row = query.get(idx);
-            String id, name, sum_weight, sum_calories, description, links;
-            id = name = description = sum_weight = sum_calories = links = null;
-            for (int j = 0; j < row.size(); ++j) {
-                String column = query.get(0).get(j);
-                String value = row.get(j);
-                switch (column) {
-                    case "description" -> description = value;
-                    case "name" -> name = value;
-                    case "id_rec" -> id = value;
-                    case "sum_calories" -> sum_calories = value;
-                    case "sum_weight" -> sum_weight = value;
-                    case "links" -> links = value;
-                    default -> throw new Exception("Unknown column find due parsing: " + column);
-                }
-            }
-            result.add(new Recipe(Integer.parseInt(id), Integer.parseInt(sum_weight), Integer.parseInt(sum_calories), name, description, links));
-            //result.add(new Recipe(Integer.parseInt(id), name, description, Integer.parseInt(sum_calories), Integer.parseInt(sum_weight)));
+            Recipe res = getRecipe(query.get(idx), query.get(0), true);
+            result.add(res);
+        }
+        return result;
+    }
+    public static ArrayList<Recipe> getRecipesDangerousFrom(ArrayList<ArrayList<String>> query) throws Exception {
+        ArrayList<Recipe> result = new ArrayList<>();
+        for (int idx = 1; idx < query.size(); idx++) {
+            Recipe res = getRecipe(query.get(idx), query.get(0), false);
+            if (res == null) continue;
+            result.add(res);
         }
         return result;
     }

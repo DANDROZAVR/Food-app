@@ -42,6 +42,14 @@ public class ParseProductsInput {
                 if (!(prod instanceof Solids)) throw new Exception("Product there should be instance of Solids class");
                 Solids item = (Solids) prod;
                 item.setName(item.getProductType().split(" ")[0]);
+                if (item.getName().equals("FAST"))
+                    item.setName(item.getDescription().split(",")[1]);
+                if (item.getName().toLowerCase().equals("mcdonalds")) {
+                    String [] desc = item.getDescription().split(",")[1].split(" ");
+                    item.setName(desc[desc.length - 1]);
+                }
+                item.setName(item.getName().toLowerCase());
+                System.out.println(item.getName());
                 if (item.nutrient.getCarbo() < item.nutrient.getSugar()) continue;
                 if (item.nutrient.getCarbo() + item.nutrient.getFat() + item.nutrient.getProtein() > 100.0) continue;
                 if (was)
@@ -57,6 +65,7 @@ public class ParseProductsInput {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("Generated  solids");
     }
     /*public static void main(String[] args) {
         parse();

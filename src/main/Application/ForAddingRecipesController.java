@@ -174,7 +174,7 @@ public class ForAddingRecipesController {
                     List_of_elements.add(new Pair<>(i.getKey().getId(), i.getValue()));
                 }
 
-                Recipe new_recipe = new Recipe(Id, GetName.getText(), GetDescription.getText(), List_of_elements);
+                Recipe new_recipe = new Recipe(Id, GetName.getText(), GetDescription.getText(), List_of_elements, "");
                 Query.addNewRecipe(new_recipe, list_of_recipes, list_of_products);
                 error_out.setTextFill(Color.web("#16b221", 0.8));
                 error_out.setText("OK");

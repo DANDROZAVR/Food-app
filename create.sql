@@ -115,14 +115,16 @@ create table products_vitamins(
 ); 
 create table recipes (
 	id_rec integer constraint pk_reci primary key,
-	name varchar(30) not null,
+	name varchar(200) not null,
+	prep_time smallint default 0 check(prep_time >= 0 AND prep_time <= 1000),
 	sum_weight numeric(7) not null,
 	sum_calories numeric(7) not null, 
-	description varchar(300), --optional
-	links varchar(300) --optional	
+	description varchar(1000), 
+	instruction varchar(1500), 
 	check(sum_weight >= 0),
 	check(sum_calories >= 0)
 );
+--check for products
 create table recipes_nutrient_main(
 	id_rec integer not null unique constraint fk_nut_main references recipes(id_rec),
 	fat smallint not null constraint fat1 check(fat >= 0 AND fat <= 100),
@@ -130,13 +132,6 @@ create table recipes_nutrient_main(
 	carbo smallint not null constraint carbo1 check(carbo >= 0 AND carbo <= 100),
 	sugar smallint constraint sugar1 check(sugar is null OR (sugar >= 0 AND sugar <= carbo)),
 	constraint sum_check1 check(carbo + fat + protein <= 100)
-);
-create table recipes_nutrient_additional(
-	id_rec integer not null unique constraint fk_nut_main references recipes(id_rec),
-	zinc real default 0.00 check(zinc >= 0.00 AND zinc <= 100.00),
-	iron real default 0.00 check(iron >= 0.00 AND iron <= 100.00), 
-	calcium real default 0.00 check(calcium >= 0.00 AND iron <= 100.00), 
-	magnesium real default 0.00 check(magnesium >= 0.00 AND magnesium <= 100.00)
 );
 create table recipes_areatag (
 	id integer constraint fk_rec_area references recipes(id_rec),
@@ -153,6 +148,22 @@ create table recipes_content_products (
 	weight numeric(6) not null check(weight >= 0),  
 	weight_type char(4) not null check(weight_type in ('g', 'ml'))
 );
+
+
+
+
+
+
+
+/*
+
+
+weight
+
+
+*/
+
+
 create table recipes_content_recipes (
 	id_rec integer not null constraint fk_rec_cont references recipes(id_rec),
 	id integer not null constraint fk_prod references recipes(id_rec) check(id != id_rec), 
@@ -464,6 +475,6 @@ insert into species_taste(id_prod, taste)
 (7, 'Salty');	
 
 insert into restaurants_main(id,name,geoposition,adres) values (10, 'Andrew', 'CS', 'Dust');
-insert into recipes(id_rec, name, sum_weight,sum_calories,description,links) values (12,'sdfgsdgs',14,15,'csdfgsd','link');
+--insert into recipes(id_rec, name, sum_weight,sum_calories,description,links) values (12,'sdfgsdgs',14,15,'csdfgsd','link');
 insert into restaurants_group_meals(id_restaurant,id_group,cena,min_cena,max_cena) values (10,5,3424,1213,4535);
 insert into group_meals_content(id_group,id_rec) values (5,12);

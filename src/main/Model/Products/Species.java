@@ -6,6 +6,7 @@ public class Species extends Product {
         Salty,
         Bitter,
         Spicy,
+        Burning,
         None
     }
     Taste taste;
@@ -24,6 +25,8 @@ public class Species extends Product {
                     return Taste.Salty;
                 case "Bitter":
                     return Taste.Bitter;
+                case "Burning":
+                    return Taste.Burning;
                 case "Spicy":
                     return Taste.Spicy;
                 default:
@@ -41,6 +44,8 @@ public class Species extends Product {
                 return "Salty";
             case Bitter:
                 return "Bitter";
+            case Burning:
+                return "Burning";
             case Spicy:
                 return "Spicy";
             default:
