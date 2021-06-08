@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import main.Data.Parser;
 import main.Helpers.CSVReader.ParseProductsInput;
+import main.Helpers.CSVReader.ParserRecipesInput;
 import main.Model.Products.Product;
 import org.postgresql.replication.fluent.AbstractStreamBuilder;
 
@@ -33,6 +34,8 @@ public class Main extends Application {
             System.exit(1);
         }
         //ParseProductsInput.parse();
+        ParserRecipesInput.parse();
+        //System.exit(0);
         launch(args);
     }
     public static void setScene(FXMLLoader loader) {

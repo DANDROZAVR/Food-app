@@ -16,28 +16,37 @@ public class CSVLoad {
         boolean increase = false;
         StringBuilder actual = new StringBuilder();
         ArrayList<String> res = new ArrayList<>();
+        int max_val = 1;
+        char last;
+        char now = '~';
         for (int i = 0; i < queue.length(); ++i) {
-            if (queue.charAt(i) == '\'') continue;
-            if (queue.charAt(i) == ';') {
+            last = now;
+            now = queue.charAt(i);
+            if (now == '\'') now = '`';
+            if (now == ';') {
                 res.add(actual.toString());
                 break;
             }
-            if (queue.charAt(i) == '"') {
-                if (quotes == 2 || quotes == 0) {
+            if (now == '"') {
+                if (last == now && max_val == 1)
+                    max_val = 2;
+                if (quotes == max_val || quotes == 0) {
                     increase = !increase;
                 }
                 if (increase) ++quotes; else --quotes;
                 continue;
             }
-            if (quotes == 0 || (res.size() == 0 && queue.charAt(i) == ',')) {
+            if ((quotes == 0 && now == ',') || (res.size() == 0 && now == ',')) {
                 res.add(actual.toString());
                 quotes = 0;
                 increase = false;
                 actual.setLength(0);
                 continue;
             }
-            actual.append(queue.charAt(i));
+            actual.append(now);
         }
+        if (actual.length() > 0)
+            res.add(actual.toString());
         return res;
     }
     public static ArrayList<ArrayList<String>> load(String filePath) {
@@ -48,8 +57,8 @@ public class CSVLoad {
                 String lineInput;
                 while ((lineInput = br.readLine()) != null) {
                     ArrayList<String> line = parseString(lineInput);
-                    if (line.size() == 48)
-                        res.add(line);
+                    if (!(res.size() > 0 && line.size() != res.get(0).size())) res.add(line);
+                    //if (res.size() > 15) break;
                 }
             }
         } catch (Exception e) {

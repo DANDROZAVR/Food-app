@@ -8,24 +8,43 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Recipe {
-    private int id, weight, all_calories; // All calories
-    private String Name = null, description = null;
-    private String Link; // [ id, weight ]
+    private int id, weight, all_calories, time; // All calories
+    private String Name = null, description = null, ingredients = null;
+    private String instruction;
     private int calories;
-    private ArrayList<Pair<Integer, Integer>> Components;
-
-    public Recipe(int id, int weight,int calories, String Name, String Description, String Link) {
+    private ArrayList<Pair<Integer, Integer>> Components; // [ id, weight ]
+    private ArrayList<Product> NormComp = null;
+    private String repair(String input) {
+        StringBuilder res = new StringBuilder();
+        int last = 0;
+        int end = 0;
+        while(end < input.length()) { //125 max
+            int i = end;
+            while(end < input.length() && input.charAt(end) != ' ') ++end;
+            if (end - last > 120) {
+                res.append('\n');
+                last = end;
+            }
+            for (int j = i; j < end; ++j)
+                res.append(input.charAt(j));
+            if (end != input.length()) res.append(" ");
+            ++end;
+        }
+        return res.toString();
+    }
+    public Recipe(int id, int weight,int calories, String Name, String Description, String Instruction) {
         this.id = id;
         this.Name = Name;
-        this.description = Description;
+        this.description = repair(Description);
         this.calories = calories;
         this.weight = weight;
-        this.Link = Link;
+        this.instruction = repair(Instruction);
     }
-    public Recipe(int id,  String Name, String Description, ArrayList < Pair <Integer, Integer> > List) throws SQLException {
+    public Recipe(int id,  String Name, String Description, ArrayList < Pair <Integer, Integer> > List, String Instruction) throws SQLException {
         this.id = id;
         this.Name = Name;
-        this.description = Description;
+        this.description = repair(Description);
+        this.instruction = repair(Instruction);
         this.calories = 0;
         this.all_calories = 0;
         this.weight = 0;
@@ -43,11 +62,49 @@ public class Recipe {
                 this.all_calories += (calories * new_component.getValue()) / 100;
                 this.weight += new_component.getValue();
             }
-            this.calories = (this.all_calories * this.weight) / 100;
             Components.add(new_component);
         }
+        this.calories = this.all_calories*100 / this.weight;
     }
-
+    public Recipe(int id,  String Name, String Description, ArrayList < Pair <Product, Integer> > List, String Instruction, boolean ignored) throws SQLException {
+        this.id = id;
+        this.Name = Name;
+        this.description = repair(Description);
+        this.instruction = repair(Instruction);
+        this.calories = 0;
+        this.all_calories = 0;
+        this.weight = 0;
+        Components = new ArrayList<>();
+        for(Pair <Product, Integer> new_component : List) {
+            //see is this receipt or product
+            int calories = new_component.getKey().getCalories();
+            this.all_calories += (calories * new_component.getValue()) / 100;
+            this.weight += new_component.getValue();
+            Components.add(new Pair<Integer, Integer>(new_component.getKey().getId(), new_component.getValue()));
+        }
+        this.calories = this.all_calories* 100 / this.weight;
+    }
+    public Recipe setIngredients(String val) {
+        this.ingredients = val;
+        return this;
+    }
+    public Recipe setTime(String time) {
+        try {
+            this.time = Integer.parseInt(time);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.time = 0;
+        return this;
+    }
+    public Recipe setNormalComponent(ArrayList<Product> content) {
+        NormComp = content;
+        return this;
+    }
+    public ArrayList<Product> getNormalComponent() {
+        return NormComp;
+    }
+    public String getIngredients() { return ingredients; }
 
     public int getId(){
         return this.id;
@@ -58,9 +115,12 @@ public class Recipe {
     public int getWeight(){
         return this.weight;
     }
-
+    public int getTime() {return this.time;}
     public int getAllCalories(){
         return this.all_calories;
+    }
+    public int getCalories(){
+        return this.calories;
     }
 
     public String getName(){
@@ -69,8 +129,8 @@ public class Recipe {
     public String getDescription(){
         return this.description;
     }
-    public String getLink(){
-        return this.Link;
+    public String getInstruction(){
+        return this.instruction;
     }
     /*
     public void add(Product x, int weight){

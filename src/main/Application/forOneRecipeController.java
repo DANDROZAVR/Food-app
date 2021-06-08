@@ -81,7 +81,7 @@ public class forOneRecipeController {
                     ArrayList<ArrayList<String>> component = Database.execute("select * from recipes where id_rec =" + c.getKey() + ";");
                     Hyperlink temp = new Hyperlink(component.get(1).get(1));
                     temp.setTooltip(new Tooltip("weight: " + component.get(1).get(2) + "\n" +
-                            "All calories: " + component.get(1).get(3) + "\n" + "Description: " + component.get(1).get(4)));
+                            "Calories per 100 g: " + component.get(1).get(3) + "\n" + "Description: " + component.get(1).get(4)));
                     temp.setOnAction(t -> {
                         FXMLLoader loader = LoadXML.load("forOneRecipe.fxml");
                         try {
