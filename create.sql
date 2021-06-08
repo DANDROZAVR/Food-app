@@ -423,11 +423,51 @@ $$
 	end;
 $$ language plpgsql;
 
-create or replace rule spec_insert as
-on insert to solids_full
-do instead(
-	select solids_full_insert(new);
+drop table if exists shopsOrderRec cascade;
+drop table if exists shopsOrderProd cascade;
+
+create table shopsOrderRec(
+    id_order integer primary key not null,
+    id_rec integer references recipes(id_rec),
+        id_shop integer not null references shops_main(id),
+        date timestamp not null
 );
+create table shopsOrderProd(
+  id_order integer primary key not null,
+  id_prod integer references products(id_prod),
+    id_shop integer not null references shops_main(id),
+    date timestamp not null
+);
+
+--insert into shopsOrderProd values (1, 1, 1, clock_timestamp());
+--insert into shopsOrderRec values (2, 1, 2, clock_timestamp());
+
+create or replace view shopOrders as
+  select id_order, id_shop, id_prod as id, date from shopsOrderProd union
+  select id_order, id_shop, id_rec as id, date from shopsOrderRec;
+
+create or replace function order_insert(id_order integer, id_shop integer, id integer, date timestamp)
+  returns void as
+$$
+  begin
+    if (id % 2 = 1) then
+      insert into shopsOrderProd
+        values
+      (id_order, id, id_shop, date);
+    else
+      insert into shopsOrderRec
+        values
+      (id_order, id, id_shop, date);
+    end if;
+  end;
+$$ language plpgsql;
+
+create or replace rule spec_insert as
+on insert to shopOrders
+do instead(
+  select order_insert(new.id_order, new.id_shop, new.id, new.date);
+);
+
 
 
 
@@ -460,6 +500,7 @@ insert into products_tag(id_prod, tag)
 insert into species_taste(id_prod, taste)
 	values
 (7, 'Salty');
+
 insert into restaurants_main(id,name,geoposition,adres) values (10, 'Andrew', 'CS', 'Dust');
 insert into restaurants_group_meals(id_restaurant,id_group,cena,min_cena,max_cena) values (10,5,3424,1213,4535);
 insert into group_meals_content(id_group,id_rec) values (5,2000);
