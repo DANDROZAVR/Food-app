@@ -47,7 +47,7 @@ public class ForRecipesController extends Main {
         try {
             ArrayList<ArrayList<String>> output = Query.getFullInformation("recipes");
             for (ArrayList<String> s : output) {
-                if (!s.get(4).equals("description")) {
+                if (!s.get(5).equals("description")) {
                     Hyperlink link = new Hyperlink(s.get(1));
                     link.setTooltip(new Tooltip("weight: " + s.get(2) + "\n" +
                             "All calories: " + s.get(3)+ "\n" + "Description: " + s.get(4)));

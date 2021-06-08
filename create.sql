@@ -475,6 +475,6 @@ insert into species_taste(id_prod, taste)
 (7, 'Salty');	
 
 insert into restaurants_main(id,name,geoposition,adres) values (10, 'Andrew', 'CS', 'Dust');
---insert into recipes(id_rec, name, sum_weight,sum_calories,description,links) values (12,'sdfgsdgs',14,15,'csdfgsd','link');
+insert into recipes(id_rec, name, sum_weight,sum_calories,description,links) values (2000,'sdfgsdgs',14,15,'csdfgsd','link');
 insert into restaurants_group_meals(id_restaurant,id_group,cena,min_cena,max_cena) values (10,5,3424,1213,4535);
-insert into group_meals_content(id_group,id_rec) values (5,12);
+insert into group_meals_content(id_group,id_rec) values (5,2000);

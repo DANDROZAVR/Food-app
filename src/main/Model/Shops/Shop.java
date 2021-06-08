@@ -1,4 +1,4 @@
-package main.Model.Restaurants;
+package main.Model.Shops;
 
 import javafx.util.Pair;
 import main.Application.Order;
@@ -6,14 +6,15 @@ import main.Data.Database;
 import main.Data.Parser;
 import main.Data.Query;
 import main.Model.Recipes.Recipe;
+import main.Model.Restaurants.Building;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Restaurant extends Building{
-    public Restaurant(int id, String geoposition, String adres, String name){
+public class Shop extends Building {
+    public Shop(int id, String geoposition, String adres, String name){
         setId(id);
         setGeoposition(geoposition);
         setAdres(adres);
