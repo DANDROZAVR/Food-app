@@ -20,13 +20,20 @@
       <Label fx:id="error_out" layoutX="594.0" layoutY="494.0" prefHeight="63.0" prefWidth="189.0" textFill="#16b221" />
       <TextField fx:id="GetDescription" layoutX="105.0" layoutY="86.0" prefHeight="35.0" prefWidth="643.0" />
       <Label layoutX="764.0" layoutY="86.0" prefHeight="35.0" prefWidth="125.0" text="Description" />
-      <Label layoutX="105.0" layoutY="160.0" prefHeight="35.0" prefWidth="125.0" text="Recipes" />
-      <Label layoutX="439.0" layoutY="160.0" prefHeight="35.0" prefWidth="125.0" text="Products" />
-      <Button fx:id="PlusRecipes" layoutX="183.0" layoutY="168.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="+" />
-      <Button fx:id="MinusRecipes" layoutX="247.0" layoutY="168.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="-" />
-      <Button fx:id="PlusProducts" layoutX="523.0" layoutY="168.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="+" />
-      <Button fx:id="MinusProducts" layoutX="587.0" layoutY="168.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="-" />
-      <VBox fx:id="AddRecipes" layoutX="109.0" layoutY="203.0" prefHeight="252.0" prefWidth="270.0" />
-      <VBox fx:id="AddProducts" layoutX="439.0" layoutY="203.0" prefHeight="252.0" prefWidth="242.0" />
+      <Label layoutX="99.0" layoutY="237.0" prefHeight="35.0" prefWidth="125.0" text="Recipes" />
+      <Label layoutX="427.0" layoutY="237.0" prefHeight="35.0" prefWidth="125.0" text="Products" />
+      <Button fx:id="PlusRecipes" layoutX="177.0" layoutY="241.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="+" />
+      <Button fx:id="MinusRecipes" layoutX="244.0" layoutY="241.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="-" />
+      <Button fx:id="PlusProducts" layoutX="513.0" layoutY="241.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="+" />
+      <Button fx:id="MinusProducts" layoutX="585.0" layoutY="241.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="-" />
+      <VBox fx:id="AddRecipes" layoutX="109.0" layoutY="272.0" prefHeight="183.0" prefWidth="270.0" />
+      <VBox fx:id="AddProducts" layoutX="439.0" layoutY="272.0" prefHeight="183.0" prefWidth="242.0" />
+      <TextField fx:id="GetInstruction" layoutX="105.0" layoutY="142.0" prefHeight="35.0" prefWidth="643.0" />
+      <Label layoutX="764.0" layoutY="142.0" prefHeight="35.0" prefWidth="125.0" text="Instruction" />
+      <TextField fx:id="GetTimeHours" layoutX="105.0" layoutY="196.0" prefHeight="35.0" prefWidth="62.0" />
+      <Label layoutX="177.0" layoutY="206.0" text="h" />
+      <TextField fx:id="GetTimeMinutes" layoutX="193.0" layoutY="196.0" prefHeight="35.0" prefWidth="62.0" />
+      <Label layoutX="263.0" layoutY="206.0" text="m" />
+      <Label layoutX="291.0" layoutY="196.0" prefHeight="35.0" prefWidth="125.0" text="Cooking time" />
    </children>
 </AnchorPane>
