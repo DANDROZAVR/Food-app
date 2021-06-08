@@ -167,8 +167,8 @@ create table recipes_content_recipes (
 
 create table restaurants_main(
                                  id integer not null primary key,
-                                 "name" varchar(10) not null,
-                                 geoposition varchar(30) not null,
+                                 "name" varchar(100) not null,
+                                 geoposition point not null,
                                  adres varchar(100)
 );
 create table restaurants_info(
@@ -462,7 +462,7 @@ insert into species_taste(id_prod, taste)
 values
 (7, 'Salty');
 
-insert into restaurants_main(id,name,geoposition,adres) values (10, 'Andrew', 'CS', 'Dust');
+insert into restaurants_main(id,name,geoposition,adres) values (10, 'Andrew', '0,0', 'Dust');
 --insert into recipes(id_rec, name, sum_weight,sum_calories,description,links) values (12,'sdfgsdgs',14,15,'csdfgsd','link');
 insert into restaurants_group_meals(id_restaurant,id_group,cena,min_cena,max_cena) values (10,5,3424,1213,4535);
 insert into group_meals_content(id_group,id_rec) values (5,12);

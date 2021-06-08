@@ -359,7 +359,7 @@ public class Query {
         query = new String("select count(*) from restaurants_main where " +
                 "id = " + r.getId() + " AND " +
                 "name = '" + r.getName() + "' AND " +
-                "geoposition = '" + r.getGeoposition() + "' AND " +
+                "geoposition ~= '" + r.getGeoposition() + "' AND " +
                 "adres = '" + r.getAdres() + "';"
         );
         if(Integer.parseInt(Database.execute(query).get(1).get(0)) == 0){
