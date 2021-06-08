@@ -5,6 +5,8 @@ import main.Application.Order;
 import main.Data.Database;
 import main.Data.Parser;
 import main.Data.Query;
+import main.Model.Orders.shopOrder;
+import main.Model.Products.Product;
 import main.Model.Recipes.Recipe;
 import main.Model.Restaurants.Building;
 
@@ -14,46 +16,44 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Shop extends Building {
-    public Shop(int id, String geoposition, String adres, String name){
+    public Shop(int id, String adres, String name){
         setId(id);
-        setGeoposition(geoposition);
         setAdres(adres);
         setName(name);
     }
-    public ArrayList<Recipe> getMenu() throws SQLException,Exception {
-        ArrayList<ArrayList<String>> Ides = Database.execute("select id_rec from group_meals_content where id_group = (select id_group from restaurants_group_meals where id_restaurant =" + this.getId() +");");
-        ArrayList<Recipe> res = new ArrayList<>();
-        for(ArrayList<String> recipeId: Ides){
-            if(recipeId.get(0).equals("id_rec")){
+    public ArrayList<Integer> getMenu() throws Exception {
+        ArrayList<ArrayList<String>> Ides = Database.execute("select id_rec from shops_content_recipes where id_shop =" + getId() + ";");
+        Ides.addAll(Database.execute("select id_prod from shops_content_products where id_shop =" + getId() + ";"));
+        ArrayList<Integer> res = new ArrayList<>();
+        for(ArrayList<String> Id: Ides){
+            if(Id.get(0).equals("id_rec") || Id.get(0).equals("id_prod")){
                 continue;
             }
-            ArrayList<ArrayList<String>> oneRecipe = Database.execute("select * from recipes where id_rec =" + Integer.parseInt(recipeId.get(0)) +";");
-            ArrayList<Pair<Integer,Integer>> content = Query.getAllContentOfRecipe(Integer.parseInt(oneRecipe.get(1).get(0)));
-            res.add(Parser.getRecipesFrom(oneRecipe, content).get(0));
+           res.add(Integer.parseInt(Id.get(0)));
         }
         return res;
     }
-    public static ArrayList<Order> getOrders(int restaurant) throws SQLException,Exception{
-        ArrayList<ArrayList<String>> res = Database.execute("select * from orders where id_restaurant =" + restaurant +";");
-        ArrayList<Order> ans = new ArrayList<>();
-        Map<Integer, ArrayList<Recipe>> temp = new HashMap<>();
+    public static ArrayList<shopOrder> getOrders(int shop) throws SQLException,Exception{
+        ArrayList<ArrayList<String>> res = Database.execute("select * from shopOrders where id_shop =" + shop +";");
+        ArrayList<shopOrder> ans = new ArrayList<>();
+        Map<Integer, ArrayList<Integer>> temp = new HashMap<>();
         Map<Integer, String> dates = new HashMap<>();
         for(ArrayList<String> a: res){
             if(a.get(0).equals("id_order")){
                 continue;
             }else{
                 if(temp.containsKey(Integer.parseInt(a.get(0)))){
-                    temp.get(Integer.parseInt(a.get(0))).add(Parser.parseRecipeById(Integer.parseInt(a.get(2))));
+                    temp.get(Integer.parseInt(a.get(0))).add(Integer.parseInt(a.get(2)));
                 }else {
                     dates.put(Integer.parseInt(a.get(0)),a.get(3));
-                    ArrayList<Recipe> temp2 = new ArrayList<>();
-                    temp2.add(Parser.parseRecipeById(Integer.parseInt(a.get(2))));
+                    ArrayList<Integer> temp2 = new ArrayList<>();
+                    temp2.add(Integer.parseInt(a.get(2)));
                     temp.put(Integer.parseInt(a.get(0)), temp2);
                 }
             }
         }
         for(Integer i: temp.keySet()){
-            ans.add(new Order(i,temp.get(i),dates.get(i),Parser.parseRestaurantById(restaurant))) ;
+            ans.add(new shopOrder(i,temp.get(i),dates.get(i),Parser.parseShopById(shop))) ;
         }
         return ans;
     }

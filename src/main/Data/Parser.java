@@ -9,9 +9,11 @@ import main.Model.Products.Product;
 import main.Model.Products.Solids;
 import main.Model.Products.Species;
 import main.Model.Recipes.Recipe;
+import main.Model.Shops.Shop;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Parser {
@@ -44,9 +46,17 @@ public class Parser {
         ArrayList<Pair<Integer,Integer>> content = Query.getAllContentOfRecipe(Integer.parseInt(temp.get(1).get(0)));
         return getRecipesFrom(temp,content).get(0);
     }
+    public static Product parseProductById(int id) throws SQLException,Exception {
+        ArrayList<ArrayList<String>> temp = Database.execute("select * from products where id_prod =" + id +";");
+        return getProductsFrom(temp).get(0);
+    }
     public static Restaurant parseRestaurantById(int id) throws SQLException,Exception {
         ArrayList<ArrayList<String>> temp = Database.execute("select * from restaurants_main where id =" + id +";");
         return getRestaurantsFrom(temp).get(0);
+    }
+    public static Shop parseShopById(int id) throws SQLException,Exception {
+        ArrayList<ArrayList<String>> temp = Database.execute("select * from shops_main where id =" + id +";");
+        return getShopsFrom(temp).get(0);
     }
     /*static void main(String...varargs) {
 
@@ -268,5 +278,26 @@ public class Parser {
             DoubleName = longName.charAt(i) + DoubleName;
         }
         return DoubleName;
+    }
+
+    public static ArrayList<Shop> getShopsFrom(ArrayList<ArrayList<String>> query) throws Exception {
+        ArrayList<Shop> result = new ArrayList<>();
+        for (int idx = 1; idx < query.size(); idx++) {
+            ArrayList<String> row = query.get(idx);
+            String id, name, adres;
+            id = name = adres  = null;
+            for (int j = 0; j < row.size(); ++j) {
+                String column = query.get(0).get(j);
+                String value = row.get(j);
+                switch (column) {
+                    case "name" -> name = value;
+                    case "id" -> id = value;
+                    case "adres" -> adres = value;
+                    default -> throw new Exception("Unknown column find due parsing: " + column);
+                }
+            }
+            result.add(new Shop(Integer.parseInt(id), adres, name));
+        }
+        return result;
     }
 }
