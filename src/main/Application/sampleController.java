@@ -1,6 +1,7 @@
 package main.Application;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -8,8 +9,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import main.Data.Database;
 import main.Data.Parser;
 import main.Data.Query;
 import main.Model.Products.Product;
@@ -18,7 +21,10 @@ import main.Model.Products.Solids;
 public class sampleController extends Main {
     @FXML
     private ResourceBundle resources;
-
+    @FXML
+    private TextField Query;
+    @FXML
+    private Button QueryButton;
     @FXML
     private URL location;
     @FXML
@@ -82,6 +88,14 @@ public class sampleController extends Main {
             Parent root = loader.getRoot();
             ((ButtonShopController) loader.getController()).setSceneBack(Restaurants.getScene());
             ((Stage) ButtonAddRecipes.getScene().getWindow()).setScene(new Scene(root));
+        });
+        QueryButton.setOnAction(t -> {
+            try {
+                System.out.println(Database.execute(Query.getText()));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            Query.clear();
         });
     }
 
