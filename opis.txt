@@ -1,0 +1,10 @@
+Andrei Daletski, Daniel Yurszewicz, Andrei Mishchanka
+
+Projekt jest bardzo prostą wersją książki kucharskiej z produktami i przepisami. Produkt może mieć w sobie różne mineraly, vitaminy. Przepis ma instrukcję jak go ugotować, nazwę, czas przygotowania oraz dodatkową ciekawą informację.
+
+Istnieje możliwość wyszukiwania produktu/przepisu oraz pogląd informacji o skłądnikach/samich przepisach. 
+
+Istnieje możliwość szmodzielnie zrobić jakieś zapytania oraz zobaczyć ich wynik.
+
+Równieź są, jak opisaliśmy w pierwszej cześci projektu, sklepy i restauracji, dla których wiemy różną informację, jak, na przykład, adres, nazwę, czas pracy w różne dni tygodnia i opis przedmiotów, które one prowadzą.
+

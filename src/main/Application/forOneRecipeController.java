@@ -42,7 +42,8 @@ public class forOneRecipeController {
 
     @FXML
     private TextArea description;
-
+    @FXML
+    private TextArea instruction;
     @FXML
     private VBox link;
     @FXML
@@ -54,8 +55,9 @@ public class forOneRecipeController {
         //((TextArea)((HBox)VBoxProduct.getChildren().get(0)).getChildren().get(0)).setAccessibleText(item.getName());
         Name.setText(item.getName());
         weight.setText(String.valueOf(item.getWeight()));
-        description.setText(String.valueOf(item.getDescription()));
-        calories.setText(String.valueOf(item.getAllCalories()));
+        description.setText(String.valueOf(item.repair(item.getDescription())));
+        calories.setText(String.valueOf(item.getCalories()));
+        instruction.setText(String.valueOf(item.repair(item.getInstruction())));
         if(item.getComponents() != null) {
             for (Pair<Integer, Integer> c : item.getComponents()) {
                 if (c.getKey() % 2 == 1) {

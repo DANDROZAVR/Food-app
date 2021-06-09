@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class ParseProductsInput {
     public static void parse() {
@@ -38,6 +39,7 @@ public class ParseProductsInput {
                     "vitamin_A, vitamin_B6, vitamin_B12, vitamin_C, vitamin_E, vitamin_K)\n  VALUES\n");
 
             boolean was = false;
+            HashMap<String, Integer> mp = new HashMap<>();
             for (Product prod : info) {
                 if (!(prod instanceof Solids)) throw new Exception("Product there should be instance of Solids class");
                 Solids item = (Solids) prod;
@@ -52,9 +54,13 @@ public class ParseProductsInput {
                 System.out.println(item.getName());
                 if (item.nutrient.getCarbo() < item.nutrient.getSugar()) continue;
                 if (item.nutrient.getCarbo() + item.nutrient.getFat() + item.nutrient.getProtein() > 100.0) continue;
+                mp.putIfAbsent(item.getName(), 0);
+                //if (mp.get(item.getName()) > 5) continue;
+                mp.put(item.getName(), mp.get(item.getName()) + 1);
                 if (was)
                     writer.println(",");
                 was = true;
+
                 writer.printf("(nextval('for_id_products'), '%s', '%s', '%s', '%s', %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", item.getProductType(), "Solids", item.getName(), item.getDescription(), item.getCalories(),
                         item.nutrient.getFat(), item.nutrient.getsaturated_fat(), item.nutrient.getProtein(), item.nutrient.getCarbo(), item.nutrient.getSugar(), item.nutrient.getZinc(),
                         item.nutrient.getIron(), item.nutrient.getCalcium(), item.nutrient.getMagnesium(), item.vitamins.a, item.vitamins.b6, item.vitamins.b12, item.vitamins.c, item.vitamins.e,

@@ -122,7 +122,10 @@ public class Query {
         String query = new String(
                         "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 " +
                                 "left join species_taste using(id_prod)"
-                             + " left join drinks_info using(id_prod);");
+                             + " left join drinks_info using(id_prod)" +
+                                "left join products_nutrient_main using(id_prod)" +
+                                "left join products_nutrient_additional using(id_prod)" +
+                                "left join products_vitamins using(id_prod);");
         return Database.execute(query);
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_all_first(String fromTable, String prefixName) throws SQLException {
@@ -359,7 +362,7 @@ public class Query {
         query = new String("select count(*) from restaurants_main where " +
                 "id = " + r.getId() + " AND " +
                 "name = '" + r.getName() + "' AND " +
-                "geoposition ~= '" + r.getGeoposition() + "' AND " +
+                "geoposition = '" + r.getGeoposition() + "' AND " +
                 "adres = '" + r.getAdres() + "';"
         );
         if(Integer.parseInt(Database.execute(query).get(1).get(0)) == 0){

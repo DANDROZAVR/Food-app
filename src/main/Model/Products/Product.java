@@ -7,14 +7,14 @@ public abstract class Product {
     final private int id;
     protected String name, description, productGroup, weightType;
     String[] area, links, tags;
-    private String repair(String input) {
+    public String repair(String input) {
         StringBuilder res = new StringBuilder();
         int last = 0;
         int end = 0;
         while(end < input.length()) { //125 max
             int i = end;
             while(end < input.length() && input.charAt(end) != ' ') ++end;
-            if (end - last > 123) {
+            if (end - last > 116) {
                 res.append('\n');
                 last = end;
             }
@@ -33,7 +33,7 @@ public abstract class Product {
         if (!name.equals("watermelon") && (name.contains("milk") || name.contains("water") || name.contains("shake") || name.contains("juice")))
             weightType = "ml"; else weightType = "g";
     }
-    public void setDescription(String description){ this.description = repair(description); }
+    public void setDescription(String description){ this.description = description; }
     public void setLinks(String[] links){ this.links = links; }
     public void setArea(String[] area){ this.area = area; }
     public void setName(String name){ this.name = name; }

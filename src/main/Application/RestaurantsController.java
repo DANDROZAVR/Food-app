@@ -27,8 +27,9 @@ import main.Model.Recipes.Recipe;
 import javax.xml.crypto.Data;
 
 public class RestaurantsController {
-    int id_order(int id_restaurant,int s){
-         return id_restaurant+s*1000;
+    static int id_order= 0;
+    int id_order(){
+         return id_order++;
     }
     Map<Hyperlink, Recipe> helper;
     private final ListView listView = new ListView();
@@ -96,10 +97,11 @@ public class RestaurantsController {
         order.setOnAction(t -> {
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
+            int new_id = id_order();
             for(Recipe r: order1){
                 try {
                     Database.execute("insert into orders(id_order, id_restaurant, id_rec, date) values ("
-                            + id_order(restaurant.getId(),order1.size())
+                            + new_id
                             +','
                             + restaurant.getId()
                             + ','
