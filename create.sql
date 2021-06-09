@@ -1,3 +1,4 @@
+\i clear.sql
 /*
 link to diagram
 https://github.com/DANDROZAVR/Food-app/blob/main/diagram.png
@@ -90,10 +91,10 @@ create table species_taste (
 create table products_nutrient_main(
 	id_prod integer not null unique constraint fk_nut_main references products(id_prod),
 	fat smallint not null check(fat >= 0 AND fat <= 100),
-	saturated_fat smallint check(saturated_fat is null or saturated_fat <= fat),
+	saturated_fat smallint default 0.00 check(saturated_fat is null or saturated_fat <= fat),
 	protein smallint not null check(protein >= 0 AND protein <= 100), 
 	carbo smallint not null check(carbo >= 0 AND carbo <= 100),
-	sugar smallint check(sugar is null OR (sugar >= 0 AND sugar <= carbo))
+	sugar_total smallint check(sugar_total is null OR (sugar_total >= 0 AND sugar_total <= carbo))
 	check(carbo + fat + protein <= 100)
 );
 create table products_nutrient_additional(
@@ -124,28 +125,20 @@ create table recipes (
 	check(sum_weight >= 0),
 	check(sum_calories >= 0)
 );
---check for products
-create table recipes_nutrient_main(
-	id_rec integer not null unique constraint fk_nut_main references recipes(id_rec),
-	fat smallint not null constraint fat1 check(fat >= 0 AND fat <= 100),
-	protein smallint not null constraint protein1 check(protein >= 0 AND protein <= 100), 
-	carbo smallint not null constraint carbo1 check(carbo >= 0 AND carbo <= 100),
-	sugar smallint constraint sugar1 check(sugar is null OR (sugar >= 0 AND sugar <= carbo)),
-	constraint sum_check1 check(carbo + fat + protein <= 100)
-);
+;
 create table recipes_areatag (
 	id integer constraint fk_rec_area references recipes(id_rec),
-	area varchar(40) not null
+	area varchar(50) not null
 );
 create table recipes_tag (
 	id integer constraint fk_rec_tag references recipes(id_rec),
-	tag varchar(30) not null
+	tag varchar(120) not null
 );
 
 create table recipes_content_products (
 	id_rec integer not null constraint fk_rec_cont references recipes(id_rec),
 	id integer not null constraint fk_prod references products(id_prod),
-	weight numeric(6) not null check(weight >= 0),  
+	weight integer not null check(weight >= 0),  
 	weight_type char(4) not null check(weight_type in ('g', 'ml'))
 );
 
@@ -175,22 +168,18 @@ create table recipes_content_recipes (
 
 create table restaurants_main(
         id integer not null primary key,
-        "name" varchar(10) not null,
-        geoposition varchar(30) not null, 
+        "name" varchar(10) not null, 
 		adres varchar(100)
 );
 create table restaurants_info(
        id integer not null primary key constraint fk_shop_des references restaurants_main(id), 
-       open time,
-       close time
-       constraint con_open_close check((open is null and close is null) or (close>open)),
        stars integer check (stars <= 5 OR stars is null),
        description varchar(100),
        food_delivery boolean not null
 );
 create table restaurants_geoposition(
 		id integer not null primary key references restaurants_main(id),	
-		geoposition varchar(30) not null
+		geoposition point not null
 );
 create table restaurants_plan_weekdays(
 	   id integer not null primary key constraint fk_shop_des references restaurants_main(id), 
@@ -237,7 +226,7 @@ create table shops_info(
 );
 create table shops_geoposition(
 		id integer not null primary key references shops_main(id),	
-		geoposition varchar(30) not null
+		geoposition point not null
 );
 create table shops_plan_weekdays(
 	   id integer not null primary key constraint fk_shop_des references shops_main(id), 
@@ -270,31 +259,11 @@ create table shops_content_recipes(
        cena numeric(10) not null,
        count integer not null check(count >= 1)
 );
-create table shops_discounts_recipes(
-       id_shop integer not null references shops_main(id),
-       id_rec integer not null references recipes(id_rec),
-       discount_val numeric(4) not null check(discount_val >0 and discount_val<=100),
-       min_count integer
-);
-create table shops_discounts_products(
-       id_shop integer not null references shops_main(id),
-       id_prod integer not null references products(id_prod),
-       min_count integer
-);
-create table shop_cards(
-       id_shop integer not null primary key references shops_main(id),
-       is_accumulative boolean not null 
-);
-create table discounts(
-       id_shop integer not null unique references shops_main(id),
-       sum_for_discount numeric(10) not null,
-       discount numeric check(discount >0 and discount<=100)
-);
-create table orders(
+create table restaurant_orders(
        id_order integer not null,
        id_restaurant integer not null references restaurants_main(id),
        id_rec integer not null references recipes(id_rec),
-       date date not null,
+       date timestamp not null,
        primary key(id_order,id_restaurant,id_rec,date)
 );
 
@@ -323,18 +292,8 @@ ALTER TABLE ONLY restaurants_group_meals
     ADD CONSTRAINT fses2e FOREIGN KEY (id_rec) references recipes(id_rec);*/
 ALTER TABLE ONLY recipes_areatag
     ADD CONSTRAINT rec_area_ee2 FOREIGN KEY (id) references recipes(id_rec);
-ALTER TABLE ONLY discounts
-    ADD CONSTRAINT disc_123 FOREIGN KEY (id_shop) references shops_main(id);
 ALTER TABLE ONLY shop_cards
     ADD CONSTRAINT disc_1223 FOREIGN KEY (id_shop) references shops_main(id);
-ALTER TABLE ONLY shops_discounts_products
-    ADD CONSTRAINT disc_12253 FOREIGN KEY (id_shop) references shops_main(id);
-ALTER TABLE ONLY shops_discounts_products
-    ADD CONSTRAINT disc_12233 FOREIGN KEY (id_prod) references products(id_prod);
-ALTER TABLE ONLY shops_discounts_recipes
-    ADD CONSTRAINT daisc_1 FOREIGN KEY (id_shop) references shops_main(id);
-ALTER TABLE ONLY shops_discounts_recipes
-    ADD CONSTRAINT daisc_12 FOREIGN KEY (id_rec) references recipes(id_rec);
 ALTER TABLE ONLY shops_content_recipes
     ADD CONSTRAINT da2isc_1 FOREIGN KEY (id_shop) references shops_main(id);	
 /*ALTER TABLE ONLY shops_content_recipes
@@ -350,7 +309,15 @@ ALTER TABLE ONLY species_taste
 ALTER TABLE ONLY drinks_info
     ADD CONSTRAINT fk_pwrod_dk FOREIGN KEY (id_prod) references products(id_prod);	
 ALTER TABLE ONLY shops_info
-    ADD CONSTRAINT fk_shoep_des FOREIGN KEY (id) references shops_main(id);	
+    ADD CONSTRAINT fk_shoep_des FOREIGN KEY (id) references shops_main(id);		
+ALTER TABLE ONLY restaurants_plan_saturday
+    ADD CONSTRAINT fk_plan_sat FOREIGN KEY (id) references restaurants_main(id);		
+ALTER TABLE ONLY restaurants_plan_sunday
+    ADD CONSTRAINT fk_plan_sat2 FOREIGN KEY (id) references restaurants_main(id);		
+ALTER TABLE ONLY restaurants_plan_weekdays
+    ADD CONSTRAINT fk_plan_sat3 FOREIGN KEY (id) references restaurants_main(id);		
+ALTER TABLE ONLY restaurants_geoposition
+    ADD CONSTRAINT fk_plan_sat3 FOREIGN KEY (id) references restaurants_main(id);		
 	
 create or replace function getProductAreaTags(item integer)
 	returns varchar as 
@@ -420,6 +387,7 @@ create or replace view solids_full(id_prod, product_group, product_class, name, 
 	natural join products_nutrient_main
 	natural join products_nutrient_additional
 	natural join products_vitamins;	
+	
 create or replace function solids_full_insert(i record)
 	returns void as
 $$
@@ -435,45 +403,61 @@ $$
 	end;
 $$ language plpgsql;
 
-create or replace rule spec_insert as
+create or replace rule solids_full_insert as
 on insert to solids_full
 do instead(
 	select solids_full_insert(new);
 );
-	
+
+drop table if exists shopsOrderRec cascade;
+drop table if exists shopsOrderProd cascade;
+
+create table shopsOrderRec(
+    id_order integer primary key not null,   
+    id_rec integer references recipes(id_rec),
+        id_shop integer not null references shops_main(id),       
+        date timestamp not null
+);
+create table shopsOrderProd(
+  id_order integer primary key not null,   
+  id_prod integer references products(id_prod),
+    id_shop integer not null references shops_main(id),       
+    date timestamp not null
+);
+  
+create or replace view shopOrders as 
+  select id_order, id_shop, id_prod as id, date from shopsOrderProd union 
+  select id_order, id_shop, id_rec as id, date from shopsOrderRec;
+
+create or replace function order_insert(id_order integer, id_shop integer, id integer, date timestamp)
+  returns void as
+$$
+  begin
+    if (id % 2 = 1) then
+      insert into shopsOrderProd 
+        values 
+      (id_order, id, id_shop, date);  
+    else
+      insert into shopsOrderRec
+        values 
+      (id_order, id, id_shop, date);
+    end if;
+  end;
+$$ language plpgsql;
+
+create or replace rule rule_insert as
+on insert to shopOrders
+do instead(
+  select order_insert(new.id_order, new.id_shop, new.id, new.date);
+);
+
+\i utils/solidsInsert.sql
+\i utils/speciesInsert.sql
+\i utils/recipesInsert.sql
 
 
-/*
 
-
-
-inserts
-
-
-*/
-	
-insert into products(id_prod, product_group, product_class, name, description, calories)
-	values
-(nextval('for_id_products'), 'fruits', 'Solids', 'apple', 'A very useful product, pleasant', 47),
-(nextval('for_id_products'), 'fruits', 'Solids', 'orange', 'Orange has an orange colour', 43),
-(nextval('for_id_products'), 'meat', 'Solids', 'beef', 'One of the most common types of meat', 187),
-(nextval('for_id_products'), 'minerals', 'Species', 'salt', 'An indispensable product both in the Middle Ages and today', 0);
-
-insert into products_areatag(id_prod, area)
-	values
-(1, 'Polska'),
-(1, 'Włochy'),
-(7, 'Worldwide');
-
-insert into products_tag(id_prod, tag)
-	values
-(1, 'Healthy food');
-
-insert into species_taste(id_prod, taste)
-	values 
-(7, 'Salty');	
-
-insert into restaurants_main(id,name,geoposition,adres) values (10, 'Andrew', 'CS', 'Dust');
---insert into recipes(id_rec, name, sum_weight,sum_calories,description,links) values (12,'sdfgsdgs',14,15,'csdfgsd','link');
+insert into restaurants_main(id,name,geoposition,adres) values (10, 'Andrew', '0,0', 'Dust');
 insert into restaurants_group_meals(id_restaurant,id_group,cena,min_cena,max_cena) values (10,5,3424,1213,4535);
 insert into group_meals_content(id_group,id_rec) values (5,12);
+insert into shops_main values(1,'sdfsaf','afadsfa');

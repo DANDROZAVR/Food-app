@@ -52,7 +52,6 @@ public class Restaurant extends Building{
             }
         }
         for(Integer i: temp.keySet()){
-            System.out.println(temp.get(i));
             ans.add(new Order(i,temp.get(i),dates.get(i),Parser.parseRestaurantById(restaurant))) ;
         }
         return ans;

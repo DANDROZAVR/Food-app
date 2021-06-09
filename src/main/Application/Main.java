@@ -33,7 +33,7 @@ public class Main extends Application {
             System.err.println("Error set connection to the database");
             System.exit(1);
         }
-        ParseProductsInput.parse();
+        //ParseProductsInput.parse();
         //ParserRecipesInput.parse();
         //System.exit(0);
         launch(args);

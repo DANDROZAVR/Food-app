@@ -1,0 +1,16 @@
+Andrei Daletski, Daniel Yurszewicz, Andrei Mishchanka
+
+Projekt jest bardzo prostą wersją książki kucharskiej z produktami i przepisami. Produkt może mieć w sobie różne mineraly, vitaminy. Przepis ma instrukcję jak go ugotować, nazwę, czas przygotowania oraz dodatkową ciekawą informację.
+
+Istnieje możliwość wyszukiwania produktu/przepisu oraz pogląd informacji o skłądnikach/samich przepisach. Można posortować według id albo kalorii oraz zobaczyć specjalnie "tegi" produktów albo przepisów.
+
+Istnieje możliwość szmodzielnie zrobić jakieś zapytania oraz zobaczyć ich wynik.
+
+Równieź są, jak opisaliśmy w pierwszej cześci projektu, sklepy i restauracji, dla których wiemy różną informację, jak, na przykład, adres, nazwę, czas pracy w różne dni tygodnia i opis przedmiotów, co można zobaczyć na schemacie.
+
+Istnieją grupowe dania, to znacza placisz jakąś cenę niezalieżną od składników, cena ta jest wyznaczona w każdej restauracji osobne. Zmiana ceny produkta więc moża nie mieć wpływ na cenę samego grupowego menu.
+
+
+Podobne, tylko nawet łatweiej, jest ze sklepami. Po prostu istnieją tam jakiś produkty oraz przepisy i możemy ich kupować. 
+
+W tym etapie zdecywaliśmy nie mieć żadnych związków z kartą zniszek.

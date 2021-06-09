@@ -36,7 +36,6 @@ public class ParserRecipesInput {
         Random rand = new Random();
         int clc = 0;
         for (Recipe item : cond) {
-            if (item.getName().equals("death by chocolate  copycat dark chocolate sauce")); else continue;
             ++clc;
             int all = 0;
             String[] possibleProducts = item.getIngredients().split("`");

@@ -9,6 +9,7 @@ public class Building {
         this.adres = adres;
         this.name = name;
     }
+
     public void setId(int id){
         this.id = id;
     }
@@ -33,7 +34,7 @@ public class Building {
     public String getGeoposition(){
         return geoposition;
     }
-    Building(){
+    public Building(){
         id = 0;
         name = geoposition = name = null;
     }
