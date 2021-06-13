@@ -64,7 +64,7 @@ public class ParserRecipesInput {
             if (content.size() == all) {
                 System.out.println(clc);
                 res.add(new Recipe(0, item.getName(), item.getDescription(), content, item.getInstruction(), true).setNormalComponent(Realcontent).setTime(item.getTime()));
-                if (res.size() > 50) return res;
+                //if (res.size() > 5) return res;
             }
         }
         return res;
@@ -83,7 +83,7 @@ public class ParserRecipesInput {
                 if (was)
                     writer.printf(",\n");
                 was = true;
-                writer.printf("(nextval('for_id_recipes'), '%s', %d, %d, '%s', '%s')", item.getName(), item.getTime(), item.getCalories(), item.getDescription(), item.getInstruction());
+                writer.printf("(nextval('for_id_recipes'), '%s', %d, %d, %d, '%s', '%s')", item.getName(), item.getTime(), item.getWeight(), item.getCalories(), item.getDescription(), item.getInstruction());
             }
             writer.println(";\n\n");
             writer.write("insert into recipes_content_products\n  values\n");

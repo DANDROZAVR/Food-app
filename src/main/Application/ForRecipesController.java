@@ -93,10 +93,10 @@ public class ForRecipesController extends Main {
             try {
                 ArrayList<ArrayList<String>> output = Query.getByNamePrefix("recipes", GetText.getText());
                 for (ArrayList<String> s : output) {
-                    if (!s.get(5).equals("description")) {
+                    if (!s.get(4).equals("description")) {
                         Hyperlink link = new Hyperlink(s.get(1));
-                        link.setTooltip(new Tooltip("weight: " + s.get(3) + "\n" +
-                                "Calories per 100 g: " + s.get(4)+ "\n" + "Description: " + s.get(5)));
+                        link.setTooltip(new Tooltip(
+                                "Calories per 100 g: " + s.get(3)+ "\n" + "Description: " + s.get(4)));
                         link.setOnAction(t -> {
                             FXMLLoader loader = LoadXML.load("ForOneRecipeView.fxml");
                             ArrayList<ArrayList<String>> temp = new ArrayList<>();
@@ -123,14 +123,14 @@ public class ForRecipesController extends Main {
         });
         caloriesAsc.setOnAction(event -> {
             try {
-                setRecipes("(select * from recipes order by sum_calories) a");
+                setRecipes("(select * from recipes order by calories) a");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
         caloriesDesc.setOnAction(event -> {
             try {
-                setRecipes("(select * from recipes order by sum_calories DESC) a");
+                setRecipes("(select * from recipes order by calories DESC) a");
             } catch (Exception e) {
                 e.printStackTrace();
             }

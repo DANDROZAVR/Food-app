@@ -87,7 +87,7 @@ public class Recipe {
             }
             Components.add(new_component);
         }
-        this.calories = this.all_calories*100 / this.weight;
+        //this.calories = this.all_calories*100 / this.weight;
     }
     public Recipe(int id,  String Name, String Description, ArrayList < Pair <Product, Integer> > List, String Instruction, boolean ignored) throws SQLException {
         this.id = id;

@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="720.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForAddingRestaurantsController">
+<AnchorPane prefHeight="720.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForAddingShopsController">
    <children>
-      <Button fx:id="AddRestaurant" layoutX="303.0" layoutY="630.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="276.0" text="ADD" />
+      <Button fx:id="AddShop" layoutX="303.0" layoutY="630.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="276.0" text="ADD" />
       <Button fx:id="cancelButton" cancelButton="true" layoutX="14.0" layoutY="18.0" mnemonicParsing="false" onAction="#goToHome" prefHeight="42.0" prefWidth="71.0" text="&lt;">
          <font>
             <Font name="Arial Black" size="15.0" />
@@ -18,7 +18,7 @@
       </Button>
       <Label fx:id="error_out" layoutX="596.0" layoutY="633.0" prefHeight="63.0" prefWidth="189.0" textFill="#16b221" />
       <TextField fx:id="GetName" layoutX="118.0" layoutY="18.0" prefHeight="42.0" prefWidth="470.0" />
-      <Label layoutX="620.0" layoutY="18.0" prefHeight="42.0" prefWidth="158.0" text="Restaurant's name" />
+      <Label layoutX="620.0" layoutY="18.0" prefHeight="42.0" prefWidth="158.0" text="Shop's name" />
       <TextField fx:id="GetDescription" layoutX="118.0" layoutY="71.0" prefHeight="42.0" prefWidth="470.0" />
       <TextField fx:id="GetAdres" layoutX="118.0" layoutY="124.0" prefHeight="42.0" prefWidth="470.0" />
       <Label layoutX="620.0" layoutY="71.0" prefHeight="42.0" prefWidth="158.0" text="Description" />

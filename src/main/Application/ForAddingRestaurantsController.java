@@ -21,7 +21,7 @@ import main.Model.Products.Product;
 import main.Model.Recipes.Recipe;
 import main.Model.Restaurants.Restaurant;
 
-public class ForAddingRestaurantsController extends Main {
+public class ForAddingRestaurantsController {
 
     @FXML
     private Button AddRestaurant;
@@ -188,7 +188,7 @@ public class ForAddingRestaurantsController extends Main {
                 TimeInterval Weekday = new TimeInterval(Integer.parseInt(GetWeekdayStartHour.getValue()), Integer.parseInt(GetWeekdayStartMinute.getValue()), Integer.parseInt(GetWeekdayFinishHour.getValue()), Integer.parseInt(GetWeekdayFinishMinute.getValue()));
                 TimeInterval Saturday = new TimeInterval(Integer.parseInt(GetSaturdayStartHour.getValue()), Integer.parseInt(GetSaturdayStartMinute.getValue()), Integer.parseInt(GetSaturdayFinishHour.getValue()), Integer.parseInt(GetSaturdayFinishMinute.getValue()));
                 TimeInterval Sunday = new TimeInterval(Integer.parseInt(GetSundayStartHour.getValue()), Integer.parseInt(GetSundayStartMinute.getValue()), Integer.parseInt(GetSundayFinishHour.getValue()), Integer.parseInt(GetSundayFinishMinute.getValue()));
-                Query.addNewRestaurant(new Restaurant(Query.getNewIdForRestaurant(), GetGeoposition.getText(), GetAdres.getText(), GetName.getText()), GetDescription.getText(), GetIsFood.isSelected(), Integer.parseInt(GetStars.getValue()), Weekday, Saturday, Sunday);
+                Query.addNewRestaurant(new Restaurant(Query.getNewIdFor("restaurants"), GetGeoposition.getText(), GetAdres.getText(), GetName.getText()), GetDescription.getText(), GetIsFood.isSelected(), Integer.parseInt(GetStars.getValue()), Weekday, Saturday, Sunday);
                 error_out.setTextFill(Color.web("#16b221", 0.8));
                 error_out.setText("OK");
             }catch (Exception e){

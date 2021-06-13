@@ -7,6 +7,7 @@ import main.Model.Products.Product;
 import main.Model.Products.Species;
 import main.Model.Recipes.Recipe;
 import main.Model.Restaurants.Restaurant;
+import main.Model.Shops.Shop;
 
 import javax.xml.crypto.Data;
 import java.sql.SQLException;
@@ -35,6 +36,13 @@ public class Query {
         return Database.execute(query);
     }
     public static ArrayList<Pair<Integer,Integer>> getAllContentOfRecipe(int id) throws SQLException {
+        ArrayList<ArrayList<String>> content = Database.execute("select id, id_rec from recipes_content_products where id = " + id + " union (select id, id_rec from recipes_content_recipes where id = " + id + ");");
+        ArrayList<Pair<Integer,Integer>> trueContent = new ArrayList<>();
+        for(int i = 1; i < content.size(); i++){
+            trueContent.add(new Pair<Integer, Integer>(Integer.parseInt(content.get(i).get(0)), Integer.parseInt(content.get(i).get(1))));
+        }
+        return trueContent;
+        /*
         ArrayList<ArrayList<String>> content = Database.execute("select getRecipeContentRecipes(" + id+ ");");
         content.addAll(Database.execute("select getRecipeContentProducts(" + id+ ");"));
         ArrayList<Pair<Integer,Integer>> trueContent = new ArrayList<>();
@@ -69,6 +77,7 @@ public class Query {
                 }
         }
         return trueContent;
+        */
     }
     public static ArrayList<Product> getSimpleProductsWithoutSpecies() throws Exception {
         String query = new String("SELECT * FROM products;");
@@ -128,11 +137,9 @@ public class Query {
     public static ArrayList<ArrayList<String>> getByNamePrefix_all(String fromTable, String prefixName) throws SQLException {
         String query = new String(
                         "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 " +
-                                "left join species_taste using(id_prod)"
+                                "left join products_tag using(id_prod)"
                              + " left join drinks_info using(id_prod)" +
-                                "left join products_nutrient_main using(id_prod)" +
-                                "left join products_nutrient_additional using(id_prod)" +
-                                "left join products_vitamins using(id_prod);");
+                                "left join products_nutrient using(id_prod);");
         return Database.execute(query);
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_all_first(String fromTable, String prefixName) throws SQLException {
@@ -158,9 +165,7 @@ public class Query {
         }
         throw new SQLException("unknown val-sequence:" + S);
     }
-    public static int getNewIdForRestaurant() throws SQLException {
-        return Integer.parseInt(Database.execute(new String("select nextval('for_id_restaurants');")).get(1).get(0));
-    }
+
     public static void addNewProduct(Product p) throws SQLException, ClassNotFoundException, Exception {
         if(Integer.parseInt(Database.execute(new String("select count(*) from products where id_prod = " + p.getId() + ";")).get(1).get(0)) != 0){
             throw new Exception("has this id");
@@ -253,14 +258,12 @@ public class Query {
         if(Integer.parseInt(Database.execute(new String("select count(*) from recipes where name = '" + p.getName() + "';")).get(1).get(0)) != 0){
             throw new Exception("has this name");
         }
-        String query = new String("INSERT INTO recipes(id_rec, name, prep_time,sum_weight, sum_calories, description, instruction) VALUES ("
+        String query = new String("INSERT INTO recipes(id_rec, name, prep_time, calories, description, instruction) VALUES ("
                 + p.getId()
                 + ", '"
                 + p.getName()
                 +"', "
                 + p.getTime()
-                +", "
-                + p.getWeight()
                 +", "
                 + p.getAllCalories()
                 +", '"
@@ -278,8 +281,7 @@ public class Query {
                 "id_rec = " + p.getId() + " AND " +
                 "name = '" + p.getName() + "' AND " +
                 "prep_time = " + p.getTime() + " AND " +
-                "sum_weight = " + p.getWeight() + " AND " +
-                "sum_calories = " + p.getAllCalories() + " AND " +
+                "calories = " + p.getAllCalories() + " AND " +
                 "description = '" + p.getDescription() + "' AND " +
                 "instruction = '" + p.getInstruction() + "';"
         );
@@ -353,15 +355,46 @@ public class Query {
             throw new Exception("has this name");
         }
 
-        String query = new String("INSERT INTO restaurants_main(id, name, geoposition, adres) VALUES ("
+        String query = new String("INSERT INTO restaurants_main(id, name, address, geoposition, open_weekdays, close_weekdays, open_saturday, close_saturday, open_sunday, close_sunday, stars, description, food_delivery) VALUES ("
                 + r.getId()
                 + ", '"
                 + r.getName()
                 +"', '"
+                + r.getAdres()
+                +"', '"
                 + r.getGeoposition()
                 +"', '"
-                + r.getAdres()
-                +"');");
+                + weekday.getStartHour()
+                + ":"
+                + weekday.getStartMinute()
+                + "', '"
+                + weekday.getEndHour()
+                + ":"
+                + weekday.getEndMinute()
+
+                +"', '"
+                + saturday.getStartHour()
+                + ":"
+                + saturday.getStartMinute()
+                + "', '"
+                + saturday.getEndHour()
+                + ":"
+                + saturday.getEndMinute()
+                +"', '"
+                + sunday.getStartHour()
+                + ":"
+                + sunday.getStartMinute()
+                + "', '"
+                + sunday.getEndHour()
+                + ":"
+                + sunday.getEndMinute()
+                + "', "
+                + stars
+                + ", '"
+                + description
+                + "', "
+                + isFood
+                +");");
         try{
             Database.update(query);
         }catch (Exception e){
@@ -372,41 +405,94 @@ public class Query {
                 "id = " + r.getId() + " AND " +
                 "name = '" + r.getName() + "' AND " +
                 "geoposition ~= '" + r.getGeoposition() + "' AND " +
-                "adres = '" + r.getAdres() + "';"
+                "address = '" + r.getAdres()
+                + "' AND open_weekdays='" +weekday.getStartHour() + ":" + weekday.getStartMinute()
+                + "' AND close_weekdays='" + weekday.getEndHour() + ":" + weekday.getEndMinute()
+                + "' AND open_saturday='" +saturday.getStartHour() + ":" + saturday.getStartMinute()
+                + "' AND close_saturday='" + saturday.getEndHour() + ":" + saturday.getEndMinute()
+                + "' AND open_sunday='" +sunday.getStartHour() + ":" + sunday.getStartMinute()
+                + "' AND close_sunday='" + sunday.getEndHour() + ":" + sunday.getEndMinute()
+                +"' AND stars=" + stars
+                + " AND description='" + description + "' AND food_delivery=" + isFood
+                + ";"
         );
         if(Integer.parseInt(Database.execute(query).get(1).get(0)) == 0){
             throw new Exception("can't add to restaurants_main");
         }
 
+    }
+
+    public static void addNewShop(Shop r, String description, boolean isFood, int stars, TimeInterval weekday, TimeInterval saturday, TimeInterval sunday) throws SQLException, Exception {
+        if(Integer.parseInt(Database.execute(new String("select count(*) from shops_main where id = " + r.getId() + ";")).get(1).get(0)) != 0){
+            throw new Exception("has this id");
+        }
+        if(Integer.parseInt(Database.execute(new String("select count(*) from shops_main where name = '" + r.getName() + "';")).get(1).get(0)) != 0){
+            throw new Exception("has this name");
+        }
+
+        String query = new String("INSERT INTO shops_main(id, name, address, geoposition, open_weekdays, close_weekdays, open_saturday, close_saturday, open_sunday, close_sunday, stars, description, food_delivery) VALUES ("
+                + r.getId()
+                + ", '"
+                + r.getName()
+                +"', '"
+                + r.getAdres()
+                +"', '"
+                + r.getGeoposition()
+                +"', '"
+                + weekday.getStartHour()
+                + ":"
+                + weekday.getStartMinute()
+                + "', '"
+                + weekday.getEndHour()
+                + ":"
+                + weekday.getEndMinute()
+
+                +"', '"
+                + saturday.getStartHour()
+                + ":"
+                + saturday.getStartMinute()
+                + "', '"
+                + saturday.getEndHour()
+                + ":"
+                + saturday.getEndMinute()
+                +"', '"
+                + sunday.getStartHour()
+                + ":"
+                + sunday.getStartMinute()
+                + "', '"
+                + sunday.getEndHour()
+                + ":"
+                + sunday.getEndMinute()
+                + "', "
+                + stars
+                + ", '"
+                + description
+                + "', "
+                + isFood
+                +");");
         try{
-            String qry = new String("insert into restaurants_plan_weekdays(id, open, close) values(" + r.getId() + ", '" + weekday.getStartHour() + ":" + weekday.getStartMinute() + "', '" + weekday.getEndHour() + ":" + weekday.getEndMinute() + "');");
-            Database.update(qry);
-            if(Integer.parseInt(Database.execute(new String("select count(*) from restaurants_plan_weekdays where id=" + r.getId() + " AND open='"+weekday.getStartHour() + ":" + weekday.getStartMinute() + "' AND close='" + weekday.getEndHour() + ":" + weekday.getEndMinute() + "';")).get(1).get(0)) == 0){
-                throw new Exception();
-            }
-            qry = new String("insert into restaurants_plan_saturday(id, open, close) values(" + r.getId() + ", '" + saturday.getStartHour() + ":" + saturday.getStartMinute() + "', '" + saturday.getEndHour() + ":" + saturday.getEndMinute() + "');");
-            Database.update(qry);
-            if(Integer.parseInt(Database.execute(new String("select count(*) from restaurants_plan_saturday where id=" + r.getId() + " AND open='"+saturday.getStartHour() + ":" + saturday.getStartMinute() + "' AND close='" + saturday.getEndHour() + ":" + saturday.getEndMinute() + "';")).get(1).get(0)) == 0){
-                throw new Exception();
-            }
-            qry = new String("insert into restaurants_plan_sunday(id, open, close) values(" + r.getId() + ", '" + sunday.getStartHour() + ":" + sunday.getStartMinute() + "', '" + sunday.getEndHour() + ":" + sunday.getEndMinute() + "');");
-            Database.update(qry);
-            if(Integer.parseInt(Database.execute(new String("select count(*) from restaurants_plan_sunday where id=" + r.getId() + " AND open='"+sunday.getStartHour() + ":" + sunday.getStartMinute() + "' AND close='" + sunday.getEndHour() + ":" + sunday.getEndMinute() + "';")).get(1).get(0)) == 0){
-                throw new Exception();
-            }
-            qry = new String("insert into restaurants_info(id, stars, description, food_delivery) values(" + r.getId() + ", " + stars + ", '" + description + "', " + isFood + ");");
-            Database.update(qry);
-            if(Integer.parseInt(Database.execute(new String("select count(*) from restaurants_info where id=" + r.getId() + " AND stars=" + stars + " AND description='" + description + "' AND food_delivery=" + isFood +";")).get(1).get(0)) == 0){
-                throw new Exception();
-            }
+            Database.update(query);
         }catch (Exception e){
-            Database.update(new String("delete from restaurants_plan_weekdays where id = " + r.getId()));
-            Database.update(new String("delete from restaurants_plan_saturday where id = " + r.getId()));
-            Database.update(new String("delete from restaurants_plan_sunday where id = " + r.getId()));
-            Database.update(new String("delete from restaurants_info where id = " + r.getId()));
-            Database.update(new String("delete from restaurants_main where id = " + r.getId()));
             e.printStackTrace();
-            throw new Exception("bad");
+        }
+
+        query = new String("select count(*) from shops_main where " +
+                "id = " + r.getId() + " AND " +
+                "name = '" + r.getName() + "' AND " +
+                "geoposition ~= '" + r.getGeoposition() + "' AND " +
+                "address = '" + r.getAdres()
+                + "' AND open_weekdays='" +weekday.getStartHour() + ":" + weekday.getStartMinute()
+                + "' AND close_weekdays='" + weekday.getEndHour() + ":" + weekday.getEndMinute()
+                + "' AND open_saturday='" +saturday.getStartHour() + ":" + saturday.getStartMinute()
+                + "' AND close_saturday='" + saturday.getEndHour() + ":" + saturday.getEndMinute()
+                + "' AND open_sunday='" +sunday.getStartHour() + ":" + sunday.getStartMinute()
+                + "' AND close_sunday='" + sunday.getEndHour() + ":" + sunday.getEndMinute()
+                +"' AND stars=" + stars
+                + " AND description='" + description + "' AND food_delivery=" + isFood
+                + ";"
+        );
+        if(Integer.parseInt(Database.execute(query).get(1).get(0)) == 0){
+            throw new Exception("can't add to shops_main");
         }
 
     }

@@ -49,6 +49,8 @@ public class sampleController extends Main {
     private Button ButtonAddRestaurants;
     @FXML
     private Button ButtonAddRecipes;
+    @FXML
+    private Button ButtonAddShops;
 
     @FXML
     private Button Shops;
@@ -97,6 +99,12 @@ public class sampleController extends Main {
             FXMLLoader loader = LoadXML.load("ForAddingRestaurants.fxml");
             Parent root = loader.getRoot();
             ((Stage) ButtonAddRestaurants.getScene().getWindow()).setScene(new Scene(root));
+        });
+        assert ButtonAddShops != null : "fx:id=\"ButtonAddShops\" was not injected: check your FXML file 'sample.fxml'.";
+        ButtonAddShops.setOnAction(event -> {
+            FXMLLoader loader = LoadXML.load("ForAddingShops.fxml");
+            Parent root = loader.getRoot();
+            ((Stage) ButtonAddShops.getScene().getWindow()).setScene(new Scene(root));
         });
         QueryButton.setOnAction(t -> {
             try {

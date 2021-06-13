@@ -44,8 +44,7 @@ public class ForButtonRestaurantsController extends Main {
             for (ArrayList<String> s : output) {
                 if (!s.get(1).equals("name")) {
                     Hyperlink link = new Hyperlink(s.get(1));
-                    link.setTooltip(new Tooltip("adres: " + s.get(3) + "\n" +
-                            "Geoposition:  " + s.get(2)+ "\n"));
+                    link.setTooltip(new Tooltip("adres: " + s.get(2) + "\n"));
                     link.setOnAction(t -> {
                         FXMLLoader loader = LoadXML.load("Restaurants.fxml");
                         ArrayList<ArrayList<String>> temp = new ArrayList<>();
