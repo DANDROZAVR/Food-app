@@ -427,13 +427,13 @@ drop table if exists shopsOrderRec cascade;
 drop table if exists shopsOrderProd cascade;
 
 create table shopsOrderRec(
-    id_order integer primary key not null,
+    id_order integer not null,
     id_rec integer references recipes(id_rec),
         id_shop integer not null references shops_main(id),
         date timestamp not null
 );
 create table shopsOrderProd(
-  id_order integer primary key not null,
+  id_order integer not null,
   id_prod integer references products(id_prod),
     id_shop integer not null references shops_main(id),
     date timestamp not null
