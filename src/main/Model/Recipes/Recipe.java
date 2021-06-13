@@ -55,12 +55,12 @@ public class Recipe {
         }
         return res.toString();
     }
-    public Recipe(int id, int weight,int calories, String Name, String Description, String Instruction) {
+    public Recipe(int id, int calories, String Name, String Description, String Instruction) {
         this.id = id;
         this.Name = Name;
         this.description = Description;
         this.calories = calories;
-        this.weight = weight;
+        //this.weight = weight;
         this.instruction = Instruction;
     }
     public Recipe(int id,  String Name, String Description, ArrayList < Pair <Integer, Integer> > List, String Instruction) throws SQLException {
