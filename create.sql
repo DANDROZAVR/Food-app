@@ -1,58 +1,5 @@
 \i clear.sql
 
-drop table if exists recipes cascade;
-drop table if exists products cascade;
-drop table if exists products_tag cascade;
-drop table if exists products_areatag cascade;
-drop table if exists products_nutrient_main cascade;
-drop table if exists products_nutrient_additional cascade;
-drop table if exists products_vitamins cascade;
-
-drop table if exists recipes_areatag cascade;
-drop table if exists recipes_tag cascade;
-drop table if exists recipes_content_products cascade;
-drop table if exists recipes_content_recipes cascade;
-drop table if exists recipes_nutrient_main cascade;
-drop table if exists recipes_nutrient_additional cascade;
-
-drop table if exists drinks_info cascade;
-drop table if exists species_taste cascade;
-
-drop type if exists prod_class_enum cascade;
-drop type if exists species_taste_enum cascade;
-
-drop table if exists restaurants_info cascade;
-drop table if exists orders cascade;
-drop table if exists restaurants_main cascade;
-drop table if exists restaurants_group_meals cascade;
-drop table if exists group_meals_content cascade;
-
-drop table if exists restaurants_geoposition cascade;
-drop table if exists restaurants_plan_weekdays;
-drop table if exists restaurants_plan_saturday;
-drop table if exists restaurants_plan_sunday;
-
-
-drop table if exists shop_description cascade;
-drop table if exists shops_main cascade;
-drop table if exists shops_geoposition cascade;
-
-drop table if exists shops_plan_weekdays;
-drop table if exists shops_plan_saturday;
-drop table if exists shops_plan_sunday;
-
-drop table if exists shops_content_recipes cascade;
-drop table if exists shops_content_products cascade;
-drop table if exists shops_discounts_recipes cascade;
-drop table if exists shops_discounts_products cascade;
-drop table if exists shop_cards cascade;
-drop table if exists shops_info cascade;
-drop table if exists discounts cascade;
-
-drop sequence if exists for_id_products cascade;
-drop sequence if exists for_id_recipes cascade;
-drop sequence if exists for_id_restaurants cascade;
-drop sequence if exists for_id_shop cascade;
 
 
 create type prod_class_enum as ENUM('Drinks', 'Solids', 'Species');
@@ -67,10 +14,6 @@ create table products (
 	description varchar(400),
 	calories numeric(5) not null check(calories >= 0)
 );
-create table products_areatag (
-	id_prod integer constraint fk_prod_area references products(id_prod),
-	area varchar(30) not null
-);
 create table products_tag (
 	id_prod integer constraint fk_prod_area references products(id_prod),
 	tag varchar(40) not null
@@ -80,12 +23,6 @@ create table drinks_info (
 	sugar boolean not null, 
 	colour varchar(15)
 );
-
-/*create table species_taste (	
-	id_prod integer not null primary key constraint fk_prod_ss references products(id_prod),
-	taste species_taste_enum not null
-);*/	
-
 create table products_nutrient(
 	id_prod integer not null unique constraint fk_nut_main references products(id_prod),
 	fat smallint not null check(fat >= 0 AND fat <= 100),
@@ -93,12 +30,10 @@ create table products_nutrient(
 	protein smallint not null check(protein >= 0 AND protein <= 100), 
 	carbo smallint not null check(carbo >= 0 AND carbo <= 100),
 	sugar_total smallint check(sugar_total is null OR (sugar_total >= 0 AND sugar_total <= carbo)),
-	id_prod integer not null unique constraint fk_nut_main references products(id_prod),
 	zinc real default 0.00 check(zinc >= 0.00 AND zinc <= 100000.00),
 	iron real default 0.00 check(iron >= 0.00 AND iron <= 100000.00), 
 	calcium real default 0.00 check(calcium >= 0.00 AND iron <= 100000.00), 
 	magnesium real default 0.00 check(magnesium >= 0.00 AND magnesium <= 100000.00),
-	id_prod integer not null unique constraint fk_vit_main references products(id_prod),
 	vitamin_A real default 0.00 check(vitamin_A >= 0.00 AND vitamin_A <= 100000.00),
 	vitamin_B6 real default 0.00 check(vitamin_B6 >= 0.00 AND vitamin_B6 <= 100000.00),
 	vitamin_B12 real default 0.00 check(vitamin_B12 >= 0.00 AND vitamin_B12 <= 100000.00),
@@ -107,26 +42,8 @@ create table products_nutrient(
 	vitamin_K real default 0.00 check(vitamin_K >= 0.00 AND vitamin_K <= 100000.00)
 	check (vitamin_A + vitamin_B6 + vitamin_B12 + vitamin_C + vitamin_E + vitamin_K <= 100000.00),
 	check(carbo + fat + protein <= 100),
-	taste species_taste_enum default null,
-	
+	taste species_taste_enum default null	
 );
-/*create table products_nutrient_additional(
-	id_prod integer not null unique constraint fk_nut_main references products(id_prod),
-	zinc real default 0.00 check(zinc >= 0.00 AND zinc <= 100000.00),
-	iron real default 0.00 check(iron >= 0.00 AND iron <= 100000.00), 
-	calcium real default 0.00 check(calcium >= 0.00 AND iron <= 100000.00), 
-	magnesium real default 0.00 check(magnesium >= 0.00 AND magnesium <= 100000.00)
-);
-create table products_vitamins(
-	id_prod integer not null unique constraint fk_vit_main references products(id_prod),
-	vitamin_A real default 0.00 check(vitamin_A >= 0.00 AND vitamin_A <= 100000.00),
-	vitamin_B6 real default 0.00 check(vitamin_B6 >= 0.00 AND vitamin_B6 <= 100000.00),
-	vitamin_B12 real default 0.00 check(vitamin_B12 >= 0.00 AND vitamin_B12 <= 100000.00),
-	vitamin_C real default 0.00 check(vitamin_C >= 0.00 AND vitamin_C <= 100000.00),
-	vitamin_E real default 0.00 check(vitamin_E >= 0.00 AND vitamin_E <= 100000.00),
-	vitamin_K real default 0.00 check(vitamin_K >= 0.00 AND vitamin_K <= 100000.00)
-	check (vitamin_A + vitamin_B6 + vitamin_B12 + vitamin_C + vitamin_E + vitamin_K <= 100000.00)
-);*/ 
 create table recipes (
 	id_rec integer constraint pk_reci primary key,
 	name varchar(200) not null,
@@ -134,13 +51,7 @@ create table recipes (
 	calories numeric(7) not null, 
 	description varchar(1000), 
 	instruction varchar(1500), 
-	check(sum_weight >= 0),
-	check(sum_calories >= 0)
-);
-;
-create table recipes_areatag (
-	id integer constraint fk_rec_area references recipes(id_rec),
-	area varchar(50) not null
+	check(calories >= 0)
 );
 create table recipes_tag (
 	id integer constraint fk_rec_tag references recipes(id_rec),
@@ -164,7 +75,7 @@ create table recipes_content_recipes (
 create table restaurants_main(
         id integer not null primary key,
         "name" varchar(50) not null, 
-		adres varchar(100),
+		address varchar(100),
 		geoposition point,
 		open_weekdays time,
 		close_weekdays time,
@@ -186,10 +97,7 @@ create table restaurants_info(
 create table restaurants_group_meals(
        id_restaurant integer not null references restaurants_main(id),
        id_group integer not null primary key,
-       cena numeric(10) not null, 
-       min_cena numeric(10) not null,
-       max_cena numeric(10) not null,
-       constraint con_min_max check(max_cena >= min_cena)
+       cena numeric(10) not null
 );
 create table group_meals_content(
        id_group integer not null references restaurants_group_meals(id_group),
@@ -197,11 +105,10 @@ create table group_meals_content(
 );
 
 
-
-create table shopss_main(
+create table shops_main(
         id integer not null primary key,
         "name" varchar(50) not null, 
-		adres varchar(100),
+		address varchar(100),
 		geoposition point,
 		open_weekdays time,
 		close_weekdays time,
@@ -217,25 +124,30 @@ create table shopss_main(
 create table shops_content_products(
        id_shop integer not null references shops_main(id),
        id_prod integer not null references products(id_prod),
-       cena numeric(10) not null,
-       count integer not null check(count >= 1)
+       price numeric(10) not null,
+       count integer not null check(count >= 0)
 );
 create table shops_content_recipes(
        id_shop integer not null references shops_main(id),
        id_rec integer not null references recipes(id_rec),
-       cena numeric(10) not null,
-       count integer not null check(count >= 1)
+       price numeric(10) not null,
+       count integer not null check(count >= 0)
 );
-
 
 create table restaurant_orders(
        id_order integer not null,
        id_restaurant integer not null references restaurants_main(id),
        id_rec integer not null references recipes(id_rec),
+	   price numeric(10) not null,
        date timestamp not null,
        primary key(id_order,id_restaurant,id_rec,date)
 );
-
+create table restaurant_content_recipes(
+       id_restaurant integer not null references restaurants_main(id),
+       id_rec integer not null references recipes(id_rec),
+       price numeric(10) not null,
+       count integer not null check(count >= 0)
+);
 
 create sequence for_id_products start with 1 increment by 2 maxvalue 100000;
 create sequence for_id_recipes start with 2 increment by 2 maxvalue 100000;
@@ -353,7 +265,7 @@ do instead(
 create or replace view solids_full(id_prod, product_group, product_class, name, description, calories, fat, saturated_fat, protein, carbo, sugar, zinc, iron, calcium, magnesium, vitamin_A, vitamin_B6, vitamin_B12, vitamin_C, vitamin_E, vitamin_K)
 	as
 	select * from products 
-	natural join products_nutrient
+	natural join products_nutrient;
 	
 create or replace function solids_full_insert(i record)
 	returns void as
@@ -378,13 +290,15 @@ drop table if exists shopsOrderProd cascade;
 create table shopsOrderRec(
     id_order integer primary key not null,   
     id_rec integer references recipes(id_rec),
-        id_shop integer not null references shops_main(id),       
-        date timestamp not null
+    id_shop integer not null references shops_main(id),       
+	price numeric(10) not null,
+    date timestamp not null
 );
 create table shopsOrderProd(
-  id_order integer primary key not null,   
-  id_prod integer references products(id_prod),
+	id_order integer primary key not null,   
+	id_prod integer references products(id_prod),
     id_shop integer not null references shops_main(id),       
+	price numeric(10) not null,
     date timestamp not null
 );
   

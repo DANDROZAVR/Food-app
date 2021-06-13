@@ -121,7 +121,7 @@ public class ShopController {
             for(Integer r: order1){
                 System.out.println(r);
                 try {
-                    Database.execute("insert into shopOrders(id_order, id_shop, id, date) values ("
+                    Database.update("insert into shopOrders(id_order, id_shop, id, date) values ("
                             + new_id
                             +','
                             + shop.getId()

@@ -21,7 +21,7 @@ import main.Model.Products.Product;
 import main.Model.Recipes.Recipe;
 import main.Model.Restaurants.Restaurant;
 
-public class ForAddingRestaurantsController {
+public class ForAddingRestaurantsController extends Main {
 
     @FXML
     private Button AddRestaurant;

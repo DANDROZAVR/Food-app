@@ -22,7 +22,7 @@ import main.Model.Recipes.Recipe;
 
 import javax.swing.*;
 
-public class forOneRecipeController {
+public class forOneRecipeController extends Main {
     final ListView listView = new ListView();
     Scene sceneProduct;
     @FXML
