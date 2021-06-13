@@ -21,13 +21,13 @@
       <TextField fx:id="GetDescription" layoutX="105.0" layoutY="86.0" prefHeight="35.0" prefWidth="643.0" />
       <Label layoutX="764.0" layoutY="86.0" prefHeight="35.0" prefWidth="125.0" text="Description" />
       <Label layoutX="99.0" layoutY="237.0" prefHeight="35.0" prefWidth="125.0" text="Recipes" />
-      <Label layoutX="511.0" layoutY="237.0" prefHeight="35.0" prefWidth="125.0" text="Products" />
+      <Label layoutX="427.0" layoutY="237.0" prefHeight="35.0" prefWidth="125.0" text="Products" />
       <Button fx:id="PlusRecipes" layoutX="177.0" layoutY="241.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="+" />
       <Button fx:id="MinusRecipes" layoutX="244.0" layoutY="241.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="-" />
-      <Button fx:id="PlusProducts" layoutX="597.0" layoutY="241.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="+" />
-      <Button fx:id="MinusProducts" layoutX="669.0" layoutY="241.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="-" />
-      <VBox fx:id="AddRecipes" layoutX="60.0" layoutY="272.0" prefHeight="183.0" prefWidth="389.0" />
-      <VBox fx:id="AddProducts" layoutX="463.0" layoutY="272.0" prefHeight="183.0" prefWidth="362.0" />
+      <Button fx:id="PlusProducts" layoutX="513.0" layoutY="241.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="+" />
+      <Button fx:id="MinusProducts" layoutX="585.0" layoutY="241.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="-" />
+      <VBox fx:id="AddRecipes" layoutX="109.0" layoutY="272.0" prefHeight="183.0" prefWidth="311.0" />
+      <VBox fx:id="AddProducts" layoutX="439.0" layoutY="272.0" prefHeight="183.0" prefWidth="366.0" />
       <TextField fx:id="GetInstruction" layoutX="105.0" layoutY="142.0" prefHeight="35.0" prefWidth="643.0" />
       <Label layoutX="764.0" layoutY="142.0" prefHeight="35.0" prefWidth="125.0" text="Instruction" />
       <TextField fx:id="GetTimeHours" layoutX="105.0" layoutY="196.0" prefHeight="35.0" prefWidth="62.0" />

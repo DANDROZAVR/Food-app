@@ -36,10 +36,11 @@ public class Query {
         return Database.execute(query);
     }
     public static ArrayList<Pair<Integer,Integer>> getAllContentOfRecipe(int id) throws SQLException {
-        ArrayList<ArrayList<String>> content = Database.execute("select id, id_rec from recipes_content_products where id = " + id + " union (select id, id_rec from recipes_content_recipes where id = " + id + ");");
+        ArrayList<ArrayList<String>> content = Database.execute("select id, id_rec from recipes_content_products where id_rec = " + id + " union (select id, id_rec from recipes_content_recipes where id_rec = " + id + ");");
         ArrayList<Pair<Integer,Integer>> trueContent = new ArrayList<>();
         for(int i = 1; i < content.size(); i++){
             trueContent.add(new Pair<Integer, Integer>(Integer.parseInt(content.get(i).get(0)), Integer.parseInt(content.get(i).get(1))));
+            System.out.println(trueContent.get(i - 1));
         }
         return trueContent;
         /*
@@ -111,7 +112,7 @@ public class Query {
         return Integer.parseInt(Database.execute(query).get(1).get(0));
     }
     public static int getCaloriesFromRecipes(String fromTable, int item) throws SQLException {
-        String query = "SELECT sum_calories FROM " + fromTable + " WHERE id_rec=" + String.valueOf(item) + ";";
+        String query = "SELECT calories FROM " + fromTable + " WHERE id_rec=" + String.valueOf(item) + ";";
         return Integer.parseInt(Database.execute(query).get(1).get(0));
     }
     public static ArrayList<ArrayList<String>> getByName(String fromTable, String name) throws SQLException {

@@ -65,20 +65,23 @@ public class Parser {
         ArrayList<Restaurant> result = new ArrayList<>();
         for (int idx = 1; idx < query.size(); idx++) {
             ArrayList<String> row = query.get(idx);
-            String id, name, adres, geoposition;
-            id = name = adres = geoposition = null;
+            String id, name, address, geoposition;
+            id = name = address = geoposition = null;
             for (int j = 0; j < row.size(); ++j) {
                 String column = query.get(0).get(j);
                 String value = row.get(j);
                 switch (column) {
                     case "name" -> name = value;
                     case "id" -> id = value;
-                    case "adres" -> adres = value;
+                    case "address" -> address = value;
                     case "geoposition" -> geoposition = value;
-                    default -> throw new Exception("Unknown column find due parsing: " + column);
+                    //default -> throw new Exception("Unknown column find due parsing: " + column);
+                    default -> {
+                        continue;
+                    }
                 }
             }
-            result.add(new Restaurant(Integer.parseInt(id), geoposition, adres, name));
+            result.add(new Restaurant(Integer.parseInt(id), geoposition, address, name));
         }
         return result;
     }
@@ -106,8 +109,8 @@ public class Parser {
         return true;
     }
     public static Recipe getRecipe(ArrayList<String> row, ArrayList<String> head, boolean strongNull) throws Exception {
-        String id, name, sum_weight, sum_calories, description, instruction, prepTime, ingredients;
-        id = name = description = sum_weight = sum_calories = instruction = prepTime = ingredients = null;
+        String id, name, sum_calories, description, instruction, prepTime, ingredients;
+        id = name = description = sum_calories = instruction = prepTime = ingredients = null;
         for (int j = 0; j < row.size(); ++j) {
             String column = head.get(j);
             String value = row.get(j);
@@ -118,19 +121,17 @@ public class Parser {
                 case "id_rec" -> id = value;
                 case "steps", "instruction" -> instruction = value;
                 case "ingredients" -> ingredients = value;
-                case "sum_calories" -> sum_calories = value;
-                case "sum_weight" -> sum_weight = value;
+                case "calories" -> sum_calories = value;
             }
         }
-        if (strongNull && (id == null || name == null || sum_calories == null || sum_weight == null || !isInteger(prepTime)))
-            throw new Exception("Some of non-null by definition values are null:" + name + ", " + sum_weight + ", " + sum_calories);
+        if (strongNull && (id == null || name == null || sum_calories == null || !isInteger(prepTime)))
+            throw new Exception("Some of non-null by definition values are null:" + name + ", " + sum_calories);
         if (id == null) id = "-1";
         if (sum_calories == null) sum_calories = "-1";
-        if (sum_weight == null) sum_weight = "-1";
         if (name == null) name = "-1";
         if (!isInteger(prepTime) || name.length() >= 200 || description.length() >= 1000 || instruction.length() >= 1000)
             return null;
-        return new Recipe(Integer.parseInt(id), Integer.parseInt(sum_weight), Integer.parseInt(sum_calories), name, description, instruction).setIngredients(ingredients).setTime(prepTime);
+        return new Recipe(Integer.parseInt(id), Integer.parseInt(sum_calories), name, description, instruction).setIngredients(ingredients).setTime(prepTime);
     }
     public static Recipe getRecipe(ArrayList<String> row, ArrayList<String> head, ArrayList<Pair<Integer,Integer>> recipesContent) throws Exception {
         String id, name, calories, description, instruction, prepTime, ingredients;
@@ -283,20 +284,23 @@ public class Parser {
         ArrayList<Shop> result = new ArrayList<>();
         for (int idx = 1; idx < query.size(); idx++) {
             ArrayList<String> row = query.get(idx);
-            String id, name, adres, geoposition;
-            id = name = adres  = geoposition = null;
+            String id, name, address, geoposition;
+            id = name = address  = geoposition = null;
             for (int j = 0; j < row.size(); ++j) {
                 String column = query.get(0).get(j);
                 String value = row.get(j);
                 switch (column) {
                     case "name" -> name = value;
                     case "id" -> id = value;
-                    case "adres" -> adres = value;
+                    case "address" -> address = value;
                     case "geoposition" -> geoposition = value;
-                    default -> throw new Exception("Unknown column find due parsing: " + column);
+                    //default -> throw new Exception("Unknown column find due parsing: " + column);
+                    default -> {
+                        continue;
+                    }
                 }
             }
-            result.add(new Shop(Integer.parseInt(id), geoposition, adres, name));
+            result.add(new Shop(Integer.parseInt(id), geoposition, address, name));
         }
         return result;
     }
