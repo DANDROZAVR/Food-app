@@ -27,7 +27,7 @@ public class Main extends Application {
     }
     public static void main(String[] args) {
         try {
-            main.Data.Database.connect("jdbc:postgresql://localhost:5433/test", "test", "testpass");
+            main.Data.Database.connect("jdbc:postgresql://localhost:5432/test", "test", "testpass");
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error set connection to the database");

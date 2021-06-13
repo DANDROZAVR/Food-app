@@ -45,7 +45,52 @@ public class ShopController {
     private VBox VBoxOrder;
     @FXML
     private Button history;
+    @FXML
+    private TextArea Description;
+
+    @FXML
+    private TextField OpenWeekdays;
+
+    @FXML
+    private TextField CloseWeekdays;
+
+    @FXML
+    private TextField OpenSaturday;
+
+    @FXML
+    private TextField CloseSaturday;
+
+    @FXML
+    private TextField OpenSunday;
+
+    @FXML
+    private TextField CloseSunday;
+
+    @FXML
+    private TextArea Stars;
+
+    @FXML
+    private TextField Adres;
+
+    @FXML
+    private TextField geoposition;
+
+    @FXML
+    private TextField delivery;
+
     void setShop(Shop shop)  throws Exception {
+        ArrayList<ArrayList<String>> normal_shop = Database.execute("select * from shops_main where id=" + shop.getId() + ";");
+        Description.setText(normal_shop.get(1).get(11));
+        OpenWeekdays.setText("Open in weekdays from " + normal_shop.get(1).get(4));
+        CloseWeekdays.setText("till " + normal_shop.get(1).get(5));
+        OpenSaturday.setText("Open in saturday from " + normal_shop.get(1).get(6));
+        CloseSaturday.setText("till " + normal_shop.get(1).get(7));
+        OpenSunday.setText("Open in sunday from " + normal_shop.get(1).get(8));
+        CloseSunday.setText("till " + normal_shop.get(1).get(9));
+        Stars.setText("Has "+ normal_shop.get(1).get(10) + " stars.");
+        Adres.setText(normal_shop.get(1).get(2));
+        geoposition.setText(normal_shop.get(1).get(3));
+        delivery.setText(normal_shop.get(1).get(12).equals("t") ? "yes" : "no");
         helper = new HashMap<>();
         ArrayList<Integer> menu = shop.getMenu();
         List<Hyperlink> links = new ArrayList<>();
@@ -113,13 +158,13 @@ public class ShopController {
             System.out.println(order1);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
+            ArrayList<ArrayList<String>> idOr = new ArrayList<>();
+            try {
+                idOr = Database.execute("select nextval('for_id_shopOrders');");
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             for(Integer r: order1){
-                ArrayList<ArrayList<String>> idOr = new ArrayList<>();
-                try {
-                    idOr = Database.execute("select nextval('for_id_shopOrders');");
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
                 ArrayList<ArrayList<String>> temp = new ArrayList<>();
                 if(r%2 == 0){
                     try {
