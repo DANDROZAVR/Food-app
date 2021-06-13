@@ -1,4 +1,4 @@
-INSERT INTO SPECIES(id_prod, product_group, product_class, name, description, calories, taste)
+/*INSERT INTO SPECIES(id_prod, product_group, product_class, name, description, calories, taste)
   VALUES
 (nextval('for_id_products'), 'minerals', 'Species', 'salt', 'An indispensable product both in the Middle Ages and today', 0, 'Salty'),
 (nextval('for_id_products'), 'plant pods', 'Species', 'vanilla', 'Pods, extract, or essence. Is used in ice cream, milk puddings and creams, in cakes, in sweet fruits for dessert and in toffee.', 288, 'Bitter'),
@@ -13,7 +13,7 @@ INSERT INTO SPECIES(id_prod, product_group, product_class, name, description, ca
 (nextval('for_id_products'), 'plant seeds', 'Species', 'caraway', 'In rye bread, in German sauerkraut, in cabbage soups and stewed red cabbage, with beets, in goulash, in German and Austrian dishes with baked pork and sausages', 333, 'Bitter'),
 (nextval('for_id_products'), 'plant seeds', 'Species', 'dill', 'In pickled vegetables, especially cucumbers, with seafood and with pickled and smoked fish, in potato salads, in salads with cucumber and yogurt.', 43, 'Spicy'),
 (nextval('for_id_products'), 'plant seeds', 'Species', 'Fennel Seed', 'In fish dishes, including canned herring, in Italian pork, sausages, and sometimes in veal dishes, for soaking dried figs, for bread and cookies, and fennel is chewed to freshen the breath', 31, 'Spicy');
-
+*/
 
 
 
