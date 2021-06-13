@@ -1,7 +1,7 @@
 drop table if exists recipes cascade;
 drop table if exists products cascade;
 drop table if exists products_tag cascade;
-drop table if exists products_areatag cascade;
+drop table if exists products_nutrient cascade;
 drop table if exists products_nutrient_main cascade;
 drop table if exists products_nutrient_additional cascade;
 drop table if exists products_vitamins cascade;
@@ -23,7 +23,11 @@ drop table if exists restaurants_info cascade;
 drop table if exists orders cascade;
 drop table if exists restaurants_main cascade;
 drop table if exists restaurants_group_meals cascade;
+drop table if exists shops_content_recipes cascade;
+drop table if exists shops_content_orders cascade;
 drop table if exists group_meals_content cascade;
+drop table if exists shopsOrderRec cascade;
+drop table if exists shopsOrderProd cascade;
 
 drop table if exists restaurants_geoposition cascade;
 drop table if exists restaurants_plan_weekdays;
@@ -40,7 +44,7 @@ drop table if exists shops_plan_saturday;
 drop table if exists shops_plan_sunday;
 
 drop table if exists shops_content_recipes cascade;
-drop table if exists shops_content_products cascade;
+drop table if exists shops_content_products cascade
 drop table if exists shops_discounts_recipes cascade;
 drop table if exists shops_discounts_products cascade;
 drop table if exists shop_cards cascade;

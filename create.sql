@@ -88,12 +88,6 @@ create table restaurants_main(
 		food_delivery boolean not null
 );
 
-create table restaurants_info(
-       id integer not null primary key constraint fk_shop_des references restaurants_main(id), 
-       stars integer check (stars <= 5 OR stars is null),
-       description varchar(100),
-       food_delivery boolean not null
-);
 create table restaurants_group_meals(
        id_restaurant integer not null references restaurants_main(id),
        id_group integer not null primary key,
@@ -154,61 +148,6 @@ create sequence for_id_recipes start with 2 increment by 2 maxvalue 100000;
 create sequence for_id_shop start with 1 increment by 2 maxvalue 100000;
 create sequence for_id_restaurants start with 2 increment by 2 maxvalue 100000;
 
-/*
-
-for diagram
-
-
-*/
-
-ALTER TABLE ONLY products_areatag
-    ADD CONSTRAINT prod_area_ee FOREIGN KEY (id_prod) references products(id_prod);
-ALTER TABLE ONLY recipes_tag
-    ADD CONSTRAINT rec_tag FOREIGN KEY (id) references recipes(id_rec);	
-/*ALTER TABLE ONLY group_meals_content
-    ADD CONSTRAINT fs1ese FOREIGN KEY (id_group) references restaurants_group_meals(id_group);*/
-ALTER TABLE ONLY restaurants_group_meals
-    ADD CONSTRAINT fsese2222 FOREIGN KEY (id_restaurant) references restaurants_main(id);
-/*ALTER TABLE ONLY group_meals_content
-    ADD CONSTRAINT fses2e FOREIGN KEY (id_rec) references recipes(id_rec);*/
-ALTER TABLE ONLY recipes_areatag
-    ADD CONSTRAINT rec_area_ee2 FOREIGN KEY (id) references recipes(id_rec);
-ALTER TABLE ONLY shop_cards
-    ADD CONSTRAINT disc_1223 FOREIGN KEY (id_shop) references shops_main(id);
-ALTER TABLE ONLY shops_content_recipes
-    ADD CONSTRAINT da2isc_1 FOREIGN KEY (id_shop) references shops_main(id);	
-/*ALTER TABLE ONLY shops_content_recipes
-    ADD CONSTRAINT daisc_12 FOREIGN KEY (id_rec) references recipes(id_rec);*/
-ALTER TABLE ONLY shops_content_products
-    ADD CONSTRAINT dai23sc_12 FOREIGN KEY (id_shop)references shops_main(id);		
-ALTER TABLE ONLY shops_content_products
-    ADD CONSTRAINT dai23sc_122 FOREIGN KEY (id_prod)references products(id_prod);	
-/*ALTER TABLE ONLY recipes_content
-    ADD CONSTRAINT fk_rec_coewnt FOREIGN KEY (id_rec) references recipes(id_rec);*/	
-ALTER TABLE ONLY species_taste
-    ADD CONSTRAINT fk_proed_ss FOREIGN KEY (id_prod) references products(id_prod);		
-ALTER TABLE ONLY drinks_info
-    ADD CONSTRAINT fk_pwrod_dk FOREIGN KEY (id_prod) references products(id_prod);	
-ALTER TABLE ONLY shops_info
-    ADD CONSTRAINT fk_shoep_des FOREIGN KEY (id) references shops_main(id);		
-ALTER TABLE ONLY restaurants_plan_saturday
-    ADD CONSTRAINT fk_plan_sat FOREIGN KEY (id) references restaurants_main(id);		
-ALTER TABLE ONLY restaurants_plan_sunday
-    ADD CONSTRAINT fk_plan_sat2 FOREIGN KEY (id) references restaurants_main(id);		
-ALTER TABLE ONLY restaurants_plan_weekdays
-    ADD CONSTRAINT fk_plan_sat3 FOREIGN KEY (id) references restaurants_main(id);		
-ALTER TABLE ONLY restaurants_geoposition
-    ADD CONSTRAINT fk_plan_sat3 FOREIGN KEY (id) references restaurants_main(id);		
-	
-create or replace function getProductAreaTags(item integer)
-	returns varchar as 
-$$
-	begin
-		return (select array_agg(area) 
-		from products_areatag
-		where id_prod = item);
-	end;
-$$ language plpgsql;
 
 create or replace function getProductTags(item integer)
 	returns varchar as 
@@ -240,7 +179,7 @@ $$
 	end;
 $$ language plpgsql;
 
-create or replace view Species as
+/*create or replace view Species as
 	select * from species_taste
 	natural join products;
 
@@ -259,7 +198,7 @@ create or replace rule spec_insert as
 on insert to Species
 do instead(
 	select spec_insert(new);
-);
+);*/
 
 
 create or replace view solids_full(id_prod, product_group, product_class, name, description, calories, fat, saturated_fat, protein, carbo, sugar, zinc, iron, calcium, magnesium, vitamin_A, vitamin_B6, vitamin_B12, vitamin_C, vitamin_E, vitamin_K)
@@ -284,8 +223,6 @@ do instead(
 	select solids_full_insert(new);
 );
 
-drop table if exists shopsOrderRec cascade;
-drop table if exists shopsOrderProd cascade;
 
 create table shopsOrderRec(
     id_order integer primary key not null,   
@@ -335,7 +272,54 @@ do instead(
 
 
 
-insert into restaurants_main(id,name,geoposition,adres) values (10, 'Andrew', '0,0', 'Dust');
-insert into restaurants_group_meals(id_restaurant,id_group,cena,min_cena,max_cena) values (10,5,3424,1213,4535);
+insert into restaurants_main(id,name,geoposition) values (10, 'Andrew', '0,0', 'Dust');
+insert into restaurants_group_meals(id_restaurant,id_group,cena) values (10,5,3424);
 insert into group_meals_content(id_group,id_rec) values (5,12);
 insert into shops_main values(1,'sdfsaf','afadsfa');
+
+/*
+
+for diagram
+
+
+*/
+
+/*ALTER TABLE ONLY products_areatag
+    ADD CONSTRAINT prod_area_ee FOREIGN KEY (id_prod) references products(id_prod);
+ALTER TABLE ONLY recipes_tag
+    ADD CONSTRAINT rec_tag FOREIGN KEY (id) references recipes(id_rec);	
+/*ALTER TABLE ONLY group_meals_content
+    ADD CONSTRAINT fs1ese FOREIGN KEY (id_group) references restaurants_group_meals(id_group);*/
+/*ALTER TABLE ONLY restaurants_group_meals
+    ADD CONSTRAINT fsese2222 FOREIGN KEY (id_restaurant) references restaurants_main(id);
+/*ALTER TABLE ONLY group_meals_content
+    ADD CONSTRAINT fses2e FOREIGN KEY (id_rec) references recipes(id_rec);*/
+/*ALTER TABLE ONLY recipes_areatag
+    ADD CONSTRAINT rec_area_ee2 FOREIGN KEY (id) references recipes(id_rec);
+ALTER TABLE ONLY shop_cards
+    ADD CONSTRAINT disc_1223 FOREIGN KEY (id_shop) references shops_main(id);
+ALTER TABLE ONLY shops_content_recipes
+    ADD CONSTRAINT da2isc_1 FOREIGN KEY (id_shop) references shops_main(id);	
+/*ALTER TABLE ONLY shops_content_recipes
+    ADD CONSTRAINT daisc_12 FOREIGN KEY (id_rec) references recipes(id_rec);*/
+/*ALTER TABLE ONLY shops_content_products
+    ADD CONSTRAINT dai23sc_12 FOREIGN KEY (id_shop)references shops_main(id);		
+ALTER TABLE ONLY shops_content_products
+    ADD CONSTRAINT dai23sc_122 FOREIGN KEY (id_prod)references products(id_prod);	
+/*ALTER TABLE ONLY recipes_content
+    ADD CONSTRAINT fk_rec_coewnt FOREIGN KEY (id_rec) references recipes(id_rec);*/	
+/*ALTER TABLE ONLY species_taste
+    ADD CONSTRAINT fk_proed_ss FOREIGN KEY (id_prod) references products(id_prod);		
+ALTER TABLE ONLY drinks_info
+    ADD CONSTRAINT fk_pwrod_dk FOREIGN KEY (id_prod) references products(id_prod);	
+ALTER TABLE ONLY shops_info
+    ADD CONSTRAINT fk_shoep_des FOREIGN KEY (id) references shops_main(id);		
+ALTER TABLE ONLY restaurants_plan_saturday
+    ADD CONSTRAINT fk_plan_sat FOREIGN KEY (id) references restaurants_main(id);		
+ALTER TABLE ONLY restaurants_plan_sunday
+    ADD CONSTRAINT fk_plan_sat2 FOREIGN KEY (id) references restaurants_main(id);		
+ALTER TABLE ONLY restaurants_plan_weekdays
+    ADD CONSTRAINT fk_plan_sat3 FOREIGN KEY (id) references restaurants_main(id);		
+ALTER TABLE ONLY restaurants_geoposition
+    ADD CONSTRAINT fk_plan_sat3 FOREIGN KEY (id) references restaurants_main(id);		
+*/

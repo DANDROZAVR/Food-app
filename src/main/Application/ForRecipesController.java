@@ -54,10 +54,10 @@ public class ForRecipesController extends Main {
         listView.getItems().clear();
         ArrayList<ArrayList<String>> output = Query.getFullInformation(table);
         for (ArrayList<String> s : output) {
-            if (!s.get(5).equals("description")) {
+            if (!s.get(4).equals("description")) {
                 Hyperlink link = new Hyperlink(s.get(1));
-                link.setTooltip(new Tooltip("weight: " + s.get(3) + "\n" +
-                        "Calories per 100 g: " + s.get(4)+ "\n" + "Description: " + s.get(5)));
+                link.setTooltip(new Tooltip(
+                        "Calories per 100 g: " + s.get(3)+ "\n" + "Description: " + s.get(4)));
                 link.setOnAction(t -> {
                     FXMLLoader loader = LoadXML.load("forOneRecipe.fxml");
                     ArrayList<ArrayList<String>> temp = new ArrayList<>();
