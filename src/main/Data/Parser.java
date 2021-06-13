@@ -75,7 +75,10 @@ public class Parser {
                     case "id" -> id = value;
                     case "address" -> address = value;
                     case "geoposition" -> geoposition = value;
-                    default -> throw new Exception("Unknown column find due parsing: " + column);
+                    //default -> throw new Exception("Unknown column find due parsing: " + column);
+                    default -> {
+                        continue;
+                    }
                 }
             }
             result.add(new Restaurant(Integer.parseInt(id), geoposition, address, name));
@@ -291,7 +294,10 @@ public class Parser {
                     case "id" -> id = value;
                     case "address" -> address = value;
                     case "geoposition" -> geoposition = value;
-                    default -> throw new Exception("Unknown column find due parsing: " + column);
+                    //default -> throw new Exception("Unknown column find due parsing: " + column);
+                    default -> {
+                        continue;
+                    }
                 }
             }
             result.add(new Shop(Integer.parseInt(id), geoposition, address, name));

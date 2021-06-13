@@ -148,6 +148,9 @@ create sequence for_id_recipes start with 2 increment by 2 maxvalue 100000;
 create sequence for_id_shop start with 1 increment by 2 maxvalue 100000;
 create sequence for_id_restaurants start with 2 increment by 2 maxvalue 100000;
 
+create sequence for_id_restaurantsOrders start with 1 increment by 2 maxvalue 100000;
+
+
 /*
 
 for diagram
