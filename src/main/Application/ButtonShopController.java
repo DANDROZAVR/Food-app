@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import main.Data.Parser;
 import main.Data.Query;
 
-public class ButtonShopController {
+public class ButtonShopController extends Main{
     private final ListView listView = new ListView();
     @FXML
     private ResourceBundle resources;

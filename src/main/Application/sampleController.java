@@ -21,10 +21,7 @@ import main.Model.Products.Solids;
 public class sampleController extends Main {
     @FXML
     private ResourceBundle resources;
-    @FXML
-    private TextField Query;
-    @FXML
-    private Button QueryButton;
+
     @FXML
     private URL location;
     @FXML
@@ -38,12 +35,18 @@ public class sampleController extends Main {
     @FXML
     private Button goToHome;
     @FXML
+    private Button QueryButton;
+    @FXML
+    private TextField Query;
+    @FXML
     void openSettings(ActionEvent event) {
     }
     @FXML
     private Button setProductButton;
     @FXML
     private Button ButtonAddProducts;
+    @FXML
+    private Button ButtonAddRestaurants;
     @FXML
     private Button ButtonAddRecipes;
 
@@ -89,11 +92,17 @@ public class sampleController extends Main {
             ((ButtonShopController) loader.getController()).setSceneBack(Restaurants.getScene());
             ((Stage) ButtonAddRecipes.getScene().getWindow()).setScene(new Scene(root));
         });
+        assert ButtonAddRestaurants != null : "fx:id=\"ButtonAddRestaurants\" was not injected: check your FXML file 'sample.fxml'.";
+        ButtonAddRestaurants.setOnAction(event -> {
+            FXMLLoader loader = LoadXML.load("ForAddingRestaurants.fxml");
+            Parent root = loader.getRoot();
+            ((Stage) ButtonAddRestaurants.getScene().getWindow()).setScene(new Scene(root));
+        });
         QueryButton.setOnAction(t -> {
             try {
                 FXMLLoader loader = LoadXML.load("query1.fxml");
                 Parent root = loader.getRoot();
-                ((query1Controller) loader.getController()).setSceneBack(Restaurants.getScene());
+                ((query1Controller) loader.getController()).setSceneBack(ButtonAddRecipes.getScene());
                 ((query1Controller) loader.getController()).setText(Database.execute(Query.getText()).toString());
                 ((Stage) ButtonAddRecipes.getScene().getWindow()).setScene(new Scene(root));
             } catch (SQLException throwables) {

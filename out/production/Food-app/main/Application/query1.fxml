@@ -4,10 +4,9 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.query1Controller">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.query1Controller">
    <children>
-      <Button fx:id="Back" layoutX="64.0" layoutY="24.0" mnemonicParsing="false" text="Back" />
-      <TextArea fx:id="Area" layoutX="124.0" layoutY="70.0" prefHeight="260.0" prefWidth="351.0" />
+      <Button fx:id="Back" layoutX="34.0" layoutY="21.0" mnemonicParsing="false" text="Back" />
+      <TextArea fx:id="Area" layoutX="34.0" layoutY="70.0" prefHeight="498.0" prefWidth="837.0" />
    </children>
 </AnchorPane>

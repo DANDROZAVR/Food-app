@@ -34,7 +34,7 @@ public class Main extends Application {
             System.exit(1);
         }
         //ParseProductsInput.parse();
-        ParserRecipesInput.parse();
+        //ParserRecipesInput.parse();
         //System.exit(0);
         launch(args);
     }

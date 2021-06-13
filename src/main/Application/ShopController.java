@@ -119,8 +119,9 @@ public class ShopController {
             Date date = new Date();
             int new_id = id_order();
             for(Integer r: order1){
+                System.out.println(r);
                 try {
-                    Database.execute("insert into shopOrders values ("
+                    Database.update("insert into shopOrders(id_order, id_shop, id, date) values ("
                             + new_id
                             +','
                             + shop.getId()
@@ -128,8 +129,7 @@ public class ShopController {
                             + r
                             +",'"
                             +  dateFormat.format(date)
-                            +"');"
-                    );
+                            +"');");
                 }catch(SQLException e){
                     e.printStackTrace();
                 }

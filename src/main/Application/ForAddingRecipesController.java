@@ -21,7 +21,7 @@ import main.Data.Query;
 import main.Model.Products.Product;
 import main.Model.Recipes.Recipe;
 
-public class ForAddingRecipesController {
+public class ForAddingRecipesController extends Main {
 
     @FXML
     private TextField GetName;

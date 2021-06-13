@@ -198,7 +198,7 @@ public class Parser {
             for (int j = 0; j < row.size(); ++j) {
                 String column = query.get(0).get(j);
                 String value = row.get(j);
-                switch (column) {
+                switch (column.toLowerCase()) {
                     case "fat" -> fat = value;
                     case "protein" -> protein = value;
                     case "productType" -> productType = value;
@@ -210,12 +210,12 @@ public class Parser {
                     case "magnesium" -> magnesium = value;
                     case "saturated_fat" -> saturated_fat = value;
 
-                    case "vitamin_A" -> va = value;
-                    case "vitamin_B6" -> vb6 = value;
-                    case "vitamin_B12" -> vb12 = value;
-                    case "vitamin_C" -> vc = value;
-                    case "vitamin_E" -> ve = value;
-                    case "vitamin_K" -> vk = value;
+                    case "vitamin_a" -> va = value;
+                    case "vitamin_b6" -> vb6 = value;
+                    case "vitamin_b12" -> vb12 = value;
+                    case "vitamin_c" -> vc = value;
+                    case "vitamin_e" -> ve = value;
+                    case "vitamin_k" -> vk = value;
 
                     case "description" -> description = value;
                     case "name" -> name = value;

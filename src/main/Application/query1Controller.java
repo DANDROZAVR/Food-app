@@ -27,9 +27,19 @@ public class query1Controller {
 
     @FXML
     private TextArea Area;
-
+    String addEnters(String s) {
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < s.length(); ++i) {
+            res.append(s.charAt(i));
+            if (s.charAt(i) == ']') {
+                res.append('\n');
+                i += 3;
+            }
+        }
+        return res.toString();
+    }
     void setText(String s){
-        Area.setText(s);
+        Area.setText(addEnters(s));
     }
     @FXML
     void initialize() {

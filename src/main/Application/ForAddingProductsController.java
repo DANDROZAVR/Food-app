@@ -28,7 +28,7 @@ import main.Helpers.IconFinder.FindIcon;
 import main.Model.Products.Product;
 
 
-public class ForAddingProductsController {
+public class ForAddingProductsController extends Main {
 
     @FXML
     private ResourceBundle resources;
