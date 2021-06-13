@@ -284,8 +284,8 @@ public class Parser {
         ArrayList<Shop> result = new ArrayList<>();
         for (int idx = 1; idx < query.size(); idx++) {
             ArrayList<String> row = query.get(idx);
-            String id, name, adres;
-            id = name = adres  = null;
+            String id, name, adres, geoposition;
+            id = name = adres  = geoposition = null;
             for (int j = 0; j < row.size(); ++j) {
                 String column = query.get(0).get(j);
                 String value = row.get(j);
@@ -293,10 +293,11 @@ public class Parser {
                     case "name" -> name = value;
                     case "id" -> id = value;
                     case "adres" -> adres = value;
+                    case "geoposition" -> geoposition = value;
                     default -> throw new Exception("Unknown column find due parsing: " + column);
                 }
             }
-            result.add(new Shop(Integer.parseInt(id), adres, name));
+            result.add(new Shop(Integer.parseInt(id), geoposition, adres, name));
         }
         return result;
     }

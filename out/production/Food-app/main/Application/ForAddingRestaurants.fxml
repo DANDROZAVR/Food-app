@@ -22,7 +22,7 @@
       <TextField fx:id="GetDescription" layoutX="118.0" layoutY="71.0" prefHeight="42.0" prefWidth="470.0" />
       <TextField fx:id="GetAdres" layoutX="118.0" layoutY="124.0" prefHeight="42.0" prefWidth="470.0" />
       <Label layoutX="620.0" layoutY="71.0" prefHeight="42.0" prefWidth="158.0" text="Description" />
-      <Label layoutX="620.0" layoutY="124.0" prefHeight="42.0" prefWidth="158.0" text="Adres" />
+      <Label layoutX="620.0" layoutY="124.0" prefHeight="42.0" prefWidth="158.0" text="Address" />
       <Label layoutX="118.0" layoutY="247.0" prefHeight="50.0" prefWidth="209.0" text="Schedule" />
       <Label layoutX="197.0" layoutY="429.0" prefHeight="24.0" prefWidth="34.0" text="-" />
       <TextField fx:id="GetGeoposition" layoutX="118.0" layoutY="177.0" prefHeight="42.0" prefWidth="470.0" />

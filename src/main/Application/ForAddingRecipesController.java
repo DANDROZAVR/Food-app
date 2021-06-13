@@ -9,7 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -94,17 +94,21 @@ public class ForAddingRecipesController {
         }
     }
 
-    public ChoiceBox<String> getBoxProducts(){
-        ChoiceBox<String> _new = new ChoiceBox<String>();
+    public ComboBox<String> getBoxProducts(){
+        ComboBox<String> _new = new ComboBox<String>();
         _new.setMaxHeight(35);
+        _new.hide();
+        _new.setVisibleRowCount(15);
         _new.setValue("");
         _new.setItems(AllProducts);
         return _new;
     }
 
-    public ChoiceBox<String> getBoxRecipes(){
-        ChoiceBox<String> _new = new ChoiceBox<String>();
+    public ComboBox<String> getBoxRecipes(){
+        ComboBox<String> _new = new ComboBox<String>();
         _new.setMaxHeight(35);
+        _new.hide();
+        _new.setVisibleRowCount(15);
         _new.setValue("");
         _new.setItems(AllRecipes);
         return _new;
@@ -155,12 +159,12 @@ public class ForAddingRecipesController {
         });
         AddRecipe.setOnAction(event -> {
             try {
-                int Id = Query.getNewIdFor("Recipes");
+                int Id = Query.getNewIdFor("recipes");
 
                 ArrayList<Pair<Product, Integer>> list_of_products = new ArrayList<Pair<Product, Integer>>();
                 for(Node h: AddProducts.getChildren()){
                     HBox temp = (HBox) h;
-                    String Name = ((ChoiceBox<String>)temp.getChildren().get(0)).getValue();
+                    String Name = ((ComboBox<String>)temp.getChildren().get(0)).getValue();
                     String Weight = ((TextField)temp.getChildren().get(2)).getText();
                     list_of_products.add(new Pair<>(Parser.getProductsFrom(Query.getByName("products", Name)).get(0), Integer.parseInt(Weight)));
                 }
@@ -169,7 +173,7 @@ public class ForAddingRecipesController {
                 ArrayList<Pair<Recipe, Integer>> list_of_recipes = new ArrayList<Pair<Recipe, Integer>>();
                 for(Node h: AddRecipes.getChildren()){
                     HBox temp = (HBox) h;
-                    String Name = ((ChoiceBox<String>)temp.getChildren().get(0)).getValue();
+                    String Name = ((ComboBox<String>)temp.getChildren().get(0)).getValue();
                     String Weight = ((TextField)temp.getChildren().get(2)).getText();
                     list_of_recipes.add(new Pair<>(Parser.getRecipesFrom(Query.getByName("recipes", Name)).get(0), Integer.parseInt(Weight)));
                 }

@@ -16,8 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Shop extends Building {
-    public Shop(int id, String adres, String name){
+    public Shop(int id, String geoposition, String adres, String name){
         setId(id);
+        setGeoposition(geoposition);
         setAdres(adres);
         setName(name);
     }
