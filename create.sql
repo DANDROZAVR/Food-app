@@ -1,8 +1,5 @@
 \i clear.sql
-/*
-link to diagram
-https://github.com/DANDROZAVR/Food-app/blob/main/diagram.png
-*/
+
 drop table if exists recipes cascade;
 drop table if exists products cascade;
 drop table if exists products_tag cascade;
@@ -61,7 +58,7 @@ drop sequence if exists for_id_shop cascade;
 create type prod_class_enum as ENUM('Drinks', 'Solids', 'Species');
 create type species_taste_enum as ENUM('Sweet', 'Salty', 'Bitter', 'Sour', 'Burning', 'Spicy');
 
-
+--add unique name
 create table products (
 	id_prod integer constraint pk_prod primary key,
 	product_group varchar(60) not null,
@@ -83,21 +80,37 @@ create table drinks_info (
 	sugar boolean not null, 
 	colour varchar(15)
 );
-create table species_taste (	
+
+/*create table species_taste (	
 	id_prod integer not null primary key constraint fk_prod_ss references products(id_prod),
 	taste species_taste_enum not null
-);	
+);*/	
 
-create table products_nutrient_main(
+create table products_nutrient(
 	id_prod integer not null unique constraint fk_nut_main references products(id_prod),
 	fat smallint not null check(fat >= 0 AND fat <= 100),
 	saturated_fat smallint default 0.00 check(saturated_fat is null or saturated_fat <= fat),
 	protein smallint not null check(protein >= 0 AND protein <= 100), 
 	carbo smallint not null check(carbo >= 0 AND carbo <= 100),
-	sugar_total smallint check(sugar_total is null OR (sugar_total >= 0 AND sugar_total <= carbo))
-	check(carbo + fat + protein <= 100)
+	sugar_total smallint check(sugar_total is null OR (sugar_total >= 0 AND sugar_total <= carbo)),
+	id_prod integer not null unique constraint fk_nut_main references products(id_prod),
+	zinc real default 0.00 check(zinc >= 0.00 AND zinc <= 100000.00),
+	iron real default 0.00 check(iron >= 0.00 AND iron <= 100000.00), 
+	calcium real default 0.00 check(calcium >= 0.00 AND iron <= 100000.00), 
+	magnesium real default 0.00 check(magnesium >= 0.00 AND magnesium <= 100000.00),
+	id_prod integer not null unique constraint fk_vit_main references products(id_prod),
+	vitamin_A real default 0.00 check(vitamin_A >= 0.00 AND vitamin_A <= 100000.00),
+	vitamin_B6 real default 0.00 check(vitamin_B6 >= 0.00 AND vitamin_B6 <= 100000.00),
+	vitamin_B12 real default 0.00 check(vitamin_B12 >= 0.00 AND vitamin_B12 <= 100000.00),
+	vitamin_C real default 0.00 check(vitamin_C >= 0.00 AND vitamin_C <= 100000.00),
+	vitamin_E real default 0.00 check(vitamin_E >= 0.00 AND vitamin_E <= 100000.00),
+	vitamin_K real default 0.00 check(vitamin_K >= 0.00 AND vitamin_K <= 100000.00)
+	check (vitamin_A + vitamin_B6 + vitamin_B12 + vitamin_C + vitamin_E + vitamin_K <= 100000.00),
+	check(carbo + fat + protein <= 100),
+	taste species_taste_enum default null,
+	
 );
-create table products_nutrient_additional(
+/*create table products_nutrient_additional(
 	id_prod integer not null unique constraint fk_nut_main references products(id_prod),
 	zinc real default 0.00 check(zinc >= 0.00 AND zinc <= 100000.00),
 	iron real default 0.00 check(iron >= 0.00 AND iron <= 100000.00), 
@@ -113,13 +126,12 @@ create table products_vitamins(
 	vitamin_E real default 0.00 check(vitamin_E >= 0.00 AND vitamin_E <= 100000.00),
 	vitamin_K real default 0.00 check(vitamin_K >= 0.00 AND vitamin_K <= 100000.00)
 	check (vitamin_A + vitamin_B6 + vitamin_B12 + vitamin_C + vitamin_E + vitamin_K <= 100000.00)
-); 
+);*/ 
 create table recipes (
 	id_rec integer constraint pk_reci primary key,
 	name varchar(200) not null,
 	prep_time smallint default 0 check(prep_time >= 0 AND prep_time <= 30000),
-	sum_weight numeric(7) not null,
-	sum_calories numeric(7) not null, 
+	calories numeric(7) not null, 
 	description varchar(1000), 
 	instruction varchar(1500), 
 	check(sum_weight >= 0),
@@ -139,65 +151,37 @@ create table recipes_content_products (
 	id_rec integer not null constraint fk_rec_cont references recipes(id_rec),
 	id integer not null constraint fk_prod references products(id_prod),
 	weight integer not null check(weight >= 0),  
-	weight_type char(4) not null check(weight_type in ('g', 'ml'))
+	weight_type char(2) not null check(weight_type in ('g', 'ml'))
 );
-
-
-
-
-
-
-
-/*
-
-
-weight
-
-
-*/
-
-
 create table recipes_content_recipes (
 	id_rec integer not null constraint fk_rec_cont references recipes(id_rec),
 	id integer not null constraint fk_prod references recipes(id_rec) check(id != id_rec), 
-	weight numeric(6) not null check(weight >= 0),  
-	weight_type char(4) not null check(weight_type in ('g', 'ml'))
+	weight integer not null check(weight >= 0),  
+	weight_type char(2) not null check(weight_type in ('g', 'ml'))
 );
---check for cycle
 
 
 create table restaurants_main(
         id integer not null primary key,
-        "name" varchar(50) not null,
-		adres varchar(100)
+        "name" varchar(50) not null, 
+		adres varchar(100),
+		geoposition point,
+		open_weekdays time,
+		close_weekdays time,
+		open_saturday time,
+		close_saturday time,
+		open_sunday time,
+		close_sunday time,
+		stars integer check ((stars >= 0 and stars <= 5) OR stars is null),
+		description varchar(100),
+		food_delivery boolean not null
 );
+
 create table restaurants_info(
        id integer not null primary key constraint fk_shop_des references restaurants_main(id), 
        stars integer check (stars <= 5 OR stars is null),
        description varchar(100),
        food_delivery boolean not null
-);
-create table restaurants_geoposition(
-		id integer not null primary key references restaurants_main(id),	
-		geoposition point not null
-);
-create table restaurants_plan_weekdays(
-	   id integer not null primary key constraint fk_shop_des references restaurants_main(id), 
-	   open time,
-       close time
-       constraint con_open_close check((open is null and close is null) or (close>open))
-);
-create table restaurants_plan_saturday(
-	   id integer not null primary key constraint fk_shop_des references restaurants_main(id), 
-	   open time,
-       close time
-       constraint con_open_close check((open is null and close is null) or (close>open))
-);
-create table restaurants_plan_sunday(
-	   id integer not null primary key constraint fk_shop_des references restaurants_main(id), 
-	   open time,
-       close time
-       constraint con_open_close check((open is null and close is null) or (close>open))
 );
 create table restaurants_group_meals(
        id_restaurant integer not null references restaurants_main(id),
@@ -214,37 +198,20 @@ create table group_meals_content(
 
 
 
-create table shops_main(
+create table shopss_main(
         id integer not null primary key,
-        "name" varchar(10) not null, 
-		adres varchar(100)
-);
-create table shops_info(
-       id integer not null primary key constraint fk_shop_des references shops_main(id), 
-       description varchar(100),
-       food_delivery boolean not null
-);
-create table shops_geoposition(
-		id integer not null primary key references shops_main(id),	
-		geoposition point not null
-);
-create table shops_plan_weekdays(
-	   id integer not null primary key constraint fk_shop_des references shops_main(id), 
-	   open time,
-       close time
-       constraint con_open_close check((open is null and close is null) or (close>open))
-);
-create table shops_plan_saturday(
-	   id integer not null primary key constraint fk_shop_des references shops_main(id), 
-	   open time,
-       close time
-       constraint con_open_close check((open is null and close is null) or (close>open))
-);
-create table shops_plan_sunday(
-	   id integer not null primary key constraint fk_shop_des references shops_main(id), 
-	   open time,
-       close time
-       constraint con_open_close check((open is null and close is null) or (close>open))
+        "name" varchar(50) not null, 
+		adres varchar(100),
+		geoposition point,
+		open_weekdays time,
+		close_weekdays time,
+		open_saturday time,
+		close_saturday time,
+		open_sunday time,
+		close_sunday time,
+		stars integer check ((stars >= 0 and stars <= 5) OR stars is null),
+		description varchar(100),
+		food_delivery boolean not null
 );
 
 create table shops_content_products(
@@ -259,6 +226,8 @@ create table shops_content_recipes(
        cena numeric(10) not null,
        count integer not null check(count >= 1)
 );
+
+
 create table restaurant_orders(
        id_order integer not null,
        id_restaurant integer not null references restaurants_main(id),
@@ -384,9 +353,7 @@ do instead(
 create or replace view solids_full(id_prod, product_group, product_class, name, description, calories, fat, saturated_fat, protein, carbo, sugar, zinc, iron, calcium, magnesium, vitamin_A, vitamin_B6, vitamin_B12, vitamin_C, vitamin_E, vitamin_K)
 	as
 	select * from products 
-	natural join products_nutrient_main
-	natural join products_nutrient_additional
-	natural join products_vitamins;	
+	natural join products_nutrient
 	
 create or replace function solids_full_insert(i record)
 	returns void as
@@ -394,12 +361,8 @@ $$
 	begin
 		INSERT INTO PRODUCTS
 			values (i.id_prod, i.product_group, i.product_class, i.name, i.description, i.calories);
-		INSERT INTO products_nutrient_main
-			values (i.id_prod, i.fat, i.saturated_fat, i.protein, i.carbo, i.sugar);
-		INSERT INTO products_nutrient_additional
-			values (i.id_prod, i.zinc, i.iron, i.calcium, i.magnesium);
-		INSERT INTO products_vitamins
-			values (i.id_prod, i.vitamin_A, i.vitamin_B6, i.vitamin_B12, i.vitamin_C, i.vitamin_E, i.vitamin_K);
+		INSERT INTO products_nutrient
+			values (i.id_prod, i.fat, i.saturated_fat, i.protein, i.carbo, i.sugar, i.zinc, i.iron, i.calcium, i.magnesium, i.vitamin_A, i.vitamin_B6, i.vitamin_B12, i.vitamin_C, i.vitamin_E, i.vitamin_K);
 	end;
 $$ language plpgsql;
 
@@ -454,12 +417,11 @@ do instead(
 \i utils/solidsInsert.sql
 \i utils/speciesInsert.sql
 \i utils/recipesInsert.sql
-\i utils/addRestaurants.sql
+\i utils/restaurantsInsert.sql
 
 
 
-insert into restaurants_main(id,name,adres) values (10, 'Andrew', 'Dust');
-insert into restaurants_geoposition(id, geoposition) values(10, '0,0');
+insert into restaurants_main(id,name,geoposition,adres) values (10, 'Andrew', '0,0', 'Dust');
 insert into restaurants_group_meals(id_restaurant,id_group,cena,min_cena,max_cena) values (10,5,3424,1213,4535);
 insert into group_meals_content(id_group,id_rec) values (5,12);
 insert into shops_main values(1,'sdfsaf','afadsfa');
