@@ -133,8 +133,8 @@ public class Parser {
         return new Recipe(Integer.parseInt(id), Integer.parseInt(sum_weight), Integer.parseInt(sum_calories), name, description, instruction).setIngredients(ingredients).setTime(prepTime);
     }
     public static Recipe getRecipe(ArrayList<String> row, ArrayList<String> head, ArrayList<Pair<Integer,Integer>> recipesContent) throws Exception {
-        String id, name, sum_weight, sum_calories, description, instruction, prepTime, ingredients;
-        id = name = description = sum_weight = sum_calories = instruction = prepTime = ingredients = null;
+        String id, name, calories, description, instruction, prepTime, ingredients;
+        id = name = description = calories = instruction = prepTime = ingredients = null;
         for (int j = 0; j < row.size(); ++j) {
             String column = head.get(j);
             String value = row.get(j);
@@ -145,12 +145,11 @@ public class Parser {
                 case "id_rec" -> id = value;
                 case "steps", "instruction" -> instruction = value;
                 case "ingredients" -> ingredients = value;
-                case "sum_calories" -> sum_calories = value;
-                case "sum_weight" -> sum_weight = value;
+                case "calories" -> calories = value;
             }
         }
-        if (id == null || name == null || sum_calories == null || sum_weight == null || !isInteger(prepTime))
-            throw new Exception("Some of non-null by definition values are null:" + name + ", " + sum_weight + ", " + sum_calories);
+        if (id == null || name == null || calories == null || !isInteger(prepTime))
+            throw new Exception("Some of non-null by definition values are null:" + name + ", " + calories);
         //result.add(new Recipe(Integer.parseInt(id), name, description, Integer.parseInt(sum_calories), Integer.parseInt(sum_weight)));
         return new Recipe(Integer.parseInt(id), name, description, recipesContent, instruction).setIngredients(ingredients).setTime(prepTime);
     }

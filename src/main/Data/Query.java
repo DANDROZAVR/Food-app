@@ -36,6 +36,13 @@ public class Query {
         return Database.execute(query);
     }
     public static ArrayList<Pair<Integer,Integer>> getAllContentOfRecipe(int id) throws SQLException {
+        ArrayList<ArrayList<String>> content = Database.execute("select id, id_rec from recipes_content_products where id = " + id + " union (select id, id_rec from recipes_content_recipes where id = " + id + ");");
+        ArrayList<Pair<Integer,Integer>> trueContent = new ArrayList<>();
+        for(int i = 1; i < content.size(); i++){
+            trueContent.add(new Pair<Integer, Integer>(Integer.parseInt(content.get(i).get(0)), Integer.parseInt(content.get(i).get(1))));
+        }
+        return trueContent;
+        /*
         ArrayList<ArrayList<String>> content = Database.execute("select getRecipeContentRecipes(" + id+ ");");
         content.addAll(Database.execute("select getRecipeContentProducts(" + id+ ");"));
         ArrayList<Pair<Integer,Integer>> trueContent = new ArrayList<>();
@@ -70,6 +77,7 @@ public class Query {
                 }
         }
         return trueContent;
+        */
     }
     public static ArrayList<Product> getSimpleProductsWithoutSpecies() throws Exception {
         String query = new String("SELECT * FROM products;");
@@ -129,11 +137,9 @@ public class Query {
     public static ArrayList<ArrayList<String>> getByNamePrefix_all(String fromTable, String prefixName) throws SQLException {
         String query = new String(
                         "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 " +
-                                "left join species_taste using(id_prod)"
+                                "left join products_tag using(id_prod)"
                              + " left join drinks_info using(id_prod)" +
-                                "left join products_nutrient_main using(id_prod)" +
-                                "left join products_nutrient_additional using(id_prod)" +
-                                "left join products_vitamins using(id_prod);");
+                                "left join products_nutrient using(id_prod);");
         return Database.execute(query);
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_all_first(String fromTable, String prefixName) throws SQLException {

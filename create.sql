@@ -1,58 +1,5 @@
 \i clear.sql
 
-drop table if exists recipes cascade;
-drop table if exists products cascade;
-drop table if exists products_tag cascade;
-drop table if exists products_areatag cascade;
-drop table if exists products_nutrient_main cascade;
-drop table if exists products_nutrient_additional cascade;
-drop table if exists products_vitamins cascade;
-
-drop table if exists recipes_areatag cascade;
-drop table if exists recipes_tag cascade;
-drop table if exists recipes_content_products cascade;
-drop table if exists recipes_content_recipes cascade;
-drop table if exists recipes_nutrient_main cascade;
-drop table if exists recipes_nutrient_additional cascade;
-
-drop table if exists drinks_info cascade;
-drop table if exists species_taste cascade;
-
-drop type if exists prod_class_enum cascade;
-drop type if exists species_taste_enum cascade;
-
-drop table if exists restaurants_info cascade;
-drop table if exists orders cascade;
-drop table if exists restaurants_main cascade;
-drop table if exists restaurants_group_meals cascade;
-drop table if exists group_meals_content cascade;
-
-drop table if exists restaurants_geoposition cascade;
-drop table if exists restaurants_plan_weekdays;
-drop table if exists restaurants_plan_saturday;
-drop table if exists restaurants_plan_sunday;
-
-
-drop table if exists shop_description cascade;
-drop table if exists shops_main cascade;
-drop table if exists shops_geoposition cascade;
-
-drop table if exists shops_plan_weekdays;
-drop table if exists shops_plan_saturday;
-drop table if exists shops_plan_sunday;
-
-drop table if exists shops_content_recipes cascade;
-drop table if exists shops_content_products cascade;
-drop table if exists shops_discounts_recipes cascade;
-drop table if exists shops_discounts_products cascade;
-drop table if exists shop_cards cascade;
-drop table if exists shops_info cascade;
-drop table if exists discounts cascade;
-
-drop sequence if exists for_id_products cascade;
-drop sequence if exists for_id_recipes cascade;
-drop sequence if exists for_id_restaurants cascade;
-drop sequence if exists for_id_shop cascade;
 
 
 create type prod_class_enum as ENUM('Drinks', 'Solids', 'Species');
@@ -95,8 +42,7 @@ create table products_nutrient(
                                   vitamin_K real default 0.00 check(vitamin_K >= 0.00 AND vitamin_K <= 100000.00)
                                       check (vitamin_A + vitamin_B6 + vitamin_B12 + vitamin_C + vitamin_E + vitamin_K <= 100000.00),
                                   check(carbo + fat + protein <= 100),
-                                  taste species_taste_enum default null,
-
+                                  taste species_taste_enum default null
 );
 create table recipes (
                          id_rec integer constraint pk_reci primary key,
@@ -142,12 +88,6 @@ create table restaurants_main(
                                  food_delivery boolean not null
 );
 
-create table restaurants_info(
-                                 id integer not null primary key constraint fk_shop_des references restaurants_main(id),
-                                 stars integer check (stars <= 5 OR stars is null),
-                                 description varchar(100),
-                                 food_delivery boolean not null
-);
 create table restaurants_group_meals(
                                         id_restaurant integer not null references restaurants_main(id),
                                         id_group integer not null primary key,
@@ -215,7 +155,7 @@ for diagram
 
 */
 
-ALTER TABLE ONLY products_areatag
+/*ALTER TABLE ONLY products_areatag
     ADD CONSTRAINT prod_area_ee FOREIGN KEY (id_prod) references products(id_prod);
 ALTER TABLE ONLY recipes_tag
     ADD CONSTRAINT rec_tag FOREIGN KEY (id) references recipes(id_rec);
@@ -253,16 +193,7 @@ ALTER TABLE ONLY restaurants_plan_weekdays
     ADD CONSTRAINT fk_plan_sat3 FOREIGN KEY (id) references restaurants_main(id);
 ALTER TABLE ONLY restaurants_geoposition
     ADD CONSTRAINT fk_plan_sat3 FOREIGN KEY (id) references restaurants_main(id);
-
-create or replace function getProductAreaTags(item integer)
-    returns varchar as
-$$
-begin
-    return (select array_agg(area)
-            from products_areatag
-            where id_prod = item);
-end;
-$$ language plpgsql;
+*/
 
 create or replace function getProductTags(item integer)
     returns varchar as
@@ -294,32 +225,32 @@ begin
 end;
 $$ language plpgsql;
 
-create or replace view Species as
-select * from species_taste
-                  natural join products;
+/*create or replace view Species as
+	select * from species_taste
+	natural join products;
 
 create or replace function spec_insert(i record)
-    returns void as
+	returns void as
 $$
-begin
-    INSERT INTO PRODUCTS(id_prod, product_group, product_class, name, description, calories)
-    values (i.id_prod, i.product_group, i.product_class, i.name, i.description, i.calories);
-    INSERT INTO SPECIES_TASTE(id_prod, taste)
-    values (i.id_prod, i.taste);
-end;
+	begin
+		INSERT INTO PRODUCTS(id_prod, product_group, product_class, name, description, calories)
+			values (i.id_prod, i.product_group, i.product_class, i.name, i.description, i.calories);
+		INSERT INTO SPECIES_TASTE(id_prod, taste)
+			values (i.id_prod, i.taste);
+	end;
 $$ language plpgsql;
 
 create or replace rule spec_insert as
-    on insert to Species
-    do instead(
-    select spec_insert(new);
-    );
+on insert to Species
+do instead(
+	select spec_insert(new);
+);*/
 
 
 create or replace view solids_full(id_prod, product_group, product_class, name, description, calories, fat, saturated_fat, protein, carbo, sugar, zinc, iron, calcium, magnesium, vitamin_A, vitamin_B6, vitamin_B12, vitamin_C, vitamin_E, vitamin_K)
 as
 select * from products
-                  natural join products_nutrient
+                  natural join products_nutrient;
 
 create or replace function solids_full_insert(i record)
     returns void as
@@ -389,7 +320,7 @@ create or replace rule rule_insert as
 
 
 
-insert into restaurants_main(id,name,geoposition,adres) values (10, 'Andrew', '0,0', 'Dust');
-insert into restaurants_group_meals(id_restaurant,id_group,cena,min_cena,max_cena) values (10,5,3424,1213,4535);
+insert into restaurants_main(id,name,geoposition) values (10, 'Andrew', '0,0', 'Dust');
+insert into restaurants_group_meals(id_restaurant,id_group,cena) values (10,5,3424);
 insert into group_meals_content(id_group,id_rec) values (5,12);
 insert into shops_main values(1,'sdfsaf','afadsfa');
