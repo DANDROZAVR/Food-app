@@ -27,22 +27,20 @@ public class forOneRecipeController {
     Scene sceneProduct;
     @FXML
     private ResourceBundle resources;
-
+    @FXML
+    private TextArea tags;
     @FXML
     private URL location;
-
     @FXML
     private TextArea Name;
-
     @FXML
     private TextArea weight;
-
     @FXML
     private TextArea calories;
-
     @FXML
     private TextArea description;
-
+    @FXML
+    private TextArea instruction;
     @FXML
     private VBox link;
     @FXML
@@ -54,8 +52,10 @@ public class forOneRecipeController {
         //((TextArea)((HBox)VBoxProduct.getChildren().get(0)).getChildren().get(0)).setAccessibleText(item.getName());
         Name.setText(item.getName());
         weight.setText(String.valueOf(item.getWeight()));
-        description.setText(String.valueOf(item.getDescription()));
-        calories.setText(String.valueOf(item.getAllCalories()));
+        description.setText(item.repair(item.getDescription()));
+        calories.setText(String.valueOf(item.getCalories()));
+        instruction.setText(Recipe.repair(Recipe.fixInstruction(item.getInstruction())));
+
         if(item.getComponents() != null) {
             for (Pair<Integer, Integer> c : item.getComponents()) {
                 if (c.getKey() % 2 == 1) {
@@ -97,6 +97,11 @@ public class forOneRecipeController {
                     listView.getItems().add(temp);
 
                 }
+            }
+            try {
+                tags.setText(Query.getTagsByIdRecipes(item.getId()));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             link.getChildren().addAll(listView);
         }

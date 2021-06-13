@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -29,12 +30,12 @@
                <children>
                   <TextField fx:id="GetText" layoutX="59.0" layoutY="2.0" prefHeight="48.0" prefWidth="555.0" />
                   <Button fx:id="ButtonFind" layoutX="617.0" layoutY="2.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="39.0" />
-                  <ImageView fitHeight="48.0" fitWidth="76.0" layoutX="656.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="48.0" fitWidth="39.0" layoutX="617.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../resources/Icons/iconfinder_search_115695.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="cancelButton" alignment="CENTER_RIGHT" cancelButton="true" layoutX="10.0" layoutY="2.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#goToHome" prefHeight="48.0" prefWidth="37.0" text="&lt;">
+                  <Button fx:id="cancelButton" alignment="CENTER_RIGHT" cancelButton="true" layoutX="10.0" layoutY="2.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#goToHome" prefHeight="48.0" prefWidth="39.0" text="&lt;">
                      <font>
                         <Font name="Arial Black" size="15.0" />
                      </font>
@@ -64,5 +65,8 @@
          </padding>
       </HBox>
       <VBox fx:id="VBox" layoutX="122.0" layoutY="69.0" prefHeight="602.0" prefWidth="670.0" />
+      <Button fx:id="caloriesDesc" layoutX="55.0" layoutY="114.0" mnemonicParsing="false" text="desc" />
+      <Label layoutX="14.0" layoutY="85.0" text="Sort by calories" />
+      <Button fx:id="caloriesAsc" layoutX="14.0" layoutY="114.0" mnemonicParsing="false" text="asc" />
    </children>
 </AnchorPane>

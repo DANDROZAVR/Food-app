@@ -9,9 +9,11 @@ import main.Model.Products.Product;
 import main.Model.Products.Solids;
 import main.Model.Products.Species;
 import main.Model.Recipes.Recipe;
+import main.Model.Shops.Shop;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Parser {
@@ -44,9 +46,17 @@ public class Parser {
         ArrayList<Pair<Integer,Integer>> content = Query.getAllContentOfRecipe(Integer.parseInt(temp.get(1).get(0)));
         return getRecipesFrom(temp,content).get(0);
     }
+    public static Product parseProductById(int id) throws SQLException,Exception {
+        ArrayList<ArrayList<String>> temp = Database.execute("select * from products where id_prod =" + id +";");
+        return getProductsFrom(temp).get(0);
+    }
     public static Restaurant parseRestaurantById(int id) throws SQLException,Exception {
         ArrayList<ArrayList<String>> temp = Database.execute("select * from restaurants_main where id =" + id +";");
         return getRestaurantsFrom(temp).get(0);
+    }
+    public static Shop parseShopById(int id) throws SQLException,Exception {
+        ArrayList<ArrayList<String>> temp = Database.execute("select * from shops_main where id =" + id +";");
+        return getShopsFrom(temp).get(0);
     }
     /*static void main(String...varargs) {
 
@@ -55,20 +65,23 @@ public class Parser {
         ArrayList<Restaurant> result = new ArrayList<>();
         for (int idx = 1; idx < query.size(); idx++) {
             ArrayList<String> row = query.get(idx);
-            String id, name, adres, geoposition;
-            id = name = adres = geoposition = null;
+            String id, name, address, geoposition;
+            id = name = address = geoposition = null;
             for (int j = 0; j < row.size(); ++j) {
                 String column = query.get(0).get(j);
                 String value = row.get(j);
                 switch (column) {
                     case "name" -> name = value;
                     case "id" -> id = value;
-                    case "adres" -> adres = value;
+                    case "address" -> address = value;
                     case "geoposition" -> geoposition = value;
-                    default -> throw new Exception("Unknown column find due parsing: " + column);
+                    //default -> throw new Exception("Unknown column find due parsing: " + column);
+                    default -> {
+                        continue;
+                    }
                 }
             }
-            result.add(new Restaurant(Integer.parseInt(id), geoposition, adres, name));
+            result.add(new Restaurant(Integer.parseInt(id), geoposition, address, name));
         }
         return result;
     }
@@ -96,8 +109,8 @@ public class Parser {
         return true;
     }
     public static Recipe getRecipe(ArrayList<String> row, ArrayList<String> head, boolean strongNull) throws Exception {
-        String id, name, sum_weight, sum_calories, description, instruction, prepTime, ingredients;
-        id = name = description = sum_weight = sum_calories = instruction = prepTime = ingredients = null;
+        String id, name, sum_calories, description, instruction, prepTime, ingredients;
+        id = name = description = sum_calories = instruction = prepTime = ingredients = null;
         for (int j = 0; j < row.size(); ++j) {
             String column = head.get(j);
             String value = row.get(j);
@@ -108,23 +121,21 @@ public class Parser {
                 case "id_rec" -> id = value;
                 case "steps", "instruction" -> instruction = value;
                 case "ingredients" -> ingredients = value;
-                case "sum_calories" -> sum_calories = value;
-                case "sum_weight" -> sum_weight = value;
+                case "calories" -> sum_calories = value;
             }
         }
-        if (strongNull && (id == null || name == null || sum_calories == null || sum_weight == null || !isInteger(prepTime)))
-            throw new Exception("Some of non-null by definition values are null:" + name + ", " + sum_weight + ", " + sum_calories);
+        if (strongNull && (id == null || name == null || sum_calories == null || !isInteger(prepTime)))
+            throw new Exception("Some of non-null by definition values are null:" + name + ", " + sum_calories);
         if (id == null) id = "-1";
         if (sum_calories == null) sum_calories = "-1";
-        if (sum_weight == null) sum_weight = "-1";
         if (name == null) name = "-1";
         if (!isInteger(prepTime) || name.length() >= 200 || description.length() >= 1000 || instruction.length() >= 1000)
             return null;
-        return new Recipe(Integer.parseInt(id), Integer.parseInt(sum_weight), Integer.parseInt(sum_calories), name, description, instruction).setIngredients(ingredients).setTime(prepTime);
+        return new Recipe(Integer.parseInt(id), Integer.parseInt(sum_calories), name, description, instruction).setIngredients(ingredients).setTime(prepTime);
     }
     public static Recipe getRecipe(ArrayList<String> row, ArrayList<String> head, ArrayList<Pair<Integer,Integer>> recipesContent) throws Exception {
-        String id, name, sum_weight, sum_calories, description, instruction, prepTime, ingredients;
-        id = name = description = sum_weight = sum_calories = instruction = prepTime = ingredients = null;
+        String id, name, calories, description, instruction, prepTime, ingredients;
+        id = name = description = calories = instruction = prepTime = ingredients = null;
         for (int j = 0; j < row.size(); ++j) {
             String column = head.get(j);
             String value = row.get(j);
@@ -135,12 +146,11 @@ public class Parser {
                 case "id_rec" -> id = value;
                 case "steps", "instruction" -> instruction = value;
                 case "ingredients" -> ingredients = value;
-                case "sum_calories" -> sum_calories = value;
-                case "sum_weight" -> sum_weight = value;
+                case "calories" -> calories = value;
             }
         }
-        if (id == null || name == null || sum_calories == null || sum_weight == null || !isInteger(prepTime))
-            throw new Exception("Some of non-null by definition values are null:" + name + ", " + sum_weight + ", " + sum_calories);
+        if (id == null || name == null || calories == null || !isInteger(prepTime))
+            throw new Exception("Some of non-null by definition values are null:" + name + ", " + calories);
         //result.add(new Recipe(Integer.parseInt(id), name, description, Integer.parseInt(sum_calories), Integer.parseInt(sum_weight)));
         return new Recipe(Integer.parseInt(id), name, description, recipesContent, instruction).setIngredients(ingredients).setTime(prepTime);
     }
@@ -188,7 +198,7 @@ public class Parser {
             for (int j = 0; j < row.size(); ++j) {
                 String column = query.get(0).get(j);
                 String value = row.get(j);
-                switch (column) {
+                switch (column.toLowerCase()) {
                     case "fat" -> fat = value;
                     case "protein" -> protein = value;
                     case "productType" -> productType = value;
@@ -200,12 +210,12 @@ public class Parser {
                     case "magnesium" -> magnesium = value;
                     case "saturated_fat" -> saturated_fat = value;
 
-                    case "vitamin_A" -> va = value;
-                    case "vitamin_B6" -> vb6 = value;
-                    case "vitamin_B12" -> vb12 = value;
-                    case "vitamin_C" -> vc = value;
-                    case "vitamin_E" -> ve = value;
-                    case "vitamin_K" -> vk = value;
+                    case "vitamin_a" -> va = value;
+                    case "vitamin_b6" -> vb6 = value;
+                    case "vitamin_b12" -> vb12 = value;
+                    case "vitamin_c" -> vc = value;
+                    case "vitamin_e" -> ve = value;
+                    case "vitamin_k" -> vk = value;
 
                     case "description" -> description = value;
                     case "name" -> name = value;
@@ -268,5 +278,30 @@ public class Parser {
             DoubleName = longName.charAt(i) + DoubleName;
         }
         return DoubleName;
+    }
+
+    public static ArrayList<Shop> getShopsFrom(ArrayList<ArrayList<String>> query) throws Exception {
+        ArrayList<Shop> result = new ArrayList<>();
+        for (int idx = 1; idx < query.size(); idx++) {
+            ArrayList<String> row = query.get(idx);
+            String id, name, address, geoposition;
+            id = name = address  = geoposition = null;
+            for (int j = 0; j < row.size(); ++j) {
+                String column = query.get(0).get(j);
+                String value = row.get(j);
+                switch (column) {
+                    case "name" -> name = value;
+                    case "id" -> id = value;
+                    case "address" -> address = value;
+                    case "geoposition" -> geoposition = value;
+                    //default -> throw new Exception("Unknown column find due parsing: " + column);
+                    default -> {
+                        continue;
+                    }
+                }
+            }
+            result.add(new Shop(Integer.parseInt(id), geoposition, address, name));
+        }
+        return result;
     }
 }

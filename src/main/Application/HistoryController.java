@@ -22,13 +22,13 @@ public class HistoryController {
     private URL location;
     @FXML
     private Button Back;
+    @FXML
+    private VBox history;
     void setSceneBack(Scene scene){
         Back.setOnAction(t -> {
             ((Stage) Back.getScene().getWindow()).setScene(scene);
         });
     }
-    @FXML
-    private VBox history;
     void setRestaurant(ArrayList<Order> content){
             for (Order o : content) {
                 Hyperlink temp = new Hyperlink(o.date);

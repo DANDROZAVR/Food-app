@@ -9,7 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -56,12 +56,21 @@ public class ForAddingRecipesController {
     @FXML
     private Button MinusProducts;
 
+    @FXML
+    private TextField GetTimeHours;
+
+    @FXML
+    private TextField GetTimeMinutes;
+
     ObservableList<String> AllProducts, AllRecipes;
 
     @FXML
     void goToHome(ActionEvent event) {
         Main.goToHome();
     }
+
+    @FXML
+    private TextField GetInstruction;
 
     int SizeRecipes, SizeProducts;
 
@@ -85,17 +94,21 @@ public class ForAddingRecipesController {
         }
     }
 
-    public ChoiceBox<String> getBoxProducts(){
-        ChoiceBox<String> _new = new ChoiceBox<String>();
+    public ComboBox<String> getBoxProducts(){
+        ComboBox<String> _new = new ComboBox<String>();
         _new.setMaxHeight(35);
+        _new.hide();
+        _new.setVisibleRowCount(15);
         _new.setValue("");
         _new.setItems(AllProducts);
         return _new;
     }
 
-    public ChoiceBox<String> getBoxRecipes(){
-        ChoiceBox<String> _new = new ChoiceBox<String>();
+    public ComboBox<String> getBoxRecipes(){
+        ComboBox<String> _new = new ComboBox<String>();
         _new.setMaxHeight(35);
+        _new.hide();
+        _new.setVisibleRowCount(15);
         _new.setValue("");
         _new.setItems(AllRecipes);
         return _new;
@@ -146,12 +159,12 @@ public class ForAddingRecipesController {
         });
         AddRecipe.setOnAction(event -> {
             try {
-                int Id = Query.getNewIdFor("Recipes");
+                int Id = Query.getNewIdFor("recipes");
 
                 ArrayList<Pair<Product, Integer>> list_of_products = new ArrayList<Pair<Product, Integer>>();
                 for(Node h: AddProducts.getChildren()){
                     HBox temp = (HBox) h;
-                    String Name = ((ChoiceBox<String>)temp.getChildren().get(0)).getValue();
+                    String Name = ((ComboBox<String>)temp.getChildren().get(0)).getValue();
                     String Weight = ((TextField)temp.getChildren().get(2)).getText();
                     list_of_products.add(new Pair<>(Parser.getProductsFrom(Query.getByName("products", Name)).get(0), Integer.parseInt(Weight)));
                 }
@@ -160,7 +173,7 @@ public class ForAddingRecipesController {
                 ArrayList<Pair<Recipe, Integer>> list_of_recipes = new ArrayList<Pair<Recipe, Integer>>();
                 for(Node h: AddRecipes.getChildren()){
                     HBox temp = (HBox) h;
-                    String Name = ((ChoiceBox<String>)temp.getChildren().get(0)).getValue();
+                    String Name = ((ComboBox<String>)temp.getChildren().get(0)).getValue();
                     String Weight = ((TextField)temp.getChildren().get(2)).getText();
                     list_of_recipes.add(new Pair<>(Parser.getRecipesFrom(Query.getByName("recipes", Name)).get(0), Integer.parseInt(Weight)));
                 }
@@ -174,7 +187,15 @@ public class ForAddingRecipesController {
                     List_of_elements.add(new Pair<>(i.getKey().getId(), i.getValue()));
                 }
 
-                Recipe new_recipe = new Recipe(Id, GetName.getText(), GetDescription.getText(), List_of_elements, "");
+                Recipe new_recipe = new Recipe(Id, GetName.getText(), GetDescription.getText(), List_of_elements, GetInstruction.getText());
+                Integer hours = 0, minutes = 0;
+                if(GetTimeHours.getText() != ""){
+                    hours = Integer.parseInt(GetTimeHours.getText());
+                }
+                if(GetTimeMinutes.getText() != ""){
+                    minutes = Integer.parseInt(GetTimeMinutes.getText());
+                }
+                new_recipe.setTime(Integer.toString(hours * 60 + minutes));
                 Query.addNewRecipe(new_recipe, list_of_recipes, list_of_products);
                 error_out.setTextFill(Color.web("#16b221", 0.8));
                 error_out.setText("OK");

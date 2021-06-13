@@ -20,7 +20,7 @@ public class Restaurant extends Building{
         setName(name);
     }
     public ArrayList<Recipe> getMenu() throws SQLException,Exception {
-        ArrayList<ArrayList<String>> Ides = Database.execute("select id_rec from group_meals_content where id_group = (select id_group from restaurants_group_meals where id_restaurant =" + this.getId() +");");
+        ArrayList<ArrayList<String>> Ides = Database.execute("select id_rec from restaurant_content_recipes where id_restaurant =" + this.getId() +";");
         ArrayList<Recipe> res = new ArrayList<>();
         for(ArrayList<String> recipeId: Ides){
             if(recipeId.get(0).equals("id_rec")){
@@ -32,8 +32,8 @@ public class Restaurant extends Building{
         }
         return res;
     }
-    public static ArrayList<Order> getOrders(int restaurant) throws SQLException,Exception{
-        ArrayList<ArrayList<String>> res = Database.execute("select * from orders where id_restaurant =" + restaurant +";");
+    public static ArrayList<Order> getOrders(int restaurant) throws Exception{
+        ArrayList<ArrayList<String>> res = Database.execute("select * from restaurant_orders where id_restaurant =" + restaurant +";");
         ArrayList<Order> ans = new ArrayList<>();
         Map<Integer, ArrayList<Recipe>> temp = new HashMap<>();
         Map<Integer, String> dates = new HashMap<>();
@@ -44,7 +44,7 @@ public class Restaurant extends Building{
                 if(temp.containsKey(Integer.parseInt(a.get(0)))){
                     temp.get(Integer.parseInt(a.get(0))).add(Parser.parseRecipeById(Integer.parseInt(a.get(2))));
                 }else {
-                    dates.put(Integer.parseInt(a.get(0)),a.get(3));
+                    dates.put(Integer.parseInt(a.get(0)),a.get(4));
                     ArrayList<Recipe> temp2 = new ArrayList<>();
                     temp2.add(Parser.parseRecipeById(Integer.parseInt(a.get(2))));
                     temp.put(Integer.parseInt(a.get(0)), temp2);
@@ -52,7 +52,6 @@ public class Restaurant extends Building{
             }
         }
         for(Integer i: temp.keySet()){
-            System.out.println(temp.get(i));
             ans.add(new Order(i,temp.get(i),dates.get(i),Parser.parseRestaurantById(restaurant))) ;
         }
         return ans;
