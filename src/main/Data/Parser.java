@@ -73,9 +73,11 @@ public class Parser {
                 switch (column) {
                     case "name" -> name = value;
                     case "id" -> id = value;
-                    case "adres" -> adres = value;
+                    case "address" -> adres = value;
                     case "geoposition" -> geoposition = value;
-                    default -> throw new Exception("Unknown column find due parsing: " + column);
+                    default -> {
+                        continue;
+                    }
                 }
             }
             result.add(new Restaurant(Integer.parseInt(id), geoposition, adres, name));

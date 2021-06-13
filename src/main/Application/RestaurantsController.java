@@ -1,5 +1,6 @@
 package main.Application;
 
+import javafx.scene.control.*;
 import main.Data.Database;
 import main.Model.Restaurants.Restaurant;
 import java.net.URL;
@@ -12,10 +13,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -27,10 +24,6 @@ import main.Model.Recipes.Recipe;
 import javax.xml.crypto.Data;
 
 public class RestaurantsController {
-    static int id_order= 0;
-    int id_order(){
-         return id_order++;
-    }
     Map<Hyperlink, Recipe> helper;
     private final ListView listView = new ListView();
     @FXML
@@ -47,7 +40,51 @@ public class RestaurantsController {
     private Button history;
     @FXML
     private VBox Vbox;
+    @FXML
+    private TextArea Description;
+
+    @FXML
+    private TextField OpenWeekdays;
+
+    @FXML
+    private TextField CloseWeekdays;
+
+    @FXML
+    private TextField OpenSaturday;
+
+    @FXML
+    private TextField CloseSaturday;
+
+    @FXML
+    private TextField OpenSunday;
+
+    @FXML
+    private TextField CloseSunday;
+
+    @FXML
+    private TextArea Stars;
+
+    @FXML
+    private TextField Adres;
+
+    @FXML
+    private TextField geoposition;
+
+    @FXML
+    private TextField delivery;
     void setRestaurant(Restaurant restaurant)  throws Exception {
+        ArrayList<ArrayList<String>> normal_restaurant = Database.execute("select * from shops_main where id=" + restaurant.getId() + ";");
+        Description.setText(normal_restaurant.get(1).get(11));
+        OpenWeekdays.setText("Open in weekdays from " + normal_restaurant.get(1).get(4));
+        CloseWeekdays.setText("till " + normal_restaurant.get(1).get(5));
+        OpenSaturday.setText("Open in saturday from " + normal_restaurant.get(1).get(6));
+        CloseSaturday.setText("till " + normal_restaurant.get(1).get(7));
+        OpenSunday.setText("Open in sunday from " + normal_restaurant.get(1).get(8));
+        CloseSunday.setText("till " + normal_restaurant.get(1).get(9));
+        Stars.setText("Has "+ normal_restaurant.get(1).get(10) + " stars.");
+        Adres.setText(normal_restaurant.get(1).get(2));
+        geoposition.setText(normal_restaurant.get(1).get(3));
+        delivery.setText(normal_restaurant.get(1).get(12).equals("t") ? "yes" : "no");
         helper = new HashMap<>();
         ArrayList<Recipe> menu = restaurant.getMenu();
         List<Hyperlink> links = new ArrayList<>();
@@ -97,15 +134,27 @@ public class RestaurantsController {
         order.setOnAction(t -> {
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
-            int new_id = id_order();
+            ArrayList<ArrayList<String>> idOr = new ArrayList<>();
+            try {
+                idOr = Database.execute("select nextval('for_id_restaurantsOrders');");
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             for(Recipe r: order1){
                 try {
-                    Database.execute("insert into orders(id_order, id_restaurant, id_rec, date) values ("
-                            + new_id
+                    ArrayList<ArrayList<String>> temp = new ArrayList<>(); try {
+                        temp = Database.execute("select price from restaurant_content_recipes where id_rec = " + r.getId() + ";");
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    Database.update("insert into restaurant_orders values ("
+                            + idOr.get(1).get(0)
                             +','
                             + restaurant.getId()
                             + ','
                             + r.getId()
+                            +","
+                            + temp.get(1).get(0)
                             +",'"
                             +  dateFormat.format(date)
                             +"');");
