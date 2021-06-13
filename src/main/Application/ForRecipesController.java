@@ -82,7 +82,7 @@ public class ForRecipesController extends Main {
     @FXML
     void initialize() {
         try {
-            setRecipes("recipes");
+            //setRecipes("recipes");
         } catch (Exception e) {
             e.printStackTrace();
         }

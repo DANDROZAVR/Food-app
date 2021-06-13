@@ -62,12 +62,22 @@ public class sampleController extends Main {
             FXMLLoader loader = LoadXML.load("ForProducts.fxml");
             Parent root = loader.getRoot();
             ((Stage) show_all_products.getScene().getWindow()).setScene(new Scene(root));
+            try {
+                ((ForProductsController) loader.getController()).setProducts("products");
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         });
         assert show_all_recipes != null : "fx:id=\"show_all_recipes\" was not injected: check your FXML file 'sample.fxml'.";
         show_all_recipes.setOnAction(event -> {
             FXMLLoader loader = LoadXML.load("ForRecipes.fxml");
             Parent root = loader.getRoot();
             ((Stage) show_all_recipes.getScene().getWindow()).setScene(new Scene(root));
+            try {
+                ((ForRecipesController) loader.getController()).setRecipes("recipes");
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         });
         assert ButtonAddProducts != null : "fx:id=\"ButtonAddProducts\" was not injected: check your FXML file 'sample.fxml'.";
         ButtonAddProducts.setOnAction(event -> {

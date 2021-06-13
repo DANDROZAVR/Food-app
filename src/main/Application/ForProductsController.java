@@ -58,12 +58,15 @@ public class ForProductsController extends Main {
     private Button idAsc;
     @FXML
     private Button idDesc;
-    @FXML
-    private void setProducts(String table) throws SQLException {
+
+    public void setProducts(String table) throws SQLException {
+        ArrayList<ArrayList<String>> output = Query.getByNamePrefix_all(table,"");
+        setProductFromResult(output);
+    }
+    public void setProductFromResult(ArrayList<ArrayList<String>> output) {
         links = new ArrayList<>();
         VBox.getChildren().clear();
         listView.getItems().clear();
-        ArrayList<ArrayList<String>> output = Query.getByNamePrefix_all(table,"");
         for (ArrayList<String> s : output) {
             if (s.get(4) != null && !s.get(4).equals("description")) {
                 Hyperlink link = new Hyperlink(s.get(3));
@@ -92,7 +95,7 @@ public class ForProductsController extends Main {
     @FXML
     void initialize() {
         try {
-            setProducts("products");
+            //setProducts("products");
         } catch (Exception e) {
             e.printStackTrace();
         }

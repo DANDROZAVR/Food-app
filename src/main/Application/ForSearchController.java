@@ -1,5 +1,9 @@
 package main.Application;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import main.Data.Database;
 
 import javafx.collections.FXCollections;
@@ -7,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -22,10 +27,16 @@ import main.Model.Products.Product;
 import main.Model.Recipes.Recipe;
 
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ForSearchController extends Main {
-
+    @FXML
+    private TextField caloriesTo;
+    @FXML
+    private TextField caloriesFrom;
+    @FXML
+    public TextField linesCnt;
     @FXML
     private VBox AllTags;
     @FXML
@@ -54,15 +65,14 @@ public class ForSearchController extends Main {
     private Button ButtonFind;
     @FXML
     private Button cancelButton;
-
     @FXML
-    private Button settings;
+    public Button settings;
     @FXML
     void goToHome(ActionEvent event) {
         Main.goToHome();
     }
     @FXML
-    void openSettings(ActionEvent event) {
+    public void openSettings(javafx.event.ActionEvent actionEvent) {
     }
     @FXML
     void goToHome(javafx.event.ActionEvent event) { Main.goToHome(); }
@@ -70,6 +80,8 @@ public class ForSearchController extends Main {
     private TextField GetInstruction;
     @FXML
     int SizeTags;
+    @FXML
+    boolean wasSeted = false;
     @FXML
     ObservableList<String> Tags, Groups;
     @FXML
@@ -84,7 +96,6 @@ public class ForSearchController extends Main {
                 }
             }
             Tags = FXCollections.observableArrayList(s);
-            SizeTags = s.size();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -101,11 +112,18 @@ public class ForSearchController extends Main {
         }
     }
     @FXML
-    public ChoiceBox<String> getBoxTags(){
-        ChoiceBox<String> _new = new ChoiceBox<String>();
+    public ComboBox<String> getBoxTags(){
+        ComboBox<String> _new = new ComboBox<String>();
         _new.setMaxHeight(60);
         _new.setValue("");
         _new.setItems(Tags);
+        return _new;
+    }
+    public ComboBox<String> getGroups() {
+        ComboBox<String> _new = new ComboBox<>();
+        _new.setMaxHeight(60);
+        _new.setValue("");
+        _new.setItems(Groups);
         return _new;
     }
     public TextField getTextField(String prompText) {
@@ -122,6 +140,26 @@ public class ForSearchController extends Main {
         cName.setSelected(false);
     };
     @FXML
+    private CheckBox chooseGroup;
+    @FXML
+    private VBox Allgroups;
+    @FXML
+    boolean wascName = false;
+    @FXML
+    boolean wascId = false;
+    @FXML
+    boolean wascCalories = false;
+    @FXML
+    boolean wascAsc = false;
+    @FXML
+    boolean wascDesc = false;
+    @FXML
+    boolean wascCategory = false;
+    @FXML
+    private CheckBox cProduct;
+    @FXML
+    private CheckBox cResipe;
+    @FXML
     void initialize(){
         build();
         PlusTags.setOnAction(event -> {
@@ -137,78 +175,118 @@ public class ForSearchController extends Main {
                 AllTags.getChildren().remove(SizeTags);
             }
         });
+
         cCategory.setOnAction(event -> {
+            wascCategory = !wascCategory;
             setSortingFalse();
-            cCategory.setSelected(true);
+            cCategory.setSelected(wascCategory);
+            cProduct.setSelected(true);
+            cResipe.setSelected(false);
         });
         cName.setOnAction(event -> {
+            wascName = !wascName;
             setSortingFalse();
-            cName.setSelected(true);
+            cName.setSelected(wascName);
         });
         cId.setOnAction(event -> {
+            wascId = !wascId;
             setSortingFalse();
-            cId.setSelected(true);
+            cId.setSelected(wascId);
         });
         cCalories.setOnAction(event -> {
+            wascCalories = !wascCalories;
             setSortingFalse();
-            cCalories.setSelected(true);
+            cCalories.setSelected(wascCalories);
         });
         cAsc.setOnAction(event -> {
-            cAsc.setSelected(true);
+            wascAsc = !wascAsc;
+            cAsc.setSelected(wascAsc);
             cDesc.setSelected(false);
         });
         cDesc.setOnAction(event -> {
+            wascDesc = !wascDesc;
             cAsc.setSelected(false);
-            cDesc.setSelected(true);
+            cDesc.setSelected(wascDesc);
         });
-        /*AddRecipe.setOnAction(event -> {
-            try {
-                int Id = Query.getNewIdFor("Recipes");
-
-                ArrayList<Pair<Product, Integer>> list_of_products = new ArrayList<Pair<Product, Integer>>();
-                for(Node h: AddProducts.getChildren()){
-                    HBox temp = (HBox) h;
-                    String Name = ((ChoiceBox<String>)temp.getChildren().get(0)).getValue();
-                    String Weight = ((TextField)temp.getChildren().get(2)).getText();
-                    list_of_products.add(new Pair<>(Parser.getProductsFrom(Query.getByName("products", Name)).get(0), Integer.parseInt(Weight)));
-                }
-
-
-                ArrayList<Pair<Recipe, Integer>> list_of_recipes = new ArrayList<Pair<Recipe, Integer>>();
-                for(Node h: AddRecipes.getChildren()){
-                    HBox temp = (HBox) h;
-                    String Name = ((ChoiceBox<String>)temp.getChildren().get(0)).getValue();
-                    String Weight = ((TextField)temp.getChildren().get(2)).getText();
-                    list_of_recipes.add(new Pair<>(Parser.getRecipesFrom(Query.getByName("recipes", Name)).get(0), Integer.parseInt(Weight)));
-                }
-
-                ArrayList <Pair<Integer, Integer> > List_of_elements = new ArrayList<>();
-
-                for(Pair<Recipe, Integer> i : list_of_recipes){
-                    List_of_elements.add(new Pair<>(i.getKey().getId(), i.getValue()));
-                }
-                for(Pair<Product, Integer> i : list_of_products){
-                    List_of_elements.add(new Pair<>(i.getKey().getId(), i.getValue()));
-                }
-
-                Recipe new_recipe = new Recipe(Id, GetName.getText(), GetDescription.getText(), List_of_elements, GetInstruction.getText());
-                Integer hours = 0, minutes = 0;
-                if(GetTimeHours.getText() != ""){
-                    hours = Integer.parseInt(GetTimeHours.getText());
-                }
-                if(GetTimeMinutes.getText() != ""){
-                    minutes = Integer.parseInt(GetTimeMinutes.getText());
-                }
-                new_recipe.setTime(Integer.toString(hours * 60 + minutes));
-                Query.addNewRecipe(new_recipe, list_of_recipes, list_of_products);
-                error_out.setTextFill(Color.web("#16b221", 0.8));
-                error_out.setText("OK");
-            }catch (Exception e){
-                error_out.setTextFill(Color.web("#dd0e0e", 0.8));
-                error_out.setText("ERROR");
-                e.printStackTrace();
+        cProduct.setSelected(true);
+        cProduct.setOnAction(event -> {
+            cProduct.setSelected(true);
+            cResipe.setSelected(false);
+        });
+        cResipe.setOnAction(event -> {
+            cProduct.setSelected(false);
+            cResipe.setSelected(true);
+            cCategory.setSelected(false);
+            wascCategory = false;
+            if (wasSeted) {
+                Allgroups.getChildren().remove(0);
+                chooseGroup.setSelected(false);
+                wasSeted = false;
             }
-        });*/
+        });
+        chooseGroup.setOnAction(event -> {
+            cProduct.setSelected(true);
+            cResipe.setSelected(false);
+            if (wasSeted) {
+                Allgroups.getChildren().remove(0);
+            } else {
+                Allgroups.getChildren().add(getGroups());
+            }
+            wasSeted = true;
+        });
+        ButtonFind.setOnAction(event -> {
+            StringBuilder query = new StringBuilder().append("select * from");
+            if (cProduct.isSelected())
+                query.append(" products "); else
+                query.append(" recipes ");
+            StringBuilder whereReq = new StringBuilder();
+            whereReq.append("where name like '" + GetText.getText() + "%' ");
+            if (!caloriesFrom.getText().equals("") || !caloriesTo.getText().equals("")) {
+                String first = "0";
+                if (!caloriesFrom.getText().equals(""))
+                    first = caloriesFrom.getText();
+                String second = "1000";
+                if (!caloriesTo.getText().equals(""))
+                    second = caloriesTo.getText();
+                whereReq.append(" and calories>=").append(first).append(" and calories<=").append(second).append(" ");
+            }
+            if (chooseGroup.isSelected()) {
+                String category = ((ComboBox<String>)Allgroups.getChildren().get(0)).getValue();
+                whereReq.append(" and ").append("product_group = ").append(category).append(" ");
+            }
+            if (whereReq.toString().length() != 0) {
+                query.append(whereReq);
+            }
+            boolean was = true;
+            if (cCategory.isSelected())
+                query.append(" order by product_group"); else
+            if (cId.isSelected()) {
+                query.append(" order by id_");
+                if (cProduct.isSelected())
+                    query.append("prod"); else
+                    query.append("rec");
+            } else
+            if (cName.isSelected())
+                query.append(" order by name"); else
+            if (cCalories.isSelected())
+                query.append(" order by calories"); else
+                was = false;
+            if (was) {
+                if (cDesc.isSelected())
+                    query.append(" desc"); else
+                    query.append(" asc");
+            }
+            query.append(" limit " + linesCnt.getText());
+            System.out.println(query.toString());
+            FXMLLoader loader = LoadXML.load("ForProducts.fxml");
+            Parent root = loader.getRoot();
+            ((Stage) cProduct.getScene().getWindow()).setScene(new Scene(root));
+            try {
+                ((ForProductsController) loader.getController()).setProductFromResult(Database.execute(query.toString()));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        });
     }
 }
 

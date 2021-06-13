@@ -4,44 +4,99 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ForSearchController">
    <children>
-      <TextField layoutX="94.0" layoutY="112.0" promptText="From" />
-      <TextField layoutX="256.0" layoutY="112.0" promptText="to" />
+      <TextField fx:id="caloriesTo" layoutX="256.0" layoutY="112.0" promptText="to" />
+      <TextField fx:id="caloriesFrom" layoutX="94.0" layoutY="112.0" promptText="From" />
       <Label layoutX="32.0" layoutY="112.0" prefHeight="26.0" prefWidth="62.0" text="Calories">
          <font>
             <Font size="10.0" />
          </font>
       </Label>
-      <VBox fx:id="AllTags" layoutX="96.0" layoutY="182.0" prefHeight="183.0" prefWidth="172.0" />
-      <Button fx:id="PlusTags" layoutX="94.0" layoutY="148.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="+" />
-      <Button fx:id="MinusTags" layoutX="145.0" layoutY="148.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="-" />
-      <Label layoutX="32.0" layoutY="148.0" prefHeight="26.0" prefWidth="62.0" text="Tags">
+      <VBox fx:id="AllTags" layoutX="96.0" layoutY="194.0" prefHeight="294.0" prefWidth="172.0" />
+      <Button fx:id="PlusTags" layoutX="94.0" layoutY="161.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="+" />
+      <Button fx:id="MinusTags" layoutX="145.0" layoutY="161.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="47.0" text="-" />
+      <Label layoutX="32.0" layoutY="161.0" prefHeight="26.0" prefWidth="62.0" text="Tags">
          <font>
             <Font size="10.0" />
          </font>
       </Label>
-      <Label layoutX="477.0" layoutY="111.0" prefHeight="26.0" prefWidth="62.0" text="Sort by">
+      <Label layoutX="506.0" layoutY="112.0" prefHeight="26.0" prefWidth="62.0" text="Sort by">
          <font>
             <Font size="10.0" />
          </font>
       </Label>
-      <CheckBox fx:id="cCalories" layoutX="527.0" layoutY="116.0" mnemonicParsing="false" text="Calories" />
-      <CheckBox fx:id="cName" layoutX="607.0" layoutY="117.0" mnemonicParsing="false" text="Name" />
-      <CheckBox fx:id="cId" layoutX="678.0" layoutY="117.0" mnemonicParsing="false" text="Id" />
-      <CheckBox fx:id="cCategory" layoutX="723.0" layoutY="117.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="89.0" text="Category" />
-      <CheckBox fx:id="cAsc" layoutX="558.0" layoutY="165.0" mnemonicParsing="false" text="ascending">
+      <CheckBox fx:id="cCalories" layoutX="556.0" layoutY="117.0" mnemonicParsing="false" text="Calories" />
+      <CheckBox fx:id="cName" layoutX="636.0" layoutY="118.0" mnemonicParsing="false" text="Name" />
+      <CheckBox fx:id="cId" layoutX="707.0" layoutY="118.0" mnemonicParsing="false" text="Id" />
+      <CheckBox fx:id="cCategory" layoutX="752.0" layoutY="118.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="89.0" text="Category" />
+      <CheckBox fx:id="cAsc" layoutX="556.0" layoutY="166.0" mnemonicParsing="false" text="ascending">
          <font>
             <Font name="Lucida Sans Demibold Italic" size="14.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="cDesc" layoutX="703.0" layoutY="165.0" mnemonicParsing="false" text="descending">
+      <CheckBox fx:id="cDesc" layoutX="707.0" layoutY="165.0" mnemonicParsing="false" text="descending">
          <font>
             <Font name="Lucida Sans Demibold Italic" size="14.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="chooseGroup" layoutX="754.0" layoutY="315.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="115.0" text="Choose group" />
+      <VBox fx:id="Allgroups" layoutX="545.0" layoutY="266.0" prefHeight="272.0" prefWidth="172.0" />
+      <Button alignment="TOP_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#goToHome" prefHeight="62.0" prefWidth="66.0" text="Home">
+         <graphic>
+            <ImageView fx:id="home" fitHeight="31.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/Icons/Home.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Pane layoutX="98.0" layoutY="13.0" prefHeight="78.0" prefWidth="904.0">
+         <children>
+            <TextField fx:id="GetText" layoutX="59.0" layoutY="2.0" prefHeight="48.0" prefWidth="555.0" />
+            <Button fx:id="ButtonFind" layoutX="617.0" layoutY="2.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="39.0" />
+            <ImageView fitHeight="48.0" fitWidth="76.0" layoutX="656.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/Icons/iconfinder_search_115695.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="cancelButton" alignment="CENTER_RIGHT" cancelButton="true" layoutX="10.0" layoutY="2.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#goToHome" prefHeight="48.0" prefWidth="37.0" text="&lt;">
+               <font>
+                  <Font name="Arial Black" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="settings" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="722.0" layoutY="-4.0" mnemonicParsing="false" onAction="#openSettings" prefHeight="48.0" prefWidth="73.0" text="Settings">
+               <graphic>
+                  <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../resources/Icons/Settings.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </Pane>
+      <Label layoutX="256.0" layoutY="161.0" prefHeight="26.0" prefWidth="62.0" text="Show lines">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <TextField fx:id="linesCnt" layoutX="318.0" layoutY="161.0" prefHeight="26.0" prefWidth="83.0" text="250" />
+      <CheckBox fx:id="cProduct" layoutX="556.0" layoutY="216.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="90.0" text="Product">
+         <font>
+            <Font name="Forte" size="14.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="cResipe" layoutX="709.0" layoutY="216.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="90.0" text="Recipe">
+         <font>
+            <Font name="Forte" size="14.0" />
          </font>
       </CheckBox>
    </children>
