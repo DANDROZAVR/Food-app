@@ -68,10 +68,6 @@ public class ForSearchController extends Main {
     @FXML
     public Button settings;
     @FXML
-    void goToHome(ActionEvent event) {
-        Main.goToHome();
-    }
-    @FXML
     public void openSettings(javafx.event.ActionEvent actionEvent) {
     }
     @FXML
@@ -252,7 +248,7 @@ public class ForSearchController extends Main {
             }
             if (chooseGroup.isSelected()) {
                 String category = ((ComboBox<String>)Allgroups.getChildren().get(0)).getValue();
-                whereReq.append(" and ").append("product_group = ").append(category).append(" ");
+                whereReq.append(" and ").append("product_group = '").append(category).append("' ");
             }
             if (whereReq.toString().length() != 0) {
                 query.append(whereReq);

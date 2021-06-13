@@ -20,7 +20,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Main.primaryStage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("ForSearch.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Food-app");
         primaryStage.setScene(new Scene(root, 900, 600));
         primaryStage.show();

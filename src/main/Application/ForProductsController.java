@@ -93,6 +93,13 @@ public class ForProductsController extends Main {
         VBox.getChildren().addAll(listView);
     }
     @FXML
+    public void openSettings(javafx.event.ActionEvent actionEvent) {
+    }
+    @FXML
+    private Button settings;
+    @FXML
+    private Hyperlink goToSearch;
+    @FXML
     void initialize() {
         try {
             //setProducts("products");
@@ -126,6 +133,11 @@ public class ForProductsController extends Main {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        });
+        goToSearch.setOnAction(event -> {
+            FXMLLoader loader = LoadXML.load("ForSearch.fxml");
+            Parent root = loader.getRoot();
+            ((Stage) VBox.getScene().getWindow()).setScene(new Scene(root));
         });
         ButtonFind.setOnAction(event -> {
             links.clear();
