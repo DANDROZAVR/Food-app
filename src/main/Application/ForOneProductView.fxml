@@ -23,16 +23,17 @@
                   <ImageView fx:id="product_icon" fitHeight="94.0" fitWidth="114.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </HBox>
-            <TextArea fx:id="product_type" editable="false" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
-            <TextArea fx:id="product_calories" editable="false" prefHeight="200.0" prefWidth="200.0" />
+            <TextArea fx:id="product_type" editable="false" maxHeight="1.7976931348623157E308" prefHeight="96.0" prefWidth="515.0" />
+            <TextArea fx:id="product_calories" editable="false" prefHeight="63.0" prefWidth="515.0" />
             <TextArea fx:id="product_description" editable="false" prefHeight="200.0" prefWidth="515.0" />
+            <TextArea fx:id="Tags" prefHeight="200.0" prefWidth="515.0" />
          </children>
       </VBox>
       <Button fx:id="ToProducts" layoutX="89.0" layoutY="44.0" mnemonicParsing="false" text="Back" />
       <Label layoutX="599.0" layoutY="132.0" prefHeight="26.0" prefWidth="62.0" text="Name" />
-      <Label layoutX="599.0" layoutY="223.0" prefHeight="26.0" prefWidth="62.0" text="Category" />
-      <Label layoutX="599.0" layoutY="287.0" prefHeight="26.0" prefWidth="62.0" text="Calories" />
-      <Label layoutX="599.0" layoutY="357.0" prefHeight="26.0" prefWidth="62.0" text="Description" />
+      <Label layoutX="599.0" layoutY="210.0" prefHeight="26.0" prefWidth="62.0" text="Category" />
+      <Label layoutX="599.0" layoutY="241.0" prefHeight="26.0" prefWidth="62.0" text="Calories" />
+      <Label layoutX="599.0" layoutY="320.0" prefHeight="26.0" prefWidth="62.0" text="Description" />
       <VBox layoutX="716.0" layoutY="101.0" prefHeight="153.0" prefWidth="100.0">
          <children>
             <Label fx:id="fat" prefHeight="26.0" prefWidth="100.0" />
@@ -136,5 +137,6 @@
             <Font size="10.0" />
          </font>
       </Label>
+      <Label layoutX="599.0" layoutY="435.0" prefHeight="26.0" prefWidth="62.0" text="Tags" />
    </children>
 </AnchorPane>

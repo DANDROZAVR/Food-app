@@ -16,7 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.Data.Parser;
+import main.Data.Query;
 import main.Model.Products.Product;
 import main.Model.Products.Solids;
 
@@ -74,9 +74,12 @@ public class ForOneProductViewController extends Main {
     private Label vitamin_E;
     @FXML
     private Label vitamin_K;
+    @FXML
+    private TextArea Tags;
     void setSceneProduct(Scene sceneProduct){
         this.sceneProduct = sceneProduct;
     }
+    @FXML
     void setProduct(Product item) {
         //((TextArea)((HBox)VBoxProduct.getChildren().get(0)).getChildren().get(0)).setAccessibleText(item.getName());
         product_name.setText(item.getName());
@@ -115,6 +118,11 @@ public class ForOneProductViewController extends Main {
                 linksString.append(item.getLinks()[i]);
             }
             product_links.setText(linksString.toString());
+        }
+        try {
+            Tags.setText(Query.getTagsById(item.getId()));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         Image nImage = null;
         try {

@@ -78,18 +78,25 @@ public class Query {
         String query = new String("SELECT * FROM products left join species_taste;");
         return Parser.getProductsFrom(Database.execute(query));
     }
-    /*
-    public static ArrayList<Product> getFullProductsWithoutSpecies() throws Exception {
-        String query = new String("SELECT * FROM products;");
-        return Parser.getProductsFrom(Database.execute(query));
+    public static String resultToString(ArrayList<ArrayList<String>> arr) {
+        StringBuilder res = new StringBuilder();
+        for (int i = 1; i < arr.size(); ++i) {
+            for (String j : arr.get(i))
+                res.append(j).append(" ");
+            res.append('\n');
+        }
+        return res.toString();
     }
-    public static ArrayList<Product> getFullProductsWithSpecies() throws Exception {
-        String query = new String("SELECT * FROM products left join species_taste;");
-        return Parser.getProductsFrom(Database.execute(query));
+    public static String getTagsById(int id) throws Exception {
+        String query = new String("select area from products_areatag where id_prod = " + id);
+        String query2 = new String("select tag from products_tag where id_prod = " + id);
+        return resultToString(Database.execute(query)) + resultToString(Database.execute(query2));
     }
-    change query
-    Tags, Minerals, Vitamins
-     */
+    public static String getTagsByIdRecipes(int id) throws Exception {
+        String query = new String("select area from recipes_areatag where id = " + id);
+        String query2 = new String("select tag from recipes_tag where id = " + id);
+        return resultToString(Database.execute(query)) + resultToString(Database.execute(query2));
+    }
     public static int getCaloriesFromProducts(String fromTable, int item) throws SQLException {
         String query = "SELECT calories FROM " + fromTable + " WHERE id_prod=" + String.valueOf(item) + ";";
         return Integer.parseInt(Database.execute(query).get(1).get(0));
@@ -136,18 +143,20 @@ public class Query {
         return Database.execute(query);
     }
     public static int getNewIdFor(String S) throws SQLException {
-        int start = 0;
-        String Id = "id_rec";
-        if(S == "products"){
-            start = 1;
-            Id = "id_prod";
+        if (S.equals("products")) {
+            System.out.println(Database.execute("select nextval('for_id_products');").get(1).get(0));
+            return Integer.parseInt(Database.execute("select nextval('for_id_products');").get(1).get(0));
         }
-        for(int i = start; ; i += 2){
-            String query = new String("SELECT COUNT(*) FROM " + S + " where " + Id + "=" + i + ";");
-            if(Integer.parseInt(Database.execute(query).get(1).get(0)) == 0){
-                return i;
-            }
+        if (S.equals("recipes")) {
+            return Integer.parseInt(Database.execute("select nextval('for_id_recipes');").get(1).get(0));
         }
+        if (S.equals("shops")) {
+            return Integer.parseInt(Database.execute("select nextval('for_id_shop');").get(1).get(0));
+        }
+        if (S.equals("restaurants")) {
+            return Integer.parseInt(Database.execute("select nextval('for_id_restaurants');").get(1).get(0));
+        }
+        throw new SQLException("unknown val-sequence:" + S);
     }
     public static int getNewIdForRestaurant() throws SQLException {
         return Integer.parseInt(Database.execute(new String("select nextval('for_id_restaurants');")).get(1).get(0));
@@ -362,7 +371,7 @@ public class Query {
         query = new String("select count(*) from restaurants_main where " +
                 "id = " + r.getId() + " AND " +
                 "name = '" + r.getName() + "' AND " +
-                "geoposition = '" + r.getGeoposition() + "' AND " +
+                "geoposition ~= '" + r.getGeoposition() + "' AND " +
                 "adres = '" + r.getAdres() + "';"
         );
         if(Integer.parseInt(Database.execute(query).get(1).get(0)) == 0){

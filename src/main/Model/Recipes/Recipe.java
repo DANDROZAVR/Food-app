@@ -14,7 +14,30 @@ public class Recipe {
     private int calories;
     private ArrayList<Pair<Integer, Integer>> Components; // [ id, weight ]
     private ArrayList<Product> NormComp = null;
-    public String repair(String input) {
+    public static String fixInstruction(String instruction) {
+        StringBuilder res = new StringBuilder();
+        boolean start = true;
+        int all = 0;
+        for (int i = 0; i < instruction.length(); ++i) {
+            char c = instruction.charAt(i);
+            if (c == '[' || c == ']') continue;
+            if (c == '`') {
+                if (i + 1 < instruction.length() && instruction.charAt(i + 1) == ',') {
+                    res.append("\n");
+                    start = true;
+                    ++i;
+                }
+                continue;
+            }
+            if (start) {
+                res.append(++all + ": ");
+            }
+            start = false;
+            res.append(c);
+        }
+        return res.toString();
+    }
+    public static String repair(String input) {
         StringBuilder res = new StringBuilder();
         int last = 0;
         int end = 0;

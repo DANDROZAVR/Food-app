@@ -5,11 +5,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ButtonShopController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Application.ButtonShopController">
    <children>
-      <Button fx:id="Back" layoutX="103.0" layoutY="52.0" mnemonicParsing="false" text="Back" />
-      <VBox fx:id="Vbox" layoutX="203.0" layoutY="100.0" prefHeight="200.0" prefWidth="267.0" />
-      <Label fx:id="Shops" layoutX="272.0" layoutY="44.0" text="Shops" />
+      <Button fx:id="Back" layoutX="42.0" layoutY="39.0" mnemonicParsing="false" text="Back" />
+      <VBox fx:id="Vbox" layoutX="57.0" layoutY="100.0" prefHeight="458.0" prefWidth="792.0" />
+      <Label fx:id="Shops" layoutX="434.0" layoutY="34.0" text="Shops" />
    </children>
 </AnchorPane>

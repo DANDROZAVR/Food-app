@@ -100,7 +100,11 @@ public class sampleController extends Main {
         });
         QueryButton.setOnAction(t -> {
             try {
-                System.out.println(Database.execute(Query.getText()));
+                FXMLLoader loader = LoadXML.load("query1.fxml");
+                Parent root = loader.getRoot();
+                ((query1Controller) loader.getController()).setSceneBack(ButtonAddRecipes.getScene());
+                ((query1Controller) loader.getController()).setText(Database.execute(Query.getText()).toString());
+                ((Stage) ButtonAddRecipes.getScene().getWindow()).setScene(new Scene(root));
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

@@ -26,7 +26,7 @@
       <Label layoutX="118.0" layoutY="247.0" prefHeight="50.0" prefWidth="209.0" text="Schedule" />
       <Label layoutX="197.0" layoutY="429.0" prefHeight="24.0" prefWidth="34.0" text="-" />
       <TextField fx:id="GetGeoposition" layoutX="118.0" layoutY="177.0" prefHeight="42.0" prefWidth="470.0" />
-      <Label layoutX="620.0" layoutY="177.0" prefHeight="42.0" prefWidth="158.0" text="Geoposition" />
+      <Label layoutX="620.0" layoutY="177.0" prefHeight="42.0" prefWidth="158.0" text="Geoposition(x,y)" />
       <Label layoutX="118.0" layoutY="303.0" prefHeight="50.0" prefWidth="82.0" text="Weekday" />
       <ComboBox fx:id="GetWeekdayStartMinute" layoutX="327.0" layoutY="303.0" prefHeight="50.0" prefWidth="82.0" />
       <ComboBox fx:id="GetWeekdayFinishHour" layoutX="441.0" layoutY="303.0" prefHeight="50.0" prefWidth="82.0" />
