@@ -25,6 +25,7 @@ import javax.xml.crypto.Data;
 
 public class RestaurantsController {
     Map<Hyperlink, Recipe> helper;
+    Map<Hyperlink, Integer> helper2;
     private final ListView listView = new ListView();
     @FXML
     private ResourceBundle resources;
@@ -86,6 +87,7 @@ public class RestaurantsController {
         geoposition.setText(normal_restaurant.get(1).get(3));
         delivery.setText(normal_restaurant.get(1).get(12).equals("t") ? "yes" : "no");
         helper = new HashMap<>();
+        helper2 = new HashMap<>();
         ArrayList<Recipe> menu = restaurant.getMenu();
         List<Hyperlink> links = new ArrayList<>();
         links.clear();
@@ -94,6 +96,8 @@ public class RestaurantsController {
         for (Recipe res : menu) {
             Hyperlink link = new Hyperlink(res.getName());
             helper.put(link, res);
+            ArrayList<ArrayList<String>> price = Database.execute("select price from restaurant_content_recipes where id_rec =" + res.getId() + ";");
+            helper2.put(link, Integer.parseInt(price.get(1).get(0)));
             link.setTooltip(new Tooltip("weight: " + res.getWeight() + "\n" +
                     "All calories: " + res.getAllCalories()+ "\n" + "Description: " + res.getDescription()));
             link.setOnAction(t -> {
@@ -113,13 +117,13 @@ public class RestaurantsController {
         for(Hyperlink l: links){
             HBox temp1 = new HBox();
             Button add = new Button("add");
-            temp1.getChildren().addAll(l,add);
+            temp1.getChildren().addAll(l,add,new Label("  Price: " +helper.get(l)));
             Vbox.getChildren().addAll(temp1);
             add.setOnAction(t1 -> {
                 Vbox.getChildren().remove(temp1);
                 HBox temp2 = new HBox();
                 Button delete = new Button("delete");
-                temp2.getChildren().addAll(l,delete);
+                temp2.getChildren().addAll(l,delete,new Label("  Price: " +helper.get(l)));
                 order1.add(helper.get(l));
                 VBoxOrder.getChildren().add(temp2);
                 delete.setOnAction(t2 -> {

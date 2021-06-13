@@ -23,6 +23,7 @@ import main.Model.Shops.Shop;
 
 public class ShopController {
     Map<Hyperlink, Integer> helper;
+    Map<Hyperlink, Integer> helper2;
     private final ListView listView = new ListView();
     @FXML
     private ResourceBundle resources;
@@ -92,6 +93,7 @@ public class ShopController {
         geoposition.setText(normal_shop.get(1).get(3));
         delivery.setText(normal_shop.get(1).get(12).equals("t") ? "yes" : "no");
         helper = new HashMap<>();
+        helper2 = new HashMap<>();
         ArrayList<Integer> menu = shop.getMenu();
         List<Hyperlink> links = new ArrayList<>();
         links.clear();
@@ -102,6 +104,8 @@ public class ShopController {
                 Recipe res = Parser.parseRecipeById(ide);
                 Hyperlink link = new Hyperlink(res.getName());
                 helper.put(link, ide);
+                ArrayList<ArrayList<String>> price = Database.execute("select price from shops_content_recipes where id_rec =" + ide + ";");
+                helper2.put(link, Integer.parseInt(price.get(1).get(0)));
                 link.setTooltip(new Tooltip("weight: " + res.getWeight() + "\n" +
                         "All calories: " + res.getAllCalories() + "\n" + "Description: " + res.getDescription()));
                 link.setOnAction(t -> {
@@ -120,6 +124,8 @@ public class ShopController {
                 Product res = Parser.parseProductById(ide);
                 Hyperlink link = new Hyperlink(res.getName());
                 helper.put(link, ide);
+                ArrayList<ArrayList<String>> price = Database.execute("select price from shops_content_products where id_prod =" + ide + ";");
+                helper2.put(link, Integer.parseInt(price.get(1).get(0)));
                 link.setTooltip(new Tooltip("Product group: " + res.getType() + "\n" +
                         "Product class: " + res.getProductType()+ "\n" + "Calories " + res.getCalories()));
                 link.setOnAction(t -> {
@@ -136,13 +142,13 @@ public class ShopController {
         for(Hyperlink l: links){
             HBox temp1 = new HBox();
             Button add = new Button("add");
-            temp1.getChildren().addAll(l,add);
+            temp1.getChildren().addAll(l,add, new Label("  Price: " + String.valueOf(helper.get(l))));
             Vbox.getChildren().addAll(temp1);
             add.setOnAction(t1 -> {
                 Vbox.getChildren().remove(temp1);
                 HBox temp2 = new HBox();
                 Button delete = new Button("delete");
-                temp2.getChildren().addAll(l,delete);
+                temp2.getChildren().addAll(l,delete,new Label("  Price: " +String.valueOf(helper.get(l))));
                 order1.add(helper.get(l));
                 VBoxOrder.getChildren().add(temp2);
                 delete.setOnAction(t2 -> {
