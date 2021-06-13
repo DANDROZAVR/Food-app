@@ -98,14 +98,14 @@ public class Query {
         return res.toString();
     }
     public static String getTagsById(int id) throws Exception {
-        String query = new String("select area from products_areatag where id_prod = " + id);
+        //String query = new String("select area from products_areatag where id_prod = " + id);
         String query2 = new String("select tag from products_tag where id_prod = " + id);
-        return resultToString(Database.execute(query)) + resultToString(Database.execute(query2));
+        return resultToString(Database.execute(query2));
     }
     public static String getTagsByIdRecipes(int id) throws Exception {
-        String query = new String("select area from recipes_areatag where id = " + id);
+        //String query = new String("select area from recipes_areatag where id = " + id);
         String query2 = new String("select tag from recipes_tag where id = " + id);
-        return resultToString(Database.execute(query)) + resultToString(Database.execute(query2));
+        return resultToString(Database.execute(query2));
     }
     public static int getCaloriesFromProducts(String fromTable, int item) throws SQLException {
         String query = "SELECT calories FROM " + fromTable + " WHERE id_prod=" + String.valueOf(item) + ";";

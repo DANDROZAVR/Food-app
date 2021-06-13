@@ -85,10 +85,10 @@ public class ForSearchController extends Main {
         SizeTags = 0;
         try{
             ArrayList<String> s = new ArrayList<>();
-            ArrayList<ArrayList<String>> tagsList = Query.getFullInformation("tags");
+            ArrayList<ArrayList<String>> tagsList = Database.execute("select tag from products_tag group by 1 order by 1");
             for(ArrayList<String> item : tagsList){
-                if (!item.get(0).equals("id_tag")) {
-                    s.add(item.get(1));
+                if (!item.get(0).equals("tag")) {
+                    s.add(item.get(0));
                 }
             }
             Tags = FXCollections.observableArrayList(s);
@@ -112,12 +112,14 @@ public class ForSearchController extends Main {
         ComboBox<String> _new = new ComboBox<String>();
         _new.setMaxHeight(60);
         _new.setValue("");
+        _new.setVisibleRowCount(15);
         _new.setItems(Tags);
         return _new;
     }
     public ComboBox<String> getGroups() {
         ComboBox<String> _new = new ComboBox<>();
         _new.setMaxHeight(60);
+        _new.setVisibleRowCount(15);
         _new.setValue("");
         _new.setItems(Groups);
         return _new;
@@ -159,10 +161,8 @@ public class ForSearchController extends Main {
     void initialize(){
         build();
         PlusTags.setOnAction(event -> {
-            HBox _new = new HBox();
-            _new.getChildren().add(getBoxTags());
             //_new.getChildren().add(getTextField("From"));
-            AllTags.getChildren().add(_new);
+            AllTags.getChildren().add(getBoxTags());
             SizeTags++;
         });
         MinusTags.setOnAction(event -> {
@@ -233,8 +233,8 @@ public class ForSearchController extends Main {
         ButtonFind.setOnAction(event -> {
             StringBuilder query = new StringBuilder().append("select * from");
             if (cProduct.isSelected())
-                query.append(" products "); else
-                query.append(" recipes ");
+                query.append(" products p natural join products_nutrient "); else
+                query.append(" recipes p ");
             StringBuilder whereReq = new StringBuilder();
             whereReq.append("where name like '" + GetText.getText() + "%' ");
             if (!caloriesFrom.getText().equals("") || !caloriesTo.getText().equals("")) {
@@ -249,6 +249,11 @@ public class ForSearchController extends Main {
             if (chooseGroup.isSelected()) {
                 String category = ((ComboBox<String>)Allgroups.getChildren().get(0)).getValue();
                 whereReq.append(" and ").append("product_group = '").append(category).append("' ");
+            }
+            for (Node item : AllTags.getChildren()) {
+                String Name = ((ComboBox<String>) item).getValue();
+                whereReq.append(" and (select count(*) from products_tag t where t.id_prod = p.id_prod and t.tag = '").
+                        append(Name).append("' limit 1) > 0 ");
             }
             if (whereReq.toString().length() != 0) {
                 query.append(whereReq);

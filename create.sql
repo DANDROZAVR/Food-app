@@ -147,7 +147,8 @@ create sequence for_id_products start with 1 increment by 2 maxvalue 100000;
 create sequence for_id_recipes start with 2 increment by 2 maxvalue 100000;
 create sequence for_id_shop start with 1 increment by 2 maxvalue 100000;
 create sequence for_id_restaurants start with 2 increment by 2 maxvalue 100000;
-
+create sequence for_id_shopOrders start with 1 increment by 2 maxvalue 100000;
+create sequence for_id_restaurantsOrders start with 1 increment by 2 maxvalue 100000;
 
 create or replace function getProductTags(item integer)
 	returns varchar as 
@@ -276,6 +277,43 @@ insert into restaurants_main(id,name,geoposition) values (10, 'Andrew', '0,0', '
 insert into restaurants_group_meals(id_restaurant,id_group,cena) values (10,5,3424);
 insert into group_meals_content(id_group,id_rec) values (5,12);
 insert into shops_main values(1,'sdfsaf','afadsfa');
+
+
+insert into products_tag
+	values
+(1, 'milk-product'),	
+(3, 'milk-product'),	
+(5, 'milk-product'),
+(7, 'milk-product'),
+(47, 'milk-product'),
+(49, 'milk-product'),
+(57, 'milk-product'),
+(59, 'milk-product'),
+(351, 'meat-product'),
+(363, 'meat-product'),
+(377, 'meat-product'),
+(433, 'meat-product'),
+(569, 'meat-product'),
+(635, 'meat-product'),
+(817, 'fruit'),
+(821, 'fruit'),
+(813, 'fruit'),
+(813, 'fruit'),
+(899, 'fruit'),
+(1063, 'fruit'),
+(1061, 'yummy-drinks'),
+(1033, 'yummy-drinks'),
+(1027, 'yummy-drinks'),
+(867, 'yummy-drinks'),
+(47, 'yummy-drinks'),
+(1069, 'juicy'),
+(1177, 'juicy'),
+(1281, 'vegan-must-have'),
+(1323, 'vegan-must-have'),
+(1485, 'vegan-must'),
+(1487, 'halloween'),
+(1539, 'grass');
+
 
 /*
 
