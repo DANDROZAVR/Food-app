@@ -15,6 +15,9 @@ public class FindIcon {
         try {
             String project_path =  new File(".").getCanonicalPath();
             String file_path = "/src/main/Helpers/IconFinder";
+            File tempFile = new File(project_path + "/src/resources/Icons/" + iconName + ".png");
+            boolean exists = tempFile.exists();
+            if (exists) return true;
             String command = "python3 " + project_path + file_path + "/iconAPI.py";
             System.out.println(command);
             p = Runtime.getRuntime().exec(command + " " + iconName);
@@ -46,5 +49,5 @@ public class FindIcon {
      * @return true, if all the icons were successfully founded and added to the "recources" folder
      */
 
-    //public static void main(String[] args) { System.out.println(findIcon("apple")); }
+    //public static void main(String[] args) { System.out.println(loadIconFromNet("egg123")); }
 }

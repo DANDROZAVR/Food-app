@@ -73,19 +73,6 @@ public class ForProductsController extends Main {
         for (ArrayList<String> s : output) {
             if (s.get(4) != null && !s.get(4).equals("description")) {
                 Hyperlink link = new Hyperlink(s.get(3));
-                /*Thread t2 = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        FindIcon.loadIconFromNet(s.get(3));
-                    }
-                });*/
-                /*if (!hs.contains(s.get(3))) {
-                    FindIcon.loadIconFromNet(s.get(3));
-                    System.out.println(s.get(3));
-                    hs.add(s.get(3));
-                }*/
-                //byl = true;
-                //if (byl) break;
                 link.setTooltip(new Tooltip("Product group: " + s.get(1) + "\n" +
                         "Product class: " + s.get(2)+ "\n" + "Calories " + s.get(5)));
                 link.setOnAction(t1 -> {
@@ -115,39 +102,9 @@ public class ForProductsController extends Main {
     private Button settings;
     @FXML
     private Hyperlink goToSearch;
-    public void butFind() {
-        links.clear();
-        VBox.getChildren().clear();
-        listView.getItems().clear();
-        try {
-            ArrayList<ArrayList<String>> output = Query.getByNamePrefix_all("products", GetText.getText());
-            for (ArrayList<String> s : output) {
-                if (!s.get(4).equals("description")) {
-                    Hyperlink link = new Hyperlink(s.get(3));
-                    link.setTooltip(new Tooltip("Product group: " + s.get(1) + "\n" +
-                            "Product class: " + s.get(2)+ "\n" + "Calories " + s.get(5)));
-                    link.setOnAction(t -> {
-                        FXMLLoader loader = LoadXML.load("ForOneProductView.fxml");
-                        ArrayList<ArrayList<String>> temp = new ArrayList<>();
-                        temp.add(output.get(0));
-                        temp.add(s);
-                        try {
-                            ((ForOneProductViewController) loader.getController()).setProduct(Parser.getProductsFrom(temp).get(0));
-                            ((ForOneProductViewController) loader.getController()).setSceneProduct(GetText.getScene());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        Parent root = loader.getRoot();
-                        ((Stage) GetText.getScene().getWindow()).setScene(new Scene(root));
-                    });
-                    links.add(link);
-                }
-            }
-            listView.getItems().addAll(links);
-            VBox.getChildren().addAll(listView);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void butFind() throws SQLException {
+        ArrayList<ArrayList<String>> output = Query.getByNamePrefix_all("products", GetText.getText());
+        setProductFromResult(output);;
     }
     @FXML
     void initialize() {
@@ -190,7 +147,11 @@ public class ForProductsController extends Main {
             ((Stage) VBox.getScene().getWindow()).setScene(new Scene(root));
         });
         ButtonFind.setOnAction(event -> {
-          butFind();
+            try {
+                butFind();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
