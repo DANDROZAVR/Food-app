@@ -138,5 +138,6 @@
          </font>
       </Label>
       <Label layoutX="599.0" layoutY="435.0" prefHeight="26.0" prefWidth="62.0" text="Tags" />
+      <Label fx:id="tryFoundIcon" layoutX="466.0" layoutY="43.0" prefHeight="26.0" prefWidth="255.0" />
    </children>
 </AnchorPane>

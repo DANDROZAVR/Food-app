@@ -64,7 +64,7 @@ public class ParserRecipesInput {
             if (content.size() == all) {
                 System.out.println(clc);
                 res.add(new Recipe(0, item.getName(), item.getDescription(), content, item.getInstruction(), true).setNormalComponent(Realcontent).setTime(item.getTime()));
-                //if (res.size() > 5) return res;
+                if (res.size() > 250) return res;
             }
         }
         return res;

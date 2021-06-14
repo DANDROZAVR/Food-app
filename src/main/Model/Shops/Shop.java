@@ -46,7 +46,7 @@ public class Shop extends Building {
                 if(temp.containsKey(Integer.parseInt(a.get(0)))){
                     temp.get(Integer.parseInt(a.get(0))).add(Integer.parseInt(a.get(2)));
                 }else {
-                    dates.put(Integer.parseInt(a.get(0)),a.get(3));
+                    dates.put(Integer.parseInt(a.get(0)),a.get(4));
                     ArrayList<Integer> temp2 = new ArrayList<>();
                     temp2.add(Integer.parseInt(a.get(2)));
                     temp.put(Integer.parseInt(a.get(0)), temp2);

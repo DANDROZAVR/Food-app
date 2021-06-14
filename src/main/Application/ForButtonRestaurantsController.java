@@ -19,7 +19,7 @@ import main.Data.Parser;
 import main.Data.Query;
 import main.Model.Recipes.Recipe;
 
-public class ForButtonRestaurantsController {
+public class ForButtonRestaurantsController extends Main {
     private final ListView listView = new ListView();
     @FXML
     private ResourceBundle resources;

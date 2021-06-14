@@ -98,14 +98,14 @@ public class Query {
         return res.toString();
     }
     public static String getTagsById(int id) throws Exception {
-        String query = new String("select area from products_areatag where id_prod = " + id);
+        //String query = new String("select area from products_areatag where id_prod = " + id);
         String query2 = new String("select tag from products_tag where id_prod = " + id);
-        return resultToString(Database.execute(query)) + resultToString(Database.execute(query2));
+        return resultToString(Database.execute(query2));
     }
     public static String getTagsByIdRecipes(int id) throws Exception {
-        String query = new String("select area from recipes_areatag where id = " + id);
+        //String query = new String("select area from recipes_areatag where id = " + id);
         String query2 = new String("select tag from recipes_tag where id = " + id);
-        return resultToString(Database.execute(query)) + resultToString(Database.execute(query2));
+        return resultToString(Database.execute(query2));
     }
     public static int getCaloriesFromProducts(String fromTable, int item) throws SQLException {
         String query = "SELECT calories FROM " + fromTable + " WHERE id_prod=" + String.valueOf(item) + ";";
@@ -137,17 +137,17 @@ public class Query {
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_all(String fromTable, String prefixName) throws SQLException {
         String query = new String(
-                        "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 " +
-                                "left join products_tag using(id_prod)"
+                        "SELECT * from (SELECT * FROM " + fromTable + " natural join products_nutrient where name like '" + prefixName + "%') as products1;");
+                                /*"left join products_tag using(id_prod)"
                              + " left join drinks_info using(id_prod)" +
-                                "left join products_nutrient using(id_prod);");
+                                "left join products_nutrient using(id_prod);");*/
         return Database.execute(query);
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_all_first(String fromTable, String prefixName) throws SQLException {
         String query = new String(
-                "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 " +
+                "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1;");/* +
                         "left join species_taste using(id_prod)"
-                        + " left join drinks_info using(id_prod) limit 1;");
+                        + " left join drinks_info using(id_prod) limit 1;");*/
         return Database.execute(query);
     }
     public static int getNewIdFor(String S) throws SQLException {
@@ -496,5 +496,35 @@ public class Query {
             throw new Exception("can't add to shops_main");
         }
 
+    }
+
+    static public int getIdRecipeByName(String name) throws Exception{
+        return Integer.parseInt(Database.execute(new String("select id_rec from recipes where name='" + name + "';")).get(1).get(0));
+    }
+    static public int getIdProductByName(String name) throws Exception{
+        return Integer.parseInt(Database.execute(new String("select id_prod from products where name='" + name + "';")).get(1).get(0));
+    }
+    static public void addNewRecipeForRestaurant(int id, String Name, int cost, int count){
+        try{
+            Database.update(new String("insert into restaurant_content_recipes(id_restaurant, id_rec, price, count) values(" + id + "," + getIdRecipeByName(Name) + "," + cost + "," + count + ");"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    static public void addNewRecipeForShop(int id, String Name, int cost, int count){
+        try{
+            Database.update(new String("insert into shops_content_recipes(id_shop, id_rec, price, count) values(" + id + "," + getIdRecipeByName(Name) + "," + cost + "," + count + ");"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    static public void addNewProductForShop(int id, String Name, int cost, int count){
+        try{
+            Database.update(new String("insert into shops_content_products(id_shop, id_prod, price, count) values(" + id + "," + getIdProductByName(Name) + "," + cost + "," + count + ");"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
