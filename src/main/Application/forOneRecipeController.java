@@ -55,7 +55,6 @@ public class forOneRecipeController extends Main {
         description.setText(item.repair(item.getDescription()));
         calories.setText(String.valueOf(item.getCalories()));
         instruction.setText(Recipe.repair(Recipe.fixInstruction(item.getInstruction())));
-
         if(item.getComponents() != null) {
             for (Pair<Integer, Integer> c : item.getComponents()) {
                 if (c.getKey() % 2 == 1) {
