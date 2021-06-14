@@ -34,7 +34,7 @@ public class OrderViewController {
             link.setTooltip(new Tooltip("weight: " + r.getWeight() + "\n" +
                         "All calories: " + r.getAllCalories()+ "\n" + "Description: " + r.getDescription()));
             link.setOnAction(t -> {
-                FXMLLoader loader = LoadXML.load("ForOneRecipe.fxml");
+                FXMLLoader loader = LoadXML.load("forOneRecipe.fxml");
                 try {
                     ((forOneRecipeController) loader.getController()).setRecipe(r);
                 } catch (SQLException throwables) {

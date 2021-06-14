@@ -25,6 +25,7 @@ drop table if exists restaurants_main cascade;
 drop table if exists restaurants_group_meals cascade;
 drop table if exists shops_content_recipes cascade;
 drop table if exists shops_content_orders cascade;
+drop table if exists shops_content_products cascade;
 drop table if exists group_meals_content cascade;
 drop table if exists shopsOrderRec cascade;
 drop table if exists shopsOrderProd cascade;
@@ -33,7 +34,11 @@ drop table if exists restaurants_geoposition cascade;
 drop table if exists restaurants_plan_weekdays;
 drop table if exists restaurants_plan_saturday;
 drop table if exists restaurants_plan_sunday;
+drop table if exists restaurant_orders;
+drop table if exists restaurant_content_recipes;
 
+drop sequence if exists for_id_restaurants_orders;
+drop sequence if exists for_id_restaurantsorders;
 
 drop table if exists shop_description cascade;
 drop table if exists shops_main cascade;
