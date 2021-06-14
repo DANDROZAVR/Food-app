@@ -80,6 +80,37 @@ public class ForRecipesController extends Main {
         VBox.getChildren().addAll(listView);
     }
     @FXML
+    public void setRecipesFromResult(ArrayList<ArrayList<String>> output) {
+        links = new ArrayList<>();
+        VBox.getChildren().clear();
+        listView.getItems().clear();
+        for (ArrayList<String> s : output) {
+            if (!s.get(4).equals("description")) {
+                Hyperlink link = new Hyperlink(s.get(1));
+                link.setTooltip(new Tooltip(
+                        "Calories per 100 g: " + s.get(3)+ "\n" + "Description: " + s.get(4)));
+                link.setOnAction(t -> {
+                    FXMLLoader loader = LoadXML.load("forOneRecipe.fxml");
+                    ArrayList<ArrayList<String>> temp = new ArrayList<>();
+                    temp.add(output.get(0));
+                    temp.add(s);
+                    try {
+                        ArrayList<Pair<Integer,Integer>> content = Query.getAllContentOfRecipe(Integer.parseInt(s.get(0)));
+                        ((forOneRecipeController) loader.getController()).setRecipe(Parser.getRecipesFrom(temp, content).get(0));
+                        ((forOneRecipeController) loader.getController()).setSceneProduct(GetText.getScene());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Parent root = loader.getRoot();
+                    ((Stage) GetText.getScene().getWindow()).setScene(new Scene(root));
+                });
+                links.add(link);
+            }
+        }
+        listView.getItems().addAll(links);
+        VBox.getChildren().addAll(listView);
+    }
+    @FXML
     private Hyperlink goToSearch;
     @FXML
     void initialize() {

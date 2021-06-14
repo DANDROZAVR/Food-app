@@ -137,7 +137,7 @@ public class Query {
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_all(String fromTable, String prefixName) throws SQLException {
         String query = new String(
-                        "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1;");
+                        "SELECT * from (SELECT * FROM " + fromTable + " natural join products_nutrient where name like '" + prefixName + "%') as products1;");
                                 /*"left join products_tag using(id_prod)"
                              + " left join drinks_info using(id_prod)" +
                                 "left join products_nutrient using(id_prod);");*/
@@ -145,9 +145,9 @@ public class Query {
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_all_first(String fromTable, String prefixName) throws SQLException {
         String query = new String(
-                "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1 " +
+                "SELECT * from (SELECT * FROM " + fromTable + " where name like '" + prefixName + "%') as products1;");/* +
                         "left join species_taste using(id_prod)"
-                        + " left join drinks_info using(id_prod) limit 1;");
+                        + " left join drinks_info using(id_prod) limit 1;");*/
         return Database.execute(query);
     }
     public static int getNewIdFor(String S) throws SQLException {

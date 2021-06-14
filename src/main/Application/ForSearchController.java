@@ -79,13 +79,16 @@ public class ForSearchController extends Main {
     @FXML
     boolean wasSeted = false;
     @FXML
-    ObservableList<String> Tags, Groups;
+    ObservableList<String> Tags, Groups, RecipeTags;
     @FXML
     public void build(){
         SizeTags = 0;
         try{
             ArrayList<String> s = new ArrayList<>();
-            ArrayList<ArrayList<String>> tagsList = Database.execute("select tag from products_tag group by 1 order by 1");
+            ArrayList<ArrayList<String>> tagsList;
+            if (!cResipe.isSelected())
+                tagsList = Database.execute("select tag from products_tag group by 1 order by 1"); else
+                tagsList = Database.execute("select tag from recipes_tag group by 1 order by 1");
             for(ArrayList<String> item : tagsList){
                 if (!item.get(0).equals("tag")) {
                     s.add(item.get(0));
@@ -219,6 +222,23 @@ public class ForSearchController extends Main {
                 chooseGroup.setSelected(false);
                 wasSeted = false;
             }
+            while(SizeTags > 0) {
+                SizeTags--;
+                AllTags.getChildren().remove(SizeTags);
+            }
+            try {
+                ArrayList<String> s = new ArrayList<>();
+                ArrayList<ArrayList<String>> tagsList;
+                tagsList = Database.execute("select tag from recipes_tag group by 1 order by 1");
+                for (ArrayList<String> item : tagsList) {
+                    if (!item.get(0).equals("tag")) {
+                        s.add(item.get(0));
+                    }
+                }
+                Tags = FXCollections.observableArrayList(s);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
         chooseGroup.setOnAction(event -> {
             cProduct.setSelected(true);
@@ -232,9 +252,20 @@ public class ForSearchController extends Main {
         });
         ButtonFind.setOnAction(event -> {
             StringBuilder query = new StringBuilder().append("select * from");
+            String str, str2, str3;
             if (cProduct.isSelected())
-                query.append(" products p natural join products_nutrient "); else
+                str2 = "id_prod"; else
+                str2 = "id";
+            if (cProduct.isSelected())
+                str3 = "id_prod"; else
+                str3 = "id_rec";
+            if (cProduct.isSelected()) {
+                query.append(" products p natural join products_nutrient ");
+                str = "products";
+            }else {
+                str = "recipes";
                 query.append(" recipes p ");
+            }
             StringBuilder whereReq = new StringBuilder();
             whereReq.append("where name like '" + GetText.getText() + "%' ");
             if (!caloriesFrom.getText().equals("") || !caloriesTo.getText().equals("")) {
@@ -252,7 +283,7 @@ public class ForSearchController extends Main {
             }
             for (Node item : AllTags.getChildren()) {
                 String Name = ((ComboBox<String>) item).getValue();
-                whereReq.append(" and (select count(*) from products_tag t where t.id_prod = p.id_prod and t.tag = '").
+                whereReq.append(" and (select count(*) from " + str + "_tag t where t." + str2 + " = p." + str3 + " and t.tag = '").
                         append(Name).append("' limit 1) > 0 ");
             }
             if (whereReq.toString().length() != 0) {
@@ -279,13 +310,25 @@ public class ForSearchController extends Main {
             }
             query.append(" limit " + linesCnt.getText());
             System.out.println(query.toString());
-            FXMLLoader loader = LoadXML.load("ForProducts.fxml");
-            Parent root = loader.getRoot();
-            ((Stage) cProduct.getScene().getWindow()).setScene(new Scene(root));
-            try {
-                ((ForProductsController) loader.getController()).setProductFromResult(Database.execute(query.toString()));
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+
+            if (cProduct.isSelected()) {
+                FXMLLoader loader = LoadXML.load("ForProducts.fxml");
+                Parent root = loader.getRoot();
+                ((Stage) cProduct.getScene().getWindow()).setScene(new Scene(root));
+                try {
+                    ((ForProductsController) loader.getController()).setProductFromResult(Database.execute(query.toString()));
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            } else {
+                FXMLLoader loader = LoadXML.load("ForRecipes.fxml");
+                Parent root = loader.getRoot();
+                ((Stage) cResipe.getScene().getWindow()).setScene(new Scene(root));
+                try {
+                    ((ForRecipesController) loader.getController()).setRecipesFromResult(Database.execute(query.toString()));
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
         });
     }
