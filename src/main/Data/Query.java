@@ -497,4 +497,34 @@ public class Query {
         }
 
     }
+
+    static public int getIdRecipeByName(String name) throws Exception{
+        return Integer.parseInt(Database.execute(new String("select id_rec from recipes where name='" + name + "';")).get(1).get(0));
+    }
+    static public int getIdProductByName(String name) throws Exception{
+        return Integer.parseInt(Database.execute(new String("select id_prod from products where name='" + name + "';")).get(1).get(0));
+    }
+    static public void addNewRecipeForRestaurant(int id, String Name, int cost, int count){
+        try{
+            Database.update(new String("insert into restaurant_content_recipes(id_restaurant, id_rec, price, count) values(" + id + "," + getIdRecipeByName(Name) + "," + cost + "," + count + ");"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    static public void addNewRecipeForShop(int id, String Name, int cost, int count){
+        try{
+            Database.update(new String("insert into shops_content_recipes(id_shop, id_rec, price, count) values(" + id + "," + getIdRecipeByName(Name) + "," + cost + "," + count + ");"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    static public void addNewProductForShop(int id, String Name, int cost, int count){
+        try{
+            Database.update(new String("insert into shops_content_products(id_shop, id_prod, price, count) values(" + id + "," + getIdProductByName(Name) + "," + cost + "," + count + ");"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

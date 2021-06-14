@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.Data.Database;
 import main.Data.Parser;
+import main.Data.Query;
 import main.Model.Orders.shopOrder;
 import main.Model.Products.Product;
 import main.Model.Recipes.Recipe;
@@ -78,7 +80,55 @@ public class ShopController {
     @FXML
     private TextField delivery;
 
+    @FXML
+    private ComboBox<String> AddRecipeName;
+
+    @FXML
+    private ComboBox<String> AddProductName;
+
+    @FXML
+    private TextField AddRecipeCost;
+
+    @FXML
+    private TextField AddProductCost;
+
+    @FXML
+    private Button AddRecipe;
+
+    @FXML
+    private Button AddProduct;
+
+    void FillName(){
+        try {
+            ArrayList<String> s1 = new ArrayList<>();
+            ArrayList<Recipe> recipes = Parser.getRecipesFrom(Query.getFullInformation("Recipes"));
+            for(Recipe i : recipes){
+                s1.add(i.getName());
+            }
+            AddRecipeName.setMaxHeight(35);
+            AddRecipeName.hide();
+            AddRecipeName.setVisibleRowCount(10);
+            AddRecipeName.setValue("");
+            AddRecipeName.setItems(FXCollections.observableArrayList(s1));
+
+            s1 = new ArrayList<>();
+            ArrayList<Product> products = Parser.getProductsFrom(Query.getFullInformation("Products"));
+            for(Product i : products){
+                s1.add(i.getName());
+            }
+            AddProductName.setMaxHeight(35);
+            AddProductName.hide();
+            AddProductName.setVisibleRowCount(10);
+            AddProductName.setValue("");
+            AddProductName.setItems(FXCollections.observableArrayList(s1));
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     void setShop(Shop shop)  throws Exception {
+        FillName();
         ArrayList<ArrayList<String>> normal_shop = Database.execute("select * from shops_main where id=" + shop.getId() + ";");
         Description.setText(normal_shop.get(1).get(11));
         OpenWeekdays.setText("Open in weekdays from " + normal_shop.get(1).get(4));
@@ -218,6 +268,22 @@ public class ShopController {
                 ((Stage) Vbox.getScene().getWindow()).setScene(new Scene(root));
             }else{
                 System.out.println("Empty");
+            }
+        });
+        AddRecipe.setOnAction(t -> {
+            try {
+                Query.addNewRecipeForShop(shop.getId(), AddRecipeName.getValue(), Integer.parseInt(AddRecipeCost.getText()), 1);
+                setShop(shop);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        });
+        AddProduct.setOnAction(t -> {
+            try {
+                Query.addNewProductForShop(shop.getId(), AddProductName.getValue(), Integer.parseInt(AddProductCost.getText()), 1);
+                setShop(shop);
+            }catch (Exception e){
+                e.printStackTrace();
             }
         });
     }

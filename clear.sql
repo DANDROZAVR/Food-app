@@ -29,6 +29,8 @@ drop table if exists restaurants_geoposition cascade;
 drop table if exists restaurants_plan_weekdays;
 drop table if exists restaurants_plan_saturday;
 drop table if exists restaurants_plan_sunday;
+drop table if exists restaurant_orders;
+drop table if exists restaurant_content_recipes;
 
 
 drop table if exists shop_description cascade;

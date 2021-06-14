@@ -291,21 +291,22 @@ create table shopsOrderProd(
 );
 
 create or replace view shopOrders as
-select id_order, id_shop, id_prod as id, date from shopsOrderProd union
-select id_order, id_shop, id_rec as id, date from shopsOrderRec;
+select id_order, id_shop, id_prod as id, (select price from shops_content_products s where s.id_prod = p.id_prod),date from shopsOrderProd p
+union
+select id_order, id_shop, id_rec as id, (select price from shops_content_recipes s where s.id_rec = q.id_rec),date from shopsOrderRec q;
 
-create or replace function order_insert(id_order integer, id_shop integer, id integer, date timestamp)
+create or replace function order_insert(id_order integer, id_shop integer, id integer,price numeric, date timestamp)
     returns void as
 $$
 begin
     if (id % 2 = 1) then
         insert into shopsOrderProd
         values
-        (id_order, id, id_shop, date);
+        (id_order, id, id_shop,price,date);
     else
         insert into shopsOrderRec
         values
-        (id_order, id, id_shop, date);
+        (id_order, id, id_shop, price,date);
     end if;
 end;
 $$ language plpgsql;
@@ -313,8 +314,11 @@ $$ language plpgsql;
 create or replace rule rule_insert as
     on insert to shopOrders
     do instead(
-    select order_insert(new.id_order, new.id_shop, new.id, new.date);
+    select order_insert(new.id_order, new.id_shop, new.id, new.price ,new.date);
     );
+
+create sequence for_id_shopOrders start with 1 increment by 2 maxvalue 100000;
+create sequence for_id_restaurantsOrders start with 1 increment by 2 maxvalue 100000;
 
 \i utils/solidsInsert.sql
 \i utils/speciesInsert.sql

@@ -1,5 +1,6 @@
 package main.Application;
 
+import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import main.Data.Database;
 import main.Model.Restaurants.Restaurant;
@@ -37,6 +38,8 @@ public class RestaurantsController {
     @FXML
     private Button order;
     @FXML
+    private Button AddRecipe;
+    @FXML
     private Button history;
     @FXML
     private VBox Vbox;
@@ -71,9 +74,33 @@ public class RestaurantsController {
     private TextField geoposition;
 
     @FXML
+    private ComboBox<String> AddName;
+
+    @FXML
+    private TextField AddCost;
+
+    void FillName(){
+        try {
+            ArrayList<String> s1 = new ArrayList<>();
+            ArrayList<Recipe> recipes = Parser.getRecipesFrom(Query.getFullInformation("Recipes"));
+            for(Recipe i : recipes){
+                s1.add(i.getName());
+            }
+            AddName.setMaxHeight(35);
+            AddName.hide();
+            AddName.setVisibleRowCount(10);
+            AddName.setValue("");
+            AddName.setItems(FXCollections.observableArrayList(s1));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private TextField delivery;
     void setRestaurant(Restaurant restaurant)  throws Exception {
-        ArrayList<ArrayList<String>> normal_restaurant = Database.execute("select * from shops_main where id=" + restaurant.getId() + ";");
+        FillName();
+        ArrayList<ArrayList<String>> normal_restaurant = Database.execute("select * from restaurants_main where id=" + restaurant.getId() + ";");
         Description.setText(normal_restaurant.get(1).get(11));
         OpenWeekdays.setText("Open in weekdays from " + normal_restaurant.get(1).get(4));
         CloseWeekdays.setText("till " + normal_restaurant.get(1).get(5));
@@ -185,6 +212,15 @@ public class RestaurantsController {
             }else{
                 System.out.println("Empty");
             }
+        });
+        AddRecipe.setOnAction(t -> {
+            try {
+                Query.addNewRecipeForRestaurant(restaurant.getId(), AddName.getValue(), Integer.parseInt(AddCost.getText()), 1);
+                setRestaurant(restaurant);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         });
     }
     void setSceneBack(Scene scene){
