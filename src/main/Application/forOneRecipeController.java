@@ -51,7 +51,7 @@ public class forOneRecipeController extends Main {
     void setRecipe(Recipe item) throws SQLException {
         //((TextArea)((HBox)VBoxProduct.getChildren().get(0)).getChildren().get(0)).setAccessibleText(item.getName());
         Name.setText(item.getName());
-        weight.setText(String.valueOf(item.getWeight()));
+        weight.setText(String.valueOf(item.getTime()));
         description.setText(item.repair(item.getDescription()));
         calories.setText(String.valueOf(item.getCalories()));
         instruction.setText(Recipe.repair(Recipe.fixInstruction(item.getInstruction())));

@@ -4,11 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 public class FindIcon {
     /**
      * @param iconName name of icon to search
-     * @return true, the icon was successfully founded and added to the "recources" folder
+     * @return true, the icon was successfully founded and added to the "resources" folder
      */
     static public boolean loadIconFromNet(String iconName) {
         Process p = null;
@@ -48,6 +47,5 @@ public class FindIcon {
      * @param iconName array of names of icon to search
      * @return true, if all the icons were successfully founded and added to the "recources" folder
      */
-
     //public static void main(String[] args) { System.out.println(loadIconFromNet("egg123")); }
 }
