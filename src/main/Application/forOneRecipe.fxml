@@ -25,7 +25,7 @@
          </children>
       </VBox>
       <Label layoutX="730.0" layoutY="80.0" prefHeight="26.0" prefWidth="62.0" text="Name" />
-      <Label layoutX="731.0" layoutY="137.0" prefHeight="24.0" prefWidth="62.0" text="Weight" />
+      <Label layoutX="731.0" layoutY="137.0" prefHeight="24.0" prefWidth="117.0" text="Preparation time" />
       <Label layoutX="731.0" layoutY="194.0" prefHeight="24.0" prefWidth="62.0" text="Calories" />
       <Label layoutX="731.0" layoutY="251.0" prefHeight="24.0" prefWidth="99.0" text="Description" />
       <Label layoutX="731.0" layoutY="449.0" prefHeight="24.0" prefWidth="109.0" text="Tags | Content" />

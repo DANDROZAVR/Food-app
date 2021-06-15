@@ -55,7 +55,7 @@ public class ParseProductsInput {
                 if (item.nutrient.getCarbo() < item.nutrient.getSugar()) continue;
                 if (item.nutrient.getCarbo() + item.nutrient.getFat() + item.nutrient.getProtein() > 100.0) continue;
                 mp.putIfAbsent(item.getName(), 0);
-                if (mp.get(item.getName()) > 5) continue;
+                if (mp.get(item.getName()) > 0) continue;
                 mp.put(item.getName(), mp.get(item.getName()) + 1);
                 if (was)
                     writer.println(",");
