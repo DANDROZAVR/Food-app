@@ -1,5 +1,6 @@
 package main.Application;
 
+import com.sun.jdi.IntegerValue;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import main.Data.Database;
@@ -124,7 +125,7 @@ public class RestaurantsController {
             link.setTooltip(new Tooltip("weight: " + res.getWeight() + "\n" +
                     "All calories: " + res.getAllCalories()+ "\n" + "Description: " + res.getDescription()));
             link.setOnAction(t -> {
-                FXMLLoader loader = LoadXML.load("ForOneRecipe.fxml");
+                FXMLLoader loader = LoadXML.load("forOneRecipe.fxml");
                 try {
                     ((forOneRecipeController) loader.getController()).setRecipe(res);
                 } catch (SQLException throwables) {
@@ -136,25 +137,46 @@ public class RestaurantsController {
             });
             links.add(link);
         }
-        ArrayList<Recipe> order1 = new ArrayList<>();
+        Map<Recipe, Integer> order1 = new HashMap<>();
         for(Hyperlink l: links){
             HBox temp1 = new HBox();
             Button add = new Button("add");
             temp1.getChildren().addAll(l,add);
             Vbox.getChildren().addAll(temp1);
             add.setOnAction(t1 -> {
-                Vbox.getChildren().remove(temp1);
+                //Vbox.getChildren().remove(temp1);
+                Recipe res = helper.get(l);
+                Hyperlink link = new Hyperlink(res.getName());
+                helper.put(link, res);
+                link.setTooltip(new Tooltip("weight: " + res.getWeight() + "\n" +
+                        "All calories: " + res.getAllCalories()+ "\n" + "Description: " + res.getDescription()));
+                link.setOnAction(t -> {
+                    FXMLLoader loader = LoadXML.load("ForOneRecipe.fxml");
+                    try {
+                        ((forOneRecipeController) loader.getController()).setRecipe(res);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    ((forOneRecipeController) loader.getController()).setSceneProduct(Vbox.getScene());
+                    Parent root = loader.getRoot();
+                    ((Stage) link.getScene().getWindow()).setScene(new Scene(root));
+                });
+                links.add(link);
                 HBox temp2 = new HBox();
                 Button delete = new Button("delete");
-                temp2.getChildren().addAll(l,delete);
-                order1.add(helper.get(l));
+                temp2.getChildren().addAll(link,delete);
+                if(order1.containsKey(helper.get(link))){
+
+                    Integer x = order1.get(helper.get(link));
+                    order1.remove(helper.get(link));
+                    x += 1;
+                    order1.put(helper.get(link), x);
+                }else
+                order1.put(helper.get(link), 1);
                 VBoxOrder.getChildren().add(temp2);
                 delete.setOnAction(t2 -> {
-                    order1.remove(helper.get(l));
-                    temp1.getChildren().remove(add);
-                    temp1.getChildren().addAll(l,add);
+                    order1.remove(helper.get(link));
                     VBoxOrder.getChildren().remove(temp2);
-                    Vbox.getChildren().add(temp1);
                 });
             });
         }
@@ -167,7 +189,7 @@ public class RestaurantsController {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-            for(Recipe r: order1){
+            for(Recipe r: order1.keySet()){
                 try {
                     ArrayList<ArrayList<String>> temp = new ArrayList<>(); try {
                         temp = Database.execute("select price from restaurant_content_recipes where id_rec = " + r.getId() + ";");
@@ -184,7 +206,9 @@ public class RestaurantsController {
                             + temp.get(1).get(0)
                             +",'"
                             +  dateFormat.format(date)
-                            +"');");
+                            + "',"
+                            + order1.get(r)
+                            +");");
                 }catch(SQLException e){
                     e.printStackTrace();
                 }

@@ -32,7 +32,7 @@ public class OrderViewController {
         for(Recipe r: o.content){
             Hyperlink link = new Hyperlink(r.getName());
             link.setTooltip(new Tooltip("weight: " + r.getWeight() + "\n" +
-                        "All calories: " + r.getAllCalories()+ "\n" + "Description: " + r.getDescription()));
+                    "All calories: " + r.getAllCalories()+ "\n" + "Description: " + r.getDescription()));
             link.setOnAction(t -> {
                 FXMLLoader loader = LoadXML.load("forOneRecipe.fxml");
                 try {
@@ -51,7 +51,7 @@ public class OrderViewController {
     private Button Back;
     void setSceneBack(Scene scene){
         Back.setOnAction(t -> {
-                ((Stage) Back.getScene().getWindow()).setScene(scene);
+            ((Stage) Back.getScene().getWindow()).setScene(scene);
         });
     }
     @FXML

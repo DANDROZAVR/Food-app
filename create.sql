@@ -162,6 +162,7 @@ create table restaurant_orders(
                                   id_rec integer not null references recipes(id_rec),
                                   price numeric(10) not null,
                                   date timestamp not null,
+                                  count integer,
                                   primary key(id_order,id_restaurant,id_rec,date)
 );
 create table restaurant_content_recipes(
@@ -334,6 +335,7 @@ create or replace rule rule_insert as
 \i utils/speciesInsert.sql
 \i utils/recipesInsert.sql
 \i utils/restaurantsInsert.sql
+\i utils/shopsInsert.sql
 
 
 
