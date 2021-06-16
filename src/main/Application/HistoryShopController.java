@@ -38,7 +38,7 @@ public class HistoryShopController {
             temp.setOnAction(t2 -> {
                 FXMLLoader loader = LoadXML.load("shopOrderView.fxml");
                 try {
-                    ((ShopOrderViewController) loader.getController()).setOrder(o);
+                    ((ShopOrderViewController) loader.getController()).setOrder(o, o.getPrice());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -33,13 +33,14 @@ public class ShopOrderViewController {
 
     @FXML
     private VBox VBox;
-    void setOrder(shopOrder o) throws Exception {
+    void setOrder(shopOrder o, ArrayList<Integer> prices) throws Exception {
         VBox.getChildren().clear();
         List<Hyperlink> links = new ArrayList<>();
+        int cnt = 0;
         for(Integer ide: o.getContent()){
             if(ide%2==0) {
                 Recipe res = Parser.parseRecipeById(ide);
-                Hyperlink link = new Hyperlink(res.getName());
+                Hyperlink link = new Hyperlink(res.getName() + "  with price=" + prices.get(cnt));
                 link.setTooltip(new Tooltip("weight: " + res.getWeight() + "\n" +
                         "All calories: " + res.getAllCalories() + "\n" + "Description: " + res.getDescription()));
                 link.setOnAction(t -> {
@@ -56,7 +57,7 @@ public class ShopOrderViewController {
                 links.add(link);
             }else{
                 Product res = Parser.parseProductById(ide);
-                Hyperlink link = new Hyperlink(res.getName());
+                Hyperlink link = new Hyperlink(res.getName() + "  with price=" + prices.get(cnt));
                 link.setTooltip(new Tooltip("Product group: " + res.getType() + "\n" +
                         "Product class: " + res.getProductType()+ "\n" + "Calories " + res.getCalories()));
                 link.setOnAction(t -> {
@@ -68,6 +69,7 @@ public class ShopOrderViewController {
                 });
                 links.add(link);
             }
+            ++cnt;
         }
         VBox.getChildren().addAll(links);
     }
