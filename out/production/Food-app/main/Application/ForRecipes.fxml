@@ -31,7 +31,7 @@
                <children>
                   <TextField fx:id="GetText" layoutX="59.0" layoutY="2.0" prefHeight="48.0" prefWidth="555.0" />
                   <Button fx:id="ButtonFind" layoutX="617.0" layoutY="2.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="39.0" />
-                  <ImageView fitHeight="48.0" fitWidth="39.0" layoutX="617.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="40.0" fitWidth="32.0" layoutX="617.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../resources/Icons/iconfinder_search_115695.png" />
                      </image>

@@ -2,6 +2,8 @@ package main.Application;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
+import main.Data.Database;
 import main.Data.Parser;
 import main.Data.Query;
 import main.Model.Products.Product;
@@ -72,6 +75,12 @@ public class ForAddingRecipesController extends Main {
     @FXML
     private TextField GetInstruction;
 
+    @FXML
+    private TextField GetTagText;
+
+    @FXML
+    private ComboBox<String> GetTag;
+
     int SizeRecipes, SizeProducts;
 
     public void build(){
@@ -89,6 +98,32 @@ public class ForAddingRecipesController extends Main {
                 s1.add(i.getName());
             }
             AllRecipes = FXCollections.observableArrayList(s1);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void set_tags(){
+        try{
+            ArrayList<ArrayList<String>> t = Database.execute("select tag from tags;");
+            ArrayList<String> s = new ArrayList<>();
+            s.add("");
+            for(int i = 1; i < t.size(); i++){
+                s.add(t.get(i).get(0));
+            }
+            t = Database.execute("select tag from products_tag;");
+            Set<String> st = new TreeSet<>();
+            for(int i = 1; i < t.size(); i++){
+                st.add(t.get(i).get(0));
+            }
+            for(String i : st){
+                s.add(i);
+            }
+            GetTag.setMaxHeight(35);
+            GetTag.hide();
+            GetTag.setVisibleRowCount(15);
+            GetTag.setValue("");
+            GetTag.setItems(FXCollections.observableArrayList(s));
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -129,6 +164,7 @@ public class ForAddingRecipesController extends Main {
     @FXML
     void initialize(){
         build();
+        set_tags();
         PlusRecipes.setOnAction(event -> {
             HBox _new = new HBox();
             _new.getChildren().add(getBoxRecipes());
@@ -196,7 +232,20 @@ public class ForAddingRecipesController extends Main {
                     minutes = Integer.parseInt(GetTimeMinutes.getText());
                 }
                 new_recipe.setTime(Integer.toString(hours * 60 + minutes));
-                Query.addNewRecipe(new_recipe, list_of_recipes, list_of_products);
+
+                if(GetTag.getValue() != "" && GetTagText.getText() != ""){
+                    throw new Exception();
+                }
+                if(GetTag.getValue() == "" && GetTagText.getText() == ""){
+                    throw new Exception();
+                }
+                String Tagg = new String();
+                if(GetTag.getValue() != ""){
+                    Tagg = GetTag.getValue();
+                }else{
+                    Tagg = GetTagText.getText();
+                }
+                Query.addNewRecipe(new_recipe, list_of_recipes, list_of_products, Tagg);
                 error_out.setTextFill(Color.web("#16b221", 0.8));
                 error_out.setText("OK");
             }catch (Exception e){
