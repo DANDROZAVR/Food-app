@@ -1,6 +1,6 @@
 package main.Model.Restaurants;
 
-public class Building {
+public abstract class Building {
     private int id;
     private String geoposition, name,adres;
     Building(int id, String geoposition, String adres, String name){

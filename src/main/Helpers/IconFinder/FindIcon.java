@@ -4,17 +4,19 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 public class FindIcon {
     /**
      * @param iconName name of icon to search
-     * @return true, the icon was successfully founded and added to the "recources" folder
+     * @return true, the icon was successfully founded and added to the "resources" folder
      */
     static public boolean loadIconFromNet(String iconName) {
         Process p = null;
         try {
             String project_path =  new File(".").getCanonicalPath();
             String file_path = "/src/main/Helpers/IconFinder";
+            File tempFile = new File(project_path + "/src/resources/Icons/" + iconName + ".png");
+            boolean exists = tempFile.exists();
+            if (exists) return true;
             String command = "python3 " + project_path + file_path + "/iconAPI.py";
             System.out.println(command);
             p = Runtime.getRuntime().exec(command + " " + iconName);
@@ -45,6 +47,5 @@ public class FindIcon {
      * @param iconName array of names of icon to search
      * @return true, if all the icons were successfully founded and added to the "recources" folder
      */
-
-    //public static void main(String[] args) { System.out.println(findIcon("apple")); }
+    //public static void main(String[] args) { System.out.println(loadIconFromNet("egg123")); }
 }

@@ -22,7 +22,7 @@ import main.Model.Recipes.Recipe;
 
 import javax.swing.*;
 
-public class forOneRecipeController {
+public class forOneRecipeController extends Main {
     final ListView listView = new ListView();
     Scene sceneProduct;
     @FXML
@@ -51,15 +51,14 @@ public class forOneRecipeController {
     void setRecipe(Recipe item) throws SQLException {
         //((TextArea)((HBox)VBoxProduct.getChildren().get(0)).getChildren().get(0)).setAccessibleText(item.getName());
         Name.setText(item.getName());
-        weight.setText(String.valueOf(item.getWeight()));
+        weight.setText(String.valueOf(item.getTime()));
         description.setText(item.repair(item.getDescription()));
         calories.setText(String.valueOf(item.getCalories()));
         instruction.setText(Recipe.repair(Recipe.fixInstruction(item.getInstruction())));
-
         if(item.getComponents() != null) {
             for (Pair<Integer, Integer> c : item.getComponents()) {
                 if (c.getKey() % 2 == 1) {
-                    ArrayList<ArrayList<String>> component = Database.execute("select * from products where id_prod =" + c.getKey() + ";");
+                    ArrayList<ArrayList<String>> component = Database.execute("select * from products left join products_nutrient using(id_prod) where id_prod =" + c.getKey() + ";");
                     Hyperlink temp = new Hyperlink(component.get(1).get(3));
                     temp.setTooltip(new Tooltip("Product group: " + component.get(1).get(1) + "\n" +
                             "Product class: " + component.get(1).get(2) + "\n" + "Calories " + component.get(1).get(5)));

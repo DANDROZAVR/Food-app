@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -17,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.Data.Query;
+import main.Helpers.IconFinder.FindIcon;
 import main.Model.Products.Product;
 import main.Model.Products.Solids;
 
@@ -80,7 +82,42 @@ public class ForOneProductViewController extends Main {
         this.sceneProduct = sceneProduct;
     }
     @FXML
+    private Label tryFoundIcon;
+    @FXML
     void setProduct(Product item) {
+        tryFoundIcon.setText("I'm trying to find the icon right now");
+        Platform.runLater(()->{
+            boolean found = FindIcon.loadIconFromNet(item.getName());
+            if (found)
+                setImage(item);
+            tryFoundIcon.setText("");
+        });
+        /*Thread t1 = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                Runnable task = new Runnable() {
+                    @Override
+                    public void run() {
+                        tryFoundIcon.setText("I'm trying to find the icon right now");
+                        System.err.println(tryFoundIcon.getText());
+                        boolean found = FindIcon.loadIconFromNet(item.getName());
+                        if (found) {
+                            tryFoundIcon.setText("Success!!!");
+                            setImage(item);
+                        } else {
+                            tryFoundIcon.setText("Don't worry, be happy!");
+                        }
+                        System.err.println(tryFoundIcon.getText());
+                        try {
+                            Thread.currentThread().wait(500);
+                        } catch (Exception ignored){}
+                        tryFoundIcon.setText("");
+                    }
+                };
+                Platform.runLater(task);
+            }
+        });*/
+        //t1.start();
         //((TextArea)((HBox)VBoxProduct.getChildren().get(0)).getChildren().get(0)).setAccessibleText(item.getName());
         product_name.setText(item.getName());
         product_type.setText(item.getType());
@@ -109,8 +146,8 @@ public class ForOneProductViewController extends Main {
                vitamin_E.setText(String.valueOf(sld.vitamins.e));
                vitamin_K.setText(String.valueOf(sld.vitamins.k));
            }
-
        }
+
         if (item.getLinks() != null) {
             StringBuilder linksString = new StringBuilder();
             for (int i = 0; i < item.getLinks().length; ++i) {
@@ -124,13 +161,16 @@ public class ForOneProductViewController extends Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        setImage(item);
+    }
+
+    private void setImage(Product item) {
         Image nImage = null;
         try {
-             nImage = new Image("@../../resources/Icons/" + item.getName() + ".png");
+            nImage = new Image("@../../resources/Icons/" + item.getName() + ".png");
         } catch (IllegalArgumentException ignored) {}
         product_icon.setImage(nImage);
     }
-
 
     @FXML
     void initialize() {

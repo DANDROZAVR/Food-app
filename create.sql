@@ -272,22 +272,21 @@ create or replace rule solids_full_insert as
     select solids_full_insert(new);
     );
 
-drop table if exists shopsOrderRec cascade;
-drop table if exists shopsOrderProd cascade;
-
 create table shopsOrderRec(
-                              id_order integer primary key not null,
+                              id_order integer not null,
                               id_rec integer references recipes(id_rec),
                               id_shop integer not null references shops_main(id),
                               price numeric(10) not null,
-                              date timestamp not null
+                              date timestamp not null,
+							  primary key(id_order, id_rec, id_shop, date)
 );
 create table shopsOrderProd(
-                               id_order integer primary key not null,
+                               id_order integer not null,
                                id_prod integer references products(id_prod),
                                id_shop integer not null references shops_main(id),
                                price numeric(10) not null,
-                               date timestamp not null
+                               date timestamp not null,
+							   primary key(id_order, id_prod, id_shop, date)
 );
 
 create or replace view shopOrders as
@@ -326,8 +325,43 @@ create sequence for_id_restaurantsOrders start with 1 increment by 2 maxvalue 10
 \i utils/restaurantsInsert.sql
 
 
+insert into products_tag
+	values
+(1, 'milk-product'),	
+(3, 'milk-product'),	
+(5, 'milk-product'),
+(7, 'milk-product'),
+(47, 'milk-product'),
+(49, 'milk-product'),
+(57, 'milk-product'),
+(59, 'milk-product'),
+(351, 'meat-product'),
+(363, 'meat-product'),
+(377, 'meat-product'),
+(433, 'meat-product'),
+(569, 'meat-product'),
+(635, 'meat-product'),
+(817, 'fruit'),
+(821, 'fruit'),
+(813, 'fruit'),
+(813, 'fruit'),
+(899, 'fruit'),
+(1063, 'fruit'),
+(1061, 'yummy-drinks'),
+(1033, 'yummy-drinks'),
+(1027, 'yummy-drinks'),
+(867, 'yummy-drinks'),
+(47, 'yummy-drinks'),
+(1069, 'juicy'),
+(1177, 'juicy'),
+(1281, 'vegan-must-have'),
+(1323, 'vegan-must-have'),
+(1485, 'vegan-must'),
+(1487, 'halloween'),
+(1539, 'grass');
 
 insert into restaurants_main(id,name,geoposition) values (10, 'Andrew', '0,0', 'Dust');
 insert into restaurants_group_meals(id_restaurant,id_group,cena) values (10,5,3424);
 insert into group_meals_content(id_group,id_rec) values (5,12);
-insert into shops_main values(1,'sdfsaf','afadsfa');
+INSERT INTO shops_main(id, name, address, geoposition, open_weekdays, close_weekdays, open_saturday, close_saturday, open_sunday, close_sunday, stars, description, food_delivery) VALUES (nextval('for_id_shop'), 'Zabka', 'al. 4 maja', '0,0', '9:0', '17:0', '9:0', '17:0', '9:0', '17:0', 3, 'Green', false);
+INSERT INTO restaurants_main(id, name, address, geoposition, open_weekdays, close_weekdays, open_saturday, close_saturday, open_sunday, close_sunday, stars, description, food_delivery) VALUES (nextval('for_id_restaurants'), 'Lewiatanka', 'al. 4 maja', '0,0', '9:0', '17:0', '9:0', '17:0', '9:0', '17:0', 3, 'Green', false);

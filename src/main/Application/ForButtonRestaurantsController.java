@@ -19,7 +19,7 @@ import main.Data.Parser;
 import main.Data.Query;
 import main.Model.Recipes.Recipe;
 
-public class ForButtonRestaurantsController {
+public class ForButtonRestaurantsController extends Main {
     private final ListView listView = new ListView();
     @FXML
     private ResourceBundle resources;
@@ -42,9 +42,9 @@ public class ForButtonRestaurantsController {
         try {
             ArrayList<ArrayList<String>> output = Query.getFullInformation("restaurants_main");
             for (ArrayList<String> s : output) {
-                if (!s.get(1).equals("name")) {
+                if (!s.get(0).equals("id")) {
                     Hyperlink link = new Hyperlink(s.get(1));
-                    link.setTooltip(new Tooltip("adres: " + s.get(2) + "\n"));
+                    link.setTooltip(new Tooltip("address: " + s.get(2) + "\n"));
                     link.setOnAction(t -> {
                         FXMLLoader loader = LoadXML.load("Restaurants.fxml");
                         ArrayList<ArrayList<String>> temp = new ArrayList<>();
