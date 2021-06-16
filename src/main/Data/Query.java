@@ -253,7 +253,7 @@ public class Query {
         */
     }
 
-    public static void addNewRecipe(Recipe p, ArrayList<Pair<Recipe, Integer>> list_of_recipes, ArrayList<Pair<Product, Integer>> list_of_products) throws SQLException, Exception {
+    public static void addNewRecipe(Recipe p, ArrayList<Pair<Recipe, Integer>> list_of_recipes, ArrayList<Pair<Product, Integer>> list_of_products, String tag) throws SQLException, Exception {
         if(Integer.parseInt(Database.execute(new String("select count(*) from recipes where id_rec = " + p.getId() + ";")).get(1).get(0)) != 0){
             throw new Exception("has this id");
         }
@@ -346,6 +346,8 @@ public class Query {
             Database.update(new String("delete from recipes where id_rec=" + p.getId() + ";"));
             throw new Exception("Something bad with products or recipes from list");
         }
+
+        Database.update("insert into recipes_tag values(" + p.getId() + ", '" + tag + "');");
 
     }
 
