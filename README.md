@@ -15,5 +15,7 @@ $psql
 
 =#alter user test superuser;
 
+Przychodząc do folderu aplikacji należy wykonać:
+$psql < create.sql
 
 Po wykonywaniu tego, można jak zwykłe uruchomić aplikację. Korzystamy z library, którzy są skopiowane do folderu "libraries"
