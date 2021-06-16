@@ -36,7 +36,8 @@
             <Font name="Arial" size="15.0" />
          </font>
       </Button>
-      <ComboBox fx:id="GetTag" layoutX="105.0" layoutY="345.0" prefHeight="35.0" prefWidth="150.0" />
+      <ComboBox fx:id="GetTag" layoutX="103.0" layoutY="328.0" prefHeight="35.0" prefWidth="150.0" />
       <Label layoutX="271.0" layoutY="345.0" prefHeight="35.0" prefWidth="71.0" text="Tag" />
+      <TextField fx:id="GetTagText" layoutX="103.0" layoutY="370.0" prefHeight="35.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

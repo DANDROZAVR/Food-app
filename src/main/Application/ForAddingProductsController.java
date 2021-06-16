@@ -90,10 +90,14 @@ public class ForAddingProductsController extends Main {
     @FXML
     private ComboBox<String> GetTag;
 
+    @FXML
+    private TextField GetTagText;
+
     public void build(){
         try{
             ArrayList<ArrayList<String>> t = Database.execute("select tag from tags;");
             ArrayList<String> s = new ArrayList<>();
+            s.add("");
             for(int i = 1; i < t.size(); i++){
                 s.add(t.get(i).get(0));
             }
@@ -172,7 +176,19 @@ public class ForAddingProductsController extends Main {
                 forNewProduct.add(new ArrayList<>(row));
                 row.clear();
                 Product _new = Parser.getProductsFrom(forNewProduct).get(0);
-                Query.addNewProduct(_new, GetTag.getValue());
+                if(GetTag.getValue() != "" && GetTagText.getText() != ""){
+                    throw new Exception();
+                }
+                if(GetTag.getValue() == "" && GetTagText.getText() == ""){
+                    throw new Exception();
+                }
+                String Tagg = new String();
+                if(GetTag.getValue() != ""){
+                    Tagg = GetTag.getValue();
+                }else{
+                    Tagg = GetTagText.getText();
+                }
+                Query.addNewProduct(_new, Tagg);
                 error_out.setTextFill(Color.web("#16b221", 0.8));
                 error_out.setText("OK");
             }catch(Exception e){
