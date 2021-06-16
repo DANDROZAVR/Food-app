@@ -260,7 +260,7 @@ public class ForSearchController extends Main {
                 str3 = "id_prod"; else
                 str3 = "id_rec";
             if (cProduct.isSelected()) {
-                query.append(" products p natural join products_nutrient ");
+                query.append(" products p left join products_nutrient using(id_prod)");
                 str = "products";
             }else {
                 str = "recipes";

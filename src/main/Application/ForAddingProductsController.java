@@ -4,6 +4,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -13,19 +15,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import main.Data.Database;
 import main.Data.Parser;
 import main.Data.Query;
 import main.Helpers.IconFinder.FindIcon;
 import main.Model.Products.Product;
+import main.Model.Recipes.Recipe;
 
 
 public class ForAddingProductsController extends Main {
@@ -86,10 +87,37 @@ public class ForAddingProductsController extends Main {
             e.printStackTrace();
         }
     }
+    @FXML
+    private ComboBox<String> GetTag;
+
+    public void build(){
+        try{
+            ArrayList<ArrayList<String>> t = Database.execute("select tag from tags;");
+            ArrayList<String> s = new ArrayList<>();
+            for(int i = 1; i < t.size(); i++){
+                s.add(t.get(i).get(0));
+            }
+            t = Database.execute("select tag from products_tag;");
+            Set<String> st = new TreeSet<>();
+            for(int i = 1; i < t.size(); i++){
+                st.add(t.get(i).get(0));
+            }
+            for(String i : st){
+                s.add(i);
+            }
+            GetTag.setMaxHeight(35);
+            GetTag.hide();
+            GetTag.setVisibleRowCount(15);
+            GetTag.setValue("");
+            GetTag.setItems(FXCollections.observableArrayList(s));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void initialize(){
-
+        build();
         // Parametrs
         ChoiceBox<String> getTaste = new ChoiceBox<String>();
         {
@@ -133,18 +161,18 @@ public class ForAddingProductsController extends Main {
                 e.printStackTrace();
             }
             try {
-                String product_group = GetProductGroup.getText(), product_class = GetProductClass.getValue(), name = GetName.getText(), description = GetDescription.getText(), area = GetArea.getText(), calories = GetCalories.getText();
+                String product_group = GetProductGroup.getText(), product_class = GetProductClass.getValue(), name = GetName.getText(), description = GetDescription.getText(), calories = GetCalories.getText();
                 String sugar = getSugar.getText(), colour = getColour.getText(), taste = getTaste.getValue();
                 ArrayList< ArrayList<String> > forNewProduct = new ArrayList<>();
                 ArrayList<String> row = new ArrayList<String>();
-                row.add("id_prod"); row.add("product_group"); row.add("product_class"); row.add("name"); row.add("description"); row.add("calories"); row.add("area"); row.add("sugar"); row.add("taste");
+                row.add("id_prod"); row.add("product_group"); row.add("product_class"); row.add("name"); row.add("description"); row.add("calories"); row.add("area"); row.add("taste");
                 forNewProduct.add(new ArrayList<>(row));
                 row.clear();
-                row.add(Integer.toString(Id)); row.add(product_group); row.add(product_class); row.add(name); row.add(description); row.add(calories); row.add(area); row.add(sugar); row.add(taste);
+                row.add(Integer.toString(Id)); row.add(product_group); row.add(product_class); row.add(name); row.add(description); row.add(calories); row.add(sugar); row.add(taste);
                 forNewProduct.add(new ArrayList<>(row));
                 row.clear();
                 Product _new = Parser.getProductsFrom(forNewProduct).get(0);
-                Query.addNewProduct(_new);
+                Query.addNewProduct(_new, GetTag.getValue());
                 error_out.setTextFill(Color.web("#16b221", 0.8));
                 error_out.setText("OK");
             }catch(Exception e){

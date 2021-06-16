@@ -137,7 +137,7 @@ public class Query {
     }
     public static ArrayList<ArrayList<String>> getByNamePrefix_all(String fromTable, String prefixName) throws SQLException {
         String query = new String(
-                        "SELECT * from (SELECT * FROM " + fromTable + " natural join products_nutrient where name like '" + prefixName + "%') as products1;");
+                        "SELECT * from (SELECT * FROM " + fromTable + " left join products_nutrient using(id_prod) where name like '" + prefixName + "%') as products1;");
                                 /*"left join products_tag using(id_prod)"
                              + " left join drinks_info using(id_prod)" +
                                 "left join products_nutrient using(id_prod);");*/
@@ -167,7 +167,7 @@ public class Query {
         throw new SQLException("unknown val-sequence:" + S);
     }
 
-    public static void addNewProduct(Product p) throws SQLException, ClassNotFoundException, Exception {
+    public static void addNewProduct(Product p, String tag) throws SQLException, ClassNotFoundException, Exception {
         if(Integer.parseInt(Database.execute(new String("select count(*) from products where id_prod = " + p.getId() + ";")).get(1).get(0)) != 0){
             throw new Exception("has this id");
         }
@@ -241,6 +241,7 @@ public class Query {
                 throw new Exception("can't add to Drinks");
             }
         }
+        Database.update("insert into products_tag values(" + p.getId() + ", '" + tag + "');");
         /*
         query = new String("INSERT INTO products_areatag(id_prod, area) VALUES ("
                 + Id
