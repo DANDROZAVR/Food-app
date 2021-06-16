@@ -1,22 +1,46 @@
 \i clear.sql
 
 
-
 create type prod_class_enum as ENUM('Drinks', 'Solids', 'Species');
 create type species_taste_enum as ENUM('Sweet', 'Salty', 'Bitter', 'Sour', 'Burning', 'Spicy');
+create sequence id_for_tag start with 1 increment by 1;
 
---add unique name
+create or replace function good(tag varchar)
+	returns boolean as
+$$
+	declare
+		i integer;
+		lst char;
+		c char;
+	begin
+		lst=',';
+		for i in 0..length(tag)-1 loop
+			c = (select substring(tag, i + 1, 1)::char);		
+			if ((c >= 'a' and c <= 'z') = false and (c = '-') = false) then
+				return false;
+			end if;
+			if (c = '-' and lst = '-') then
+				return false;
+			end if;
+			lst = c;
+		end loop;
+		return true;
+	end;
+$$ language plpgsql;
+
+
 create table products (
                           id_prod integer constraint pk_prod primary key,
                           product_group varchar(60) not null,
                           product_class prod_class_enum not null,
-                          name varchar(30) not null,
+                          name varchar(30) unique not null,
                           description varchar(400),
                           calories numeric(5) not null check(calories >= 0)
 );
-create table products_tag (
-                              id_prod integer constraint fk_prod_area references products(id_prod),
-                              tag varchar(40) not null
+create table products_tags(
+	id_prod int not null references products(id_prod),
+	id_tag int not null references tags(id_tag),
+	primary key(id_prod, id_tag)
 );
 create table drinks_info (
                              id_prod integer not null primary key constraint fk_prod_dk references products(id_prod),
@@ -53,9 +77,10 @@ create table recipes (
                          instruction varchar(1500),
                          check(calories >= 0)
 );
-create table recipes_tag (
-                             id integer constraint fk_rec_tag references recipes(id_rec),
-                             tag varchar(120) not null
+create table recipes_tags(
+	id_rec int not null references recipes(id_rec),
+	id_tag int not null references tags(id_tag),
+	primary key(id_rec, id_tag)
 );
 
 create table recipes_content_products (
@@ -91,13 +116,16 @@ create table restaurants_main(
 create table restaurants_group_meals(
                                         id_restaurant integer not null references restaurants_main(id),
                                         id_group integer not null primary key,
-                                        cena numeric(10) not null
+                                        price numeric(10) not null
 );
 create table group_meals_content(
                                     id_group integer not null references restaurants_group_meals(id_group),
                                     id_rec integer not null references recipes(id_rec)
 );
-
+create table tags(
+	id_tag int not null default nextval('id_for_tag') primary key,
+	tag varchar(50) check(good(tag))
+);
 
 create table shops_main(
                            id integer not null primary key,
@@ -147,7 +175,7 @@ create sequence for_id_products start with 1 increment by 2 maxvalue 100000;
 create sequence for_id_recipes start with 2 increment by 2 maxvalue 100000;
 create sequence for_id_shop start with 1 increment by 2 maxvalue 100000;
 create sequence for_id_restaurants start with 2 increment by 2 maxvalue 100000;
-
+create sequence for_id_shopOrders start with 1 increment by 2 maxvalue 100000;
 create sequence for_id_restaurantsOrders start with 1 increment by 2 maxvalue 100000;
 
 
@@ -157,47 +185,46 @@ for diagram
 
 
 */
+create table shopsOrderRec(
+                              id_order integer not null,
+                              id_rec integer references recipes(id_rec),
+                              id_shop integer not null references shops_main(id),
+                              price numeric(10) not null,
+                              date timestamp not null,
+							  primary key(id_order, id_rec, id_shop, date)
+);
+create table shopsOrderProd(
+                               id_order integer not null,
+                               id_prod integer references products(id_prod),
+                               id_shop integer not null references shops_main(id),
+                               price numeric(10) not null,
+                               date timestamp not null,
+							   primary key(id_order, id_prod, id_shop, date)
+);
 
-/*ALTER TABLE ONLY products_areatag
-    ADD CONSTRAINT prod_area_ee FOREIGN KEY (id_prod) references products(id_prod);
-ALTER TABLE ONLY recipes_tag
-    ADD CONSTRAINT rec_tag FOREIGN KEY (id) references recipes(id_rec);
-/*ALTER TABLE ONLY group_meals_content
-    ADD CONSTRAINT fs1ese FOREIGN KEY (id_group) references restaurants_group_meals(id_group);*/
 ALTER TABLE ONLY restaurants_group_meals
     ADD CONSTRAINT fsese2222 FOREIGN KEY (id_restaurant) references restaurants_main(id);
-/*ALTER TABLE ONLY group_meals_content
-    ADD CONSTRAINT fses2e FOREIGN KEY (id_rec) references recipes(id_rec);*/
-ALTER TABLE ONLY recipes_areatag
-    ADD CONSTRAINT rec_area_ee2 FOREIGN KEY (id) references recipes(id_rec);
-ALTER TABLE ONLY shop_cards
-    ADD CONSTRAINT disc_1223 FOREIGN KEY (id_shop) references shops_main(id);
 ALTER TABLE ONLY shops_content_recipes
     ADD CONSTRAINT da2isc_1 FOREIGN KEY (id_shop) references shops_main(id);
-/*ALTER TABLE ONLY shops_content_recipes
-    ADD CONSTRAINT daisc_12 FOREIGN KEY (id_rec) references recipes(id_rec);*/
 ALTER TABLE ONLY shops_content_products
     ADD CONSTRAINT dai23sc_12 FOREIGN KEY (id_shop)references shops_main(id);
 ALTER TABLE ONLY shops_content_products
     ADD CONSTRAINT dai23sc_122 FOREIGN KEY (id_prod)references products(id_prod);
-/*ALTER TABLE ONLY recipes_content
-    ADD CONSTRAINT fk_rec_coewnt FOREIGN KEY (id_rec) references recipes(id_rec);*/
-ALTER TABLE ONLY species_taste
-    ADD CONSTRAINT fk_proed_ss FOREIGN KEY (id_prod) references products(id_prod);
 ALTER TABLE ONLY drinks_info
     ADD CONSTRAINT fk_pwrod_dk FOREIGN KEY (id_prod) references products(id_prod);
-ALTER TABLE ONLY shops_info
-    ADD CONSTRAINT fk_shoep_des FOREIGN KEY (id) references shops_main(id);
-ALTER TABLE ONLY restaurants_plan_saturday
-    ADD CONSTRAINT fk_plan_sat FOREIGN KEY (id) references restaurants_main(id);
-ALTER TABLE ONLY restaurants_plan_sunday
-    ADD CONSTRAINT fk_plan_sat2 FOREIGN KEY (id) references restaurants_main(id);
-ALTER TABLE ONLY restaurants_plan_weekdays
-    ADD CONSTRAINT fk_plan_sat3 FOREIGN KEY (id) references restaurants_main(id);
-ALTER TABLE ONLY restaurants_geoposition
-    ADD CONSTRAINT fk_plan_sat3 FOREIGN KEY (id) references restaurants_main(id);
-*/
+ALTER TABLE ONLY restaurant_orders
+    ADD CONSTRAINT fsese22222 FOREIGN KEY (id_restaurant) references restaurants_main(id);	
+ALTER TABLE ONLY restaurant_content_recipes
+    ADD CONSTRAINT dai23sc_1222 FOREIGN KEY (id_restaurant)references restaurants_main(id);
+ALTER TABLE ONLY restaurant_orders
+    ADD CONSTRAINT dai23sc_12222 FOREIGN KEY (id_restaurant)references restaurants_main(id);
+ALTER TABLE ONLY shopsOrderRec
+    ADD CONSTRAINT dai23sc_1222 FOREIGN KEY (id_shop)references shops_main(id);
+ALTER TABLE ONLY shopsOrderProd
+    ADD CONSTRAINT dai23sc_1222 FOREIGN KEY (id_shop)references shops_main(id);
 
+
+	
 create or replace function getProductTags(item integer)
     returns varchar as
 $$
@@ -272,22 +299,7 @@ create or replace rule solids_full_insert as
     select solids_full_insert(new);
     );
 
-create table shopsOrderRec(
-                              id_order integer not null,
-                              id_rec integer references recipes(id_rec),
-                              id_shop integer not null references shops_main(id),
-                              price numeric(10) not null,
-                              date timestamp not null,
-							  primary key(id_order, id_rec, id_shop, date)
-);
-create table shopsOrderProd(
-                               id_order integer not null,
-                               id_prod integer references products(id_prod),
-                               id_shop integer not null references shops_main(id),
-                               price numeric(10) not null,
-                               date timestamp not null,
-							   primary key(id_order, id_prod, id_shop, date)
-);
+
 
 create or replace view shopOrders as
 select id_order, id_shop, id_prod as id, (select price from shops_content_products s where s.id_prod = p.id_prod),date from shopsOrderProd p
@@ -316,8 +328,7 @@ create or replace rule rule_insert as
     select order_insert(new.id_order, new.id_shop, new.id, new.price ,new.date);
     );
 
-create sequence for_id_shopOrders start with 1 increment by 2 maxvalue 100000;
-create sequence for_id_restaurantsOrders start with 1 increment by 2 maxvalue 100000;
+
 
 \i utils/solidsInsert.sql
 \i utils/speciesInsert.sql
@@ -325,42 +336,8 @@ create sequence for_id_restaurantsOrders start with 1 increment by 2 maxvalue 10
 \i utils/restaurantsInsert.sql
 
 
-insert into products_tag
-	values
-(1, 'milk-product'),	
-(3, 'milk-product'),	
-(5, 'milk-product'),
-(7, 'milk-product'),
-(47, 'milk-product'),
-(49, 'milk-product'),
-(57, 'milk-product'),
-(59, 'milk-product'),
-(351, 'meat-product'),
-(363, 'meat-product'),
-(377, 'meat-product'),
-(433, 'meat-product'),
-(569, 'meat-product'),
-(635, 'meat-product'),
-(817, 'fruit'),
-(821, 'fruit'),
-(813, 'fruit'),
-(813, 'fruit'),
-(899, 'fruit'),
-(1063, 'fruit'),
-(1061, 'yummy-drinks'),
-(1033, 'yummy-drinks'),
-(1027, 'yummy-drinks'),
-(867, 'yummy-drinks'),
-(47, 'yummy-drinks'),
-(1069, 'juicy'),
-(1177, 'juicy'),
-(1281, 'vegan-must-have'),
-(1323, 'vegan-must-have'),
-(1485, 'vegan-must'),
-(1487, 'halloween'),
-(1539, 'grass');
 
-insert into restaurants_main(id,name,geoposition) values (10, 'Andrew', '0,0', 'Dust');
+
 insert into restaurants_group_meals(id_restaurant,id_group,cena) values (10,5,3424);
 insert into group_meals_content(id_group,id_rec) values (5,12);
 INSERT INTO shops_main(id, name, address, geoposition, open_weekdays, close_weekdays, open_saturday, close_saturday, open_sunday, close_sunday, stars, description, food_delivery) VALUES (nextval('for_id_shop'), 'Zabka', 'al. 4 maja', '0,0', '9:0', '17:0', '9:0', '17:0', '9:0', '17:0', 3, 'Green', false);
