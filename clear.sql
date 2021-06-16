@@ -1,13 +1,11 @@
 drop table if exists recipes cascade;
 drop table if exists products cascade;
-drop table if exists products_tag cascade;
 drop table if exists products_nutrient cascade;
 drop table if exists products_nutrient_main cascade;
 drop table if exists products_nutrient_additional cascade;
 drop table if exists products_vitamins cascade;
 
 drop table if exists recipes_areatag cascade;
-drop table if exists recipes_tag cascade;
 drop table if exists recipes_content_products cascade;
 drop table if exists recipes_content_recipes cascade;
 drop table if exists recipes_nutrient_main cascade;
@@ -49,9 +47,10 @@ drop table if exists shops_plan_saturday;
 drop table if exists shops_plan_sunday;
 
 drop table if exists shops_content_recipes cascade;
-drop table if exists shops_content_products cascade
+drop table if exists shops_content_products cascade;
 drop table if exists shops_discounts_recipes cascade;
 drop table if exists shops_discounts_products cascade;
+
 drop table if exists shop_cards cascade;
 drop table if exists shops_info cascade;
 drop table if exists discounts cascade;
@@ -60,7 +59,15 @@ drop sequence if exists for_id_products cascade;
 drop sequence if exists for_id_recipes cascade;
 drop sequence if exists for_id_restaurants cascade;
 drop sequence if exists for_id_shop cascade;
+drop sequence if exists for_id_shop_orders cascade;
+drop sequence if exists for_id_shopOrders cascade;
+drop sequence if exists for_id_restaurantsorders cascade;
 
+drop table if exists tags cascade;
+drop function if exists good cascade; 
+drop sequence if exists id_for_tag cascade;
+drop table if exists products_tags cascade;
+drop table if exists recipes_tags cascade;
 
 drop function if exists getProductAreaTags cascade; 
 drop function if exists getProductTags cascade;  
@@ -81,3 +88,4 @@ drop table if exists shopsOrderProd cascade;
 
 drop function if exists solids_full_insert;
 drop rule if exists solids_full_insert on solids_full;
+
