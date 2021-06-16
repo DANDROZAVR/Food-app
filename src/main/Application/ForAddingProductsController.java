@@ -183,7 +183,7 @@ public class ForAddingProductsController extends Main {
                     throw new Exception();
                 }
                 String Tagg = new String();
-                if(GetTag.getValue() != ""){
+                if(!GetTag.getValue().equals("")){
                     Tagg = GetTag.getValue();
                 }else{
                     Tagg = GetTagText.getText();
