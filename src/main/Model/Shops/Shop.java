@@ -38,23 +38,32 @@ public class Shop extends Building {
         ArrayList<ArrayList<String>> res = Database.execute("select * from shopOrders where id_shop =" + shop +";");
         ArrayList<shopOrder> ans = new ArrayList<>();
         Map<Integer, ArrayList<Integer>> temp = new HashMap<>();
+        Map<Integer, ArrayList<Integer>> prices = new HashMap<>();
         Map<Integer, String> dates = new HashMap<>();
+        Integer sumPrice = 0;
         for(ArrayList<String> a: res){
             if(a.get(0).equals("id_order")){
                 continue;
             }else{
                 if(temp.containsKey(Integer.parseInt(a.get(0)))){
                     temp.get(Integer.parseInt(a.get(0))).add(Integer.parseInt(a.get(2)));
+                    prices.get(Integer.parseInt(a.get(0))).add(Integer.parseInt(a.get(3)));
                 }else {
+                    sumPrice += Integer.parseInt(a.get(3));
                     dates.put(Integer.parseInt(a.get(0)),a.get(4));
+
                     ArrayList<Integer> temp2 = new ArrayList<>();
                     temp2.add(Integer.parseInt(a.get(2)));
                     temp.put(Integer.parseInt(a.get(0)), temp2);
+
+                    ArrayList<Integer> temp3 = new ArrayList<>();
+                    temp3.add(Integer.parseInt(a.get(3)));
+                    prices.put(Integer.parseInt(a.get(0)), temp3);
                 }
             }
         }
         for(Integer i: temp.keySet()){
-            ans.add(new shopOrder(i,temp.get(i),dates.get(i),Parser.parseShopById(shop))) ;
+            ans.add(new shopOrder(i,temp.get(i),dates.get(i),Parser.parseShopById(shop), prices.get(i))) ;
         }
         return ans;
     }
